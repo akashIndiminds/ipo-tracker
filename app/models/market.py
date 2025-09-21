@@ -1,85 +1,79 @@
+from pydantic import BaseModel, Field
+from typing import Optional, List, Dict, Any
 
-# app/routers/market.py
-"""
-Market related API endpoints
-"""
-from fastapi import APIRouter, HTTPException
-from typing import List, Optional
-from app.services.nse_service import NSEService
-from app.models.market import MarketIndex, MarketSummary, MarketStatus
-
-router = APIRouter()
-nse_service = NSEService()
-
-@router.get("/status", response_model=MarketStatus)
-async def get_market_status():
-    """Get current market status"""
-    try:
-        status = nse_service.get_market_status()
-        if not status:
-            raise HTTPException(status_code=404, detail="Market status not available")
-        return status
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching market status: {str(e)}")
-
-@router.get("/indices", response_model=List[MarketIndex])
-async def get_market_indices():
-    """Get all major market indices"""
-    try:
-        indices = nse_service.get_market_indices()
-        
-        # Filter to show only major indices
-        major_indices = [
-            'NIFTY 50', 'NIFTY BANK', 'NIFTY IT', 'NIFTY FMCG', 
-            'NIFTY AUTO', 'NIFTY MIDCAP 100', 'NIFTY SMLCAP 100'
-        ]
-        
-        filtered_indices = [idx for idx in indices if idx.index_name in major_indices]
-        return filtered_indices
-        
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching market indices: {str(e)}")
-
-@router.get("/summary", response_model=MarketSummary)
-async def get_market_summary():
-    """Get market summary statistics"""
-    try:
-        summary = nse_service.get_market_summary()
-        if not summary:
-            raise HTTPException(status_code=404, detail="Market summary not available")
-        return summary
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching market summary: {str(e)}")
-
-@router.get("/dashboard")
-async def get_market_dashboard():
-    """Get comprehensive market dashboard data"""
-    try:
-        # Get all market data
-        status = nse_service.get_market_status()
-        indices = nse_service.get_market_indices()
-        summary = nse_service.get_market_summary()
-        
-        # Filter major indices
-        major_indices = [
-            'NIFTY 50', 'NIFTY BANK', 'NIFTY IT', 'NIFTY FMCG'
-        ]
-        filtered_indices = [idx for idx in indices if idx.index_name in major_indices]
-        
-        # Calculate market sentiment
-        positive_indices = len([idx for idx in filtered_indices if idx.change_percent > 0])
-        total_indices = len(filtered_indices)
-        market_sentiment = "Positive" if positive_indices > total_indices/2 else "Negative"
-        
-        dashboard_data = {
-            "market_status": status.dict() if status else None,
-            "major_indices": [idx.dict() for idx in filtered_indices],
-            "market_summary": summary.dict() if summary else None,
-            "market_sentiment": market_sentiment,
-            "sentiment_score": (positive_indices / total_indices) * 100 if total_indices > 0 else 50
+class MarketIndex(BaseModel):
+    """Market index model"""
+    index_name: str = Field(..., description="Index name")
+    last: Optional[float] = Field(None, description="Last price")
+    open: Optional[float] = Field(None, description="Opening price")
+    high: Optional[float] = Field(None, description="Day high")
+    low: Optional[float] = Field(None, description="Day low") 
+    previous_close: Optional[float] = Field(None, description="Previous close")
+    change: Optional[float] = Field(None, description="Point change")
+    percent_change: Optional[float] = Field(None, description="Percentage change")
+    year_high: Optional[float] = Field(None, description="52-week high")
+    year_low: Optional[float] = Field(None, description="52-week low")
+    time_val: Optional[str] = Field(None, description="Last update time")
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "index_name": "NIFTY 50",
+                "last": 25300.50,
+                "open": 25280.00,
+                "high": 25450.75,
+                "low": 25200.25,
+                "previous_close": 25350.00,
+                "change": -49.50,
+                "percent_change": -0.19,
+                "year_high": 26277.35,
+                "year_low": 21743.65,
+                "time_val": "20-Sep-2025 15:30"
+            }
         }
-        
-        return dashboard_data
-        
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching dashboard data: {str(e)}")
+
+class MarketStatus(BaseModel):
+    """Market status model"""
+    market: str = Field(..., description="Market name")
+    market_status: str = Field(..., description="Market status (Open/Closed)")
+    trade_date: str = Field(..., description="Trading date")
+    index: Optional[str] = Field(None, description="Associated index")
+
+class MarketSentiment(BaseModel):
+    """Market sentiment model"""
+    sentiment: str = Field(..., description="Overall sentiment (positive/negative/neutral)")
+    sentiment_score: float = Field(..., description="Sentiment score (0-100)")
+    positive_count: int = Field(..., description="Number of positive indices")
+    negative_count: int = Field(..., description="Number of negative indices")
+    total_count: int = Field(..., description="Total indices analyzed")
+
+class MarketHighlights(BaseModel):
+    """Market highlights model"""
+    top_gainers: List[MarketIndex] = Field(default=[], description="Top gaining indices")
+    top_losers: List[MarketIndex] = Field(default=[], description="Top losing indices")
+    most_active: List[MarketIndex] = Field(default=[], description="Most active indices")
+
+class MarketDashboard(BaseModel):
+    """Market dashboard model"""
+    market_status: List[MarketStatus] = Field(default=[], description="Market status list")
+    major_indices: List[MarketIndex] = Field(default=[], description="Major indices")
+    market_sentiment: MarketSentiment = Field(..., description="Market sentiment analysis")
+    highlights: MarketHighlights = Field(..., description="Market highlights")
+    last_updated: str = Field(..., description="Last update timestamp")
+
+class MarketResponse(BaseModel):
+    """Standard market API response"""
+    success: bool = Field(..., description="Request success status")
+    message: str = Field(..., description="Response message")
+    count: int = Field(..., description="Number of records")
+    data: List[MarketIndex] = Field(default=[], description="Market data list")
+    timestamp: str = Field(..., description="Response timestamp")
+    source: str = Field(default="NSE API", description="Data source")
+
+class MarketOverview(BaseModel):
+    """Market overview model"""
+    nifty_50: Optional[MarketIndex] = Field(None, description="NIFTY 50 data")
+    bank_nifty: Optional[MarketIndex] = Field(None, description="BANK NIFTY data")
+    market_cap: Optional[float] = Field(None, description="Total market capitalization")
+    trading_volume: Optional[float] = Field(None, description="Total trading volume")
+    advance_decline_ratio: Optional[float] = Field(None, description="Advance/Decline ratio")
