@@ -1,15 +1,22 @@
+# Essential FastAPI dependencies - REQUIRED
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
+pydantic==2.5.0
+
+# HTTP requests - REQUIRED
 requests==2.31.0
+
+# HTML parsing - REQUIRED for GMP service
 beautifulsoup4==4.12.2
 lxml==4.9.3
-python-dotenv==1.0.0
-pydantic==2.5.0
-python-multipart==0.0.6
-aiofiles==0.8.0
-jinja2==3.1.2
+
+# Utility libraries - REQUIRED
 python-dateutil==2.8.2
-pytz==2023.3
-httpx==0.25.2
+
+# Optional but recommended for better anti-blocking
 cloudscraper==1.2.71
 fake-useragent==1.4.0
+
+# Optional utilities
+python-dotenv==1.0.0
+python-multipart==0.0.6

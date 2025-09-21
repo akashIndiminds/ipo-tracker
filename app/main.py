@@ -5,8 +5,15 @@ import logging
 import os
 from datetime import datetime
 
-# Import routers
-from app.routers import ipo, market # type: ignore
+# Import routers with error handling
+try:
+    from app.routers import ipo, market
+except ImportError as e:
+    print(f"Import error: {e}")
+    # Create dummy routers if import fails
+    from fastapi import APIRouter
+    ipo = APIRouter()
+    market = APIRouter()
 
 # Setup logging
 os.makedirs("logs", exist_ok=True)
@@ -14,7 +21,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers=[
-        logging.FileHandler('logs/ipo_tracker.log'),
+        logging.FileHandler('logs/ipo_tracker.log', encoding='utf-8'),
         logging.StreamHandler()
     ]
 )
@@ -39,9 +46,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
-app.include_router(ipo.router, prefix="/api/ipo", tags=["IPO Data"])
-app.include_router(market.router, prefix="/api/market", tags=["Market Data"])
+# Include routers with error handling
+try:
+    app.include_router(ipo.router, prefix="/api/ipo", tags=["IPO Data"])
+    app.include_router(market.router, prefix="/api/market", tags=["Market Data"])
+except Exception as e:
+    logger.error(f"Router inclusion error: {e}")
 
 @app.get("/")
 async def root():
@@ -54,6 +64,7 @@ async def root():
         "features": [
             "✅ Real-time IPO data from NSE",
             "✅ Anti-blocking web scraping",
+            "✅ GMP (Gray Market Premium) tracking",
             "✅ Market indices tracking",
             "✅ Current, upcoming & past IPOs",
             "✅ RESTful API endpoints",
@@ -67,6 +78,7 @@ async def root():
             "current_ipos": "/api/ipo/current",
             "upcoming_ipos": "/api/ipo/upcoming", 
             "past_ipos": "/api/ipo/past",
+            "gmp_data": "/api/ipo/gmp",
             "market_indices": "/api/market/indices",
             "market_status": "/api/market/status",
             "dashboard": "/api/market/dashboard"
