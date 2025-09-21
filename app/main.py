@@ -6,7 +6,7 @@ import os
 from datetime import datetime
 
 # Import routers
-from app.routers import ipo, market
+from app.routers import ipo, market # type: ignore
 
 # Setup logging
 os.makedirs("logs", exist_ok=True)
