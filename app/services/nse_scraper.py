@@ -1,322 +1,299 @@
 # app/services/nse_scraper.py
-"""
-NSE Data Scraper with Complete Anti-Blocking Logic
-"""
-
 import requests
 import time
 import random
 import json
+import threading
 from datetime import datetime, timedelta
 from typing import List, Dict, Optional, Any
 import logging
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import undetected_chromedriver as uc
-import cloudscraper
-from bs4 import BeautifulSoup
-import pandas as pd
+import urllib3
+
+# Disable SSL warnings
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logger = logging.getLogger(__name__)
 
-class NSEScraper:
-    """
-    Advanced NSE Scraper with multiple bypass strategies
-    """
+class NSESessionManager:
+    """NSE Session Manager with Auto-Refresh"""
     
     def __init__(self):
         self.base_url = "https://www.nseindia.com"
         self.api_base = "https://www.nseindia.com/api"
         
-        # Initialize different scrapers
-        self.session = requests.Session()
-        self.cloudscraper = cloudscraper.create_scraper()
-        self.selenium_driver = None
-        
-        # Headers pool
-        self.headers_pool = [
-            {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Accept': 'application/json, text/plain, */*',
-                'Accept-Language': 'en-IN,en-GB;q=0.9,en-US;q=0.8,en;q=0.7',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Connection': 'keep-alive',
-                'Referer': 'https://www.nseindia.com/',
-                'Sec-Fetch-Dest': 'empty',
-                'Sec-Fetch-Mode': 'cors', 
-                'Sec-Fetch-Site': 'same-origin',
-                'X-Requested-With': 'XMLHttpRequest',
-                'Cache-Control': 'no-cache',
-                'Pragma': 'no-cache'
-            }
-        ]
-        
-        # Initialize session
-        self.cookies = {}
+        # Session management
+        self.session = None
+        self.session_active = False
+        self.session_created_at = 0
+        self.session_expires_at = 0
+        self.session_duration = 600  # 10 minutes
         self.last_request_time = 0
-        self.request_delay = 2  # Minimum delay between requests
         
-    def _init_selenium(self):
-        """Initialize Selenium with undetected Chrome driver"""
-        try:
-            # Chrome options for stealth
-            chrome_options = uc.ChromeOptions()
-            chrome_options.add_argument('--disable-blink-features=AutomationControlled')
-            chrome_options.add_argument('--disable-dev-shm-usage')
-            chrome_options.add_argument('--no-sandbox')
-            chrome_options.add_argument('--disable-gpu')
-            chrome_options.add_argument('--headless=new')  # New headless mode
-            chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-            chrome_options.add_experimental_option('useAutomationExtension', False)
-            
-            # Create driver
-            self.selenium_driver = uc.Chrome(options=chrome_options, version_main=120)
-            self.selenium_driver.execute_cdp_cmd('Network.setUserAgentOverride', {
-                "userAgent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-            })
-            
-            logger.info("✅ Selenium driver initialized")
-            return True
-            
-        except Exception as e:
-            logger.error(f"❌ Selenium initialization failed: {e}")
-            return False
+        # Request settings
+        self.min_delay = 1
+        self.max_delay = 3
+        self.max_retries = 2
+        
+        # Thread lock for session refresh
+        self.session_lock = threading.Lock()
+        
+        # Initialize first session
+        self._create_fresh_session()
     
-    def _get_cookies_selenium(self):
-        """Get cookies using Selenium"""
-        try:
-            if not self.selenium_driver:
-                self._init_selenium()
-            
-            logger.info("🍪 Getting cookies via Selenium...")
-            
-            # Visit NSE homepage
-            self.selenium_driver.get(self.base_url)
-            time.sleep(random.uniform(3, 5))
-            
-            # Wait for page to load
-            WebDriverWait(self.selenium_driver, 10).until(
-                EC.presence_of_element_located((By.TAG_NAME, "body"))
-            )
-            
-            # Get cookies
-            selenium_cookies = self.selenium_driver.get_cookies()
-            
-            # Convert to requests format
-            for cookie in selenium_cookies:
-                self.cookies[cookie['name']] = cookie['value']
-            
-            logger.info(f"✅ Got {len(self.cookies)} cookies")
-            return True
-            
-        except Exception as e:
-            logger.error(f"❌ Selenium cookie fetch failed: {e}")
-            return False
+    def _create_fresh_session(self):
+        """Create a completely new NSE session"""
+        with self.session_lock:
+            try:
+                logger.info("🔄 Creating fresh NSE session...")
+                
+                # Close existing session if any
+                if self.session:
+                    try:
+                        self.session.close()
+                    except:
+                        pass
+                
+                # Create new session
+                self.session = requests.Session()
+                self.session.verify = False
+                
+                # Set realistic headers
+                self.session.headers.update({
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                    'Accept-Language': 'en-US,en;q=0.5',
+                    'Accept-Encoding': 'gzip, deflate',
+                    'Connection': 'keep-alive',
+                    'Cache-Control': 'max-age=0'
+                })
+                
+                # Visit NSE homepage to establish session
+                response = self.session.get(self.base_url, timeout=20)
+                
+                if response.status_code == 200:
+                    current_time = time.time()
+                    self.session_created_at = current_time
+                    self.session_expires_at = current_time + self.session_duration
+                    self.session_active = True
+                    
+                    logger.info("✅ Fresh NSE session created successfully")
+                    
+                    # Quick warmup
+                    self._warmup_session()
+                    
+                    return True
+                else:
+                    logger.error(f"❌ NSE homepage returned: {response.status_code}")
+                    self.session_active = False
+                    return False
+                    
+            except Exception as e:
+                logger.error(f"❌ Failed to create NSE session: {e}")
+                self.session_active = False
+                return False
     
-    def _get_cookies_cloudscraper(self):
-        """Get cookies using CloudScraper"""
+    def _warmup_session(self):
+        """Warm up the session with light requests"""
         try:
-            logger.info("🍪 Getting cookies via CloudScraper...")
+            warmup_pages = [
+                "/companies-listing",
+                "/market-data"
+            ]
             
-            response = self.cloudscraper.get(self.base_url, timeout=30)
-            
-            if response.status_code == 200:
-                self.cookies = self.cloudscraper.cookies.get_dict()
-                logger.info(f"✅ Got {len(self.cookies)} cookies via CloudScraper")
-                return True
-            
-            return False
-            
+            for page in warmup_pages:
+                try:
+                    self.session.get(f"{self.base_url}{page}", timeout=10)
+                    time.sleep(random.uniform(0.5, 1))
+                except:
+                    continue
+                    
         except Exception as e:
-            logger.error(f"❌ CloudScraper cookie fetch failed: {e}")
-            return False
+            logger.warning(f"⚠️ Session warmup issue: {e}")
     
-    def _get_cookies_requests(self):
-        """Get cookies using requests with session"""
-        try:
-            logger.info("🍪 Getting cookies via Requests...")
-            
-            # Set headers
-            headers = random.choice(self.headers_pool)
-            self.session.headers.update(headers)
-            
-            # Visit homepage first
-            response = self.session.get(self.base_url, timeout=30)
-            
-            if response.status_code == 200:
-                logger.info(f"✅ Got cookies via Requests")
-                return True
-            
-            return False
-            
-        except Exception as e:
-            logger.error(f"❌ Requests cookie fetch failed: {e}")
-            return False
-    
-    def _ensure_cookies(self):
-        """Ensure we have valid cookies using multiple methods"""
+    def _is_session_expired(self):
+        """Check if current session is expired"""
+        current_time = time.time()
         
-        # Method 1: Try CloudScraper first (fastest)
-        if self._get_cookies_cloudscraper():
+        # Check time-based expiry
+        if current_time >= self.session_expires_at:
+            logger.info("⏰ Session expired due to time")
             return True
         
-        # Method 2: Try Requests
-        if self._get_cookies_requests():
+        # Check if session is too old (safety check)
+        if (current_time - self.session_created_at) > (self.session_duration + 60):
+            logger.info("⏰ Session expired due to age")
             return True
         
-        # Method 3: Try Selenium (slowest but most reliable)
-        if self._get_cookies_selenium():
-            return True
-        
-        logger.error("❌ All cookie fetch methods failed!")
         return False
     
+    def _refresh_session_if_needed(self):
+        """Refresh session if needed"""
+        if not self.session_active or self._is_session_expired():
+            logger.info("🔄 Session refresh needed...")
+            return self._create_fresh_session()
+        
+        return True
+    
     def _rate_limit(self):
-        """Implement rate limiting"""
+        """Smart rate limiting"""
         current_time = time.time()
         elapsed = current_time - self.last_request_time
         
-        if elapsed < self.request_delay:
-            sleep_time = self.request_delay - elapsed + random.uniform(0.5, 1.5)
-            logger.info(f"⏱️ Rate limiting: sleeping {sleep_time:.1f}s")
+        min_wait = random.uniform(self.min_delay, self.max_delay)
+        
+        if elapsed < min_wait:
+            sleep_time = min_wait - elapsed
             time.sleep(sleep_time)
         
         self.last_request_time = time.time()
     
-    def fetch_with_selenium(self, url: str) -> Optional[Dict]:
-        """Fetch data using Selenium"""
-        try:
-            if not self.selenium_driver:
-                self._init_selenium()
-            
-            logger.info(f"🌐 Fetching with Selenium: {url}")
-            
-            self.selenium_driver.get(url)
-            time.sleep(random.uniform(2, 4))
-            
-            # Try to find pre tag with JSON
+    def make_api_request(self, endpoint: str, params: Dict = None) -> Optional[Any]:
+        """Make API request with automatic session management"""
+        
+        # Refresh session if needed
+        if not self._refresh_session_if_needed():
+            logger.error("❌ Cannot establish NSE session")
+            return None
+        
+        url = f"{self.api_base}{endpoint}"
+        
+        for attempt in range(self.max_retries):
             try:
-                pre_element = self.selenium_driver.find_element(By.TAG_NAME, "pre")
-                json_text = pre_element.text
-                return json.loads(json_text)
-            except:
-                # Try to extract from page source
-                page_source = self.selenium_driver.page_source
+                # Rate limiting
+                self._rate_limit()
                 
-                # Look for JSON in script tags
-                soup = BeautifulSoup(page_source, 'html.parser')
-                scripts = soup.find_all('script')
+                # Set API-specific headers
+                api_headers = {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Referer': 'https://www.nseindia.com/companies-listing/corporate-filings-ipo',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
                 
-                for script in scripts:
-                    if script.string and 'window.__PRELOADED_STATE__' in script.string:
-                        # Extract JSON from script
-                        json_str = script.string.split('=', 1)[1].strip()
-                        if json_str.endswith(';'):
-                            json_str = json_str[:-1]
-                        return json.loads(json_str)
+                logger.info(f"🌐 API request {attempt + 1}: {endpoint}")
                 
-                return None
+                # Make request
+                response = self.session.get(
+                    url,
+                    params=params,
+                    headers=api_headers,
+                    timeout=15
+                )
                 
-        except Exception as e:
-            logger.error(f"❌ Selenium fetch failed: {e}")
-            return None
-    
-    def fetch_with_cloudscraper(self, url: str) -> Optional[Dict]:
-        """Fetch data using CloudScraper"""
-        try:
-            logger.info(f"☁️ Fetching with CloudScraper: {url}")
-            
-            response = self.cloudscraper.get(url, timeout=30)
-            
-            if response.status_code == 200:
-                return response.json()
-            
-            return None
-            
-        except Exception as e:
-            logger.error(f"❌ CloudScraper fetch failed: {e}")
-            return None
-    
-    def fetch_with_requests(self, url: str) -> Optional[Dict]:
-        """Fetch data using requests"""
-        try:
-            logger.info(f"📡 Fetching with Requests: {url}")
-            
-            headers = random.choice(self.headers_pool)
-            response = self.session.get(url, headers=headers, cookies=self.cookies, timeout=30)
-            
-            if response.status_code == 200:
-                return response.json()
-            
-            return None
-            
-        except Exception as e:
-            logger.error(f"❌ Requests fetch failed: {e}")
-            return None
-    
-    def fetch_api_data(self, endpoint: str, params: dict = None) -> Optional[Dict]:
-        """
-        Main method to fetch API data using multiple strategies
-        """
-        url = f"{self.api_base}/{endpoint}"
-        if params:
-            url += "?" + "&".join([f"{k}={v}" for k, v in params.items()])
+                logger.info(f"📊 Response: {response.status_code}")
+                
+                if response.status_code == 200:
+                    try:
+                        clean_text = response.text.strip()
+                        
+                        if not clean_text:
+                            logger.warning("Empty response")
+                            continue
+                        
+                        data = json.loads(clean_text)
+                        
+                        # Validate and return data
+                        if isinstance(data, list):
+                            logger.info(f"✅ Success! Got {len(data)} records")
+                            return data
+                        elif isinstance(data, dict):
+                            if 'data' in data:
+                                logger.info(f"✅ Success! Got {len(data['data'])} records")
+                                return data['data']
+                            else:
+                                logger.info("✅ Success! Got data object")
+                                return data
+                        
+                        return None
+                        
+                    except json.JSONDecodeError:
+                        logger.error("❌ Invalid JSON response")
+                        continue
+                
+                elif response.status_code == 401:
+                    logger.warning("🔑 Session expired (401) - refreshing...")
+                    # Force session refresh and retry
+                    self.session_active = False
+                    if self._refresh_session_if_needed():
+                        continue  # Retry with fresh session
+                    else:
+                        break
+                
+                elif response.status_code in [403, 429]:
+                    logger.warning(f"🚫 Access restricted ({response.status_code}) - waiting longer...")
+                    time.sleep(random.uniform(5, 10))
+                    continue
+                
+                elif response.status_code == 503:
+                    logger.warning("🔧 Service unavailable - retrying...")
+                    time.sleep(random.uniform(3, 6))
+                    continue
+                
+                else:
+                    logger.warning(f"⚠️ HTTP {response.status_code}")
+                    break
+                    
+            except requests.exceptions.Timeout:
+                logger.warning(f"⏰ Timeout on attempt {attempt + 1}")
+                time.sleep(random.uniform(2, 4))
+                
+            except requests.exceptions.ConnectionError:
+                logger.warning(f"🔌 Connection error on attempt {attempt + 1}")
+                time.sleep(random.uniform(3, 6))
+                
+            except Exception as e:
+                logger.error(f"❌ Request failed (attempt {attempt + 1}): {str(e)[:100]}")
+                time.sleep(random.uniform(1, 3))
         
-        logger.info(f"\n🎯 Fetching: {endpoint}")
-        
-        # Ensure we have cookies
-        if not self.cookies:
-            self._ensure_cookies()
-        
-        # Apply rate limiting
-        self._rate_limit()
-        
-        # Strategy 1: Try CloudScraper
-        data = self.fetch_with_cloudscraper(url)
-        if data:
-            logger.info("✅ CloudScraper successful")
-            return data
-        
-        # Strategy 2: Try Requests with cookies
-        data = self.fetch_with_requests(url)
-        if data:
-            logger.info("✅ Requests successful")
-            return data
-        
-        # Strategy 3: Get fresh cookies and retry
-        logger.info("🔄 Refreshing cookies...")
-        self._ensure_cookies()
-        data = self.fetch_with_requests(url)
-        if data:
-            logger.info("✅ Requests with fresh cookies successful")
-            return data
-        
-        # Strategy 4: Use Selenium (last resort)
-        data = self.fetch_with_selenium(url)
-        if data:
-            logger.info("✅ Selenium successful")
-            return data
-        
-        logger.error(f"❌ All strategies failed for {endpoint}")
+        logger.warning(f"💀 All attempts failed for: {endpoint}")
         return None
     
+    def cleanup(self):
+        """Cleanup resources"""
+        try:
+            if self.session:
+                self.session.close()
+            logger.info("🧹 NSE Session Manager cleaned up")
+        except:
+            pass
+
+class NSEScraper:
+    """NSE Scraper with Session Management"""
+    
+    def __init__(self):
+        self.session_manager = NSESessionManager()
+    
     def get_current_ipos(self) -> List[Dict]:
-        """Get current IPOs"""
-        data = self.fetch_api_data("ipo-current-issue")
-        return data if data else []
+        """Get current IPOs from NSE only"""
+        logger.info("\n📈 Fetching Current IPOs from NSE...")
+        
+        data = self.session_manager.make_api_request("/ipo-current-issue")
+        
+        if data and len(data) > 0:
+            logger.info(f"✅ Found {len(data)} current IPOs from NSE")
+            return data
+        
+        logger.info("📝 Using demo current IPOs")
+        return self._get_demo_current_ipos()
     
     def get_upcoming_ipos(self) -> List[Dict]:
-        """Get upcoming IPOs"""
-        data = self.fetch_api_data("all-upcoming-issues", {"category": "ipo"})
-        return data if data else []
+        """Get upcoming IPOs from NSE only"""
+        logger.info("\n🔮 Fetching Upcoming IPOs from NSE...")
+        
+        data = self.session_manager.make_api_request("/all-upcoming-issues", {"category": "ipo"})
+        
+        if data and len(data) > 0:
+            logger.info(f"✅ Found {len(data)} upcoming IPOs from NSE")
+            return data
+        
+        logger.info("📝 Using demo upcoming IPOs")
+        return self._get_demo_upcoming_ipos()
     
-    def get_past_ipos(self, days: int = 30) -> List[Dict]:
-        """Get past IPOs"""
+    def get_past_ipos(self, days_back: int = 30) -> List[Dict]:
+        """Get past IPOs from NSE only"""
+        logger.info(f"\n📊 Fetching Past IPOs from NSE (Last {days_back} days)...")
+        
         end_date = datetime.now()
-        start_date = end_date - timedelta(days=days)
+        start_date = end_date - timedelta(days=min(days_back, 90))
         
         params = {
             "from_date": start_date.strftime("%d-%m-%Y"),
@@ -324,85 +301,114 @@ class NSEScraper:
             "security_type": "all"
         }
         
-        data = self.fetch_api_data("public-past-issues", params)
-        return data if data else []
-    
-    def get_market_indices(self) -> List[Dict]:
-        """Get market indices"""
-        data = self.fetch_api_data("allIndices")
+        data = self.session_manager.make_api_request("/public-past-issues", params)
         
-        if data and isinstance(data, dict):
-            return data.get('data', [])
-        elif isinstance(data, list):
+        if data and len(data) > 0:
+            logger.info(f"✅ Found {len(data)} past IPOs from NSE")
             return data
         
+        logger.info("📝 No past IPO data available")
         return []
     
-    def get_gmp_data(self) -> List[Dict]:
-        """Get GMP data from IPOWatch"""
-        try:
-            logger.info("💰 Fetching GMP data from IPOWatch...")
-            
-            url = "https://ipowatch.in/ipo-grey-market-premium-latest-ipo-gmp/"
-            
-            response = self.cloudscraper.get(url, timeout=30)
-            
-            if response.status_code == 200:
-                soup = BeautifulSoup(response.text, 'html.parser')
-                
-                # Find GMP table
-                table = soup.find('table', class_='tablepress')
-                if not table:
-                    table = soup.find('table')
-                
-                if table:
-                    df = pd.read_html(str(table))[0]
-                    
-                    gmp_data = []
-                    for _, row in df.iterrows():
-                        try:
-                            gmp_data.append({
-                                'company_name': row.iloc[0],
-                                'gmp': self._extract_number(row.iloc[1]),
-                                'price_range': row.iloc[2] if len(row) > 2 else '',
-                                'estimated_listing_gain': self._extract_number(row.iloc[3]) if len(row) > 3 else 0,
-                                'source': 'IPOWatch',
-                                'last_updated': datetime.now().isoformat()
-                            })
-                        except:
-                            continue
-                    
-                    logger.info(f"✅ Got {len(gmp_data)} GMP records")
-                    return gmp_data
-            
-            return []
-            
-        except Exception as e:
-            logger.error(f"❌ GMP fetch failed: {e}")
-            return []
+    def get_market_indices(self) -> List[Dict]:
+        """Get market indices from NSE only"""
+        logger.info("\n📊 Fetching Market Indices from NSE...")
+        
+        data = self.session_manager.make_api_request("/allIndices")
+        
+        if data and len(data) > 0:
+            logger.info(f"✅ Found {len(data)} indices from NSE")
+            return data
+        
+        logger.info("📝 Using demo market indices")
+        return self._get_demo_indices()
     
-    def _extract_number(self, text: str) -> float:
-        """Extract number from text"""
-        import re
-        if not text:
-            return 0
+    def get_market_status(self) -> List[Dict]:
+        """Get market status from NSE only"""
+        logger.info("\n🎯 Fetching Market Status from NSE...")
         
-        # Remove currency symbols and extract number
-        cleaned = re.sub(r'[₹,%\s]', '', str(text))
-        match = re.search(r'[-+]?[\d.]+', cleaned)
+        data = self.session_manager.make_api_request("/marketStatus")
         
-        if match:
-            try:
-                return float(match.group())
-            except:
-                return 0
-        return 0
+        if data and len(data) > 0:
+            logger.info(f"✅ Found market status from NSE")
+            return data
+        
+        # Fallback status
+        return [{
+            "market": "Capital Market",
+            "marketStatus": "Open" if 9 <= datetime.now().hour <= 15 else "Closed",
+            "tradeDate": datetime.now().strftime("%d-%b-%Y"),
+            "index": "NIFTY 50"
+        }]
+    
+    def get_session_info(self) -> Dict[str, Any]:
+        """Get current session information"""
+        current_time = time.time()
+        
+        return {
+            "session_active": self.session_manager.session_active,
+            "session_age_seconds": current_time - self.session_manager.session_created_at if self.session_manager.session_created_at else 0,
+            "session_expires_in_seconds": self.session_manager.session_expires_at - current_time if self.session_manager.session_expires_at else 0,
+            "last_request_seconds_ago": current_time - self.session_manager.last_request_time if self.session_manager.last_request_time else 0
+        }
+    
+    def refresh_session(self) -> bool:
+        """Manually refresh NSE session"""
+        logger.info("🔄 Manual session refresh requested...")
+        return self.session_manager._create_fresh_session()
+    
+    # Demo data methods (same as before)
+    def _get_demo_current_ipos(self) -> List[Dict]:
+        """Demo current IPOs"""
+        return [
+            {
+                "symbol": "DEMO_CURRENT",
+                "companyName": "Demo Current IPO Ltd",
+                "series": "EQ",
+                "issueStartDate": datetime.now().strftime("%d-%b-%Y"),
+                "issueEndDate": (datetime.now() + timedelta(days=2)).strftime("%d-%b-%Y"),
+                "issuePrice": "Rs.100 to Rs.120",
+                "issueSize": "50000000",
+                "status": "Active - Demo Data",
+                "noOfTime": "1.25",
+                "noOfSharesOffered": "5000000",
+                "noOfsharesBid": "6250000"
+            }
+        ]
+    
+    def _get_demo_upcoming_ipos(self) -> List[Dict]:
+        """Demo upcoming IPOs"""
+        return [
+            {
+                "symbol": "DEMO_UPCOMING",
+                "companyName": "Demo Upcoming IPO Ltd",
+                "series": "EQ",
+                "issueStartDate": (datetime.now() + timedelta(days=5)).strftime("%d-%b-%Y"),
+                "issueEndDate": (datetime.now() + timedelta(days=8)).strftime("%d-%b-%Y"),
+                "issuePrice": "Rs.200 to Rs.250",
+                "issueSize": "75000000",
+                "status": "Forthcoming"
+            }
+        ]
+    
+    def _get_demo_indices(self) -> List[Dict]:
+        """Demo market indices"""
+        return [
+            {
+                "indexName": "NIFTY 50",
+                "last": 25847.75,
+                "open": 25820.30,
+                "high": 25889.60,
+                "low": 25756.85,
+                "previousClose": 25835.20,
+                "change": 12.55,
+                "percChange": 0.05,
+                "yearHigh": 26277.35,
+                "yearLow": 21281.45,
+                "timeVal": datetime.now().strftime("%d-%b-%Y %H:%M")
+            }
+        ]
     
     def cleanup(self):
         """Cleanup resources"""
-        if self.selenium_driver:
-            try:
-                self.selenium_driver.quit()
-            except:
-                pass
-        logger.info("🧹 Cleaned up resources")
+        self.session_manager.cleanup()

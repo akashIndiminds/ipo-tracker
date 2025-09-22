@@ -1,0 +1,9 @@
+/__pycache__/
+./venv/
+*.pyc
+.DS_Store
+./app/__pycache__/
+./app/venv/
+logs/ipo_tracker.log
+app/__pycache__/main.cpython-312.pyc
+__pycache__/fallback_app.cpython-312.pyc
