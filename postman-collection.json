@@ -1,1239 +1,171 @@
 {
   "info": {
-    "name": "IPO Tracker API v2.0 - Complete Collection",
-    "description": "Comprehensive API collection for IPO tracking with NSE data scraping, GMP analysis, and market insights",
-    "version": "2.0.0",
+    "name": "IPO Tracker API",
+    "description": "Collection for IPO Tracker API endpoints. Set {{base_url}} to your server URL (e.g., http://localhost:8000).",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
+  "item": [
+    {
+      "name": "Get Current IPOs",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/ipo/current?force_refresh=false",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "ipo",
+            "current"
+          ],
+          "query": [
+            {
+              "key": "force_refresh",
+              "value": "false",
+              "description": "Set to true to force refresh from NSE"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Upcoming IPOs",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/ipo/upcoming?force_refresh=false",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "ipo",
+            "upcoming"
+          ],
+          "query": [
+            {
+              "key": "force_refresh",
+              "value": "false",
+              "description": "Set to true to force refresh from NSE"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Subscription Details",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/ipo/JARO/subscription?force_refresh=false",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "ipo",
+            "JARO",
+            "subscription"
+          ],
+          "query": [
+            {
+              "key": "force_refresh",
+              "value": "false",
+              "description": "Set to true to force refresh from NSE"
+            }
+          ]
+        },
+        "description": "Replace 'JARO' with actual symbol"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Market Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/ipo/market/status",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "ipo",
+            "market",
+            "status"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get System Status",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/ipo/status",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "ipo",
+            "status"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Refresh All Data",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/ipo/refresh",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "ipo",
+            "refresh"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
   "variable": [
     {
       "key": "base_url",
       "value": "http://localhost:8000",
       "type": "string"
-    },
-    {
-      "key": "api_version",
-      "value": "v2.0",
-      "type": "string"
-    }
-  ],
-  "item": [
-    {
-      "name": "🏠 Health & Status",
-      "item": [
-        {
-          "name": "Root Endpoint",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/",
-              "host": ["{{base_url}}"],
-              "path": [""]
-            }
-          },
-          "response": [
-            {
-              "name": "Success Response",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/",
-                  "host": ["{{base_url}}"],
-                  "path": [""]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "body": "{\n    \"message\": \"🚀 IPO Tracker API v2.0 - NSE Data Scraping\",\n    \"version\": \"2.0.0\",\n    \"timestamp\": \"2025-09-21T10:30:00Z\",\n    \"status\": \"healthy\",\n    \"features\": [\n        \"✅ Real-time IPO data from NSE\",\n        \"✅ Anti-blocking web scraping\",\n        \"✅ GMP (Gray Market Premium) tracking\",\n        \"✅ Market indices tracking\"\n    ]\n}"
-            }
-          ]
-        },
-        {
-          "name": "Health Check",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/health",
-              "host": ["{{base_url}}"],
-              "path": ["health"]
-            }
-          },
-          "response": [
-            {
-              "name": "Healthy Response",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "url": {
-                  "raw": "{{base_url}}/health",
-                  "host": ["{{base_url}}"],
-                  "path": ["health"]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "json",
-              "body": "{\n    \"status\": \"healthy\",\n    \"service\": \"ipo-tracker-api\",\n    \"version\": \"2.0.0\",\n    \"timestamp\": \"2025-09-21T10:30:00Z\",\n    \"uptime\": \"running\"\n}"
-            }
-          ]
-        },
-        {
-          "name": "API Documentation",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/docs",
-              "host": ["{{base_url}}"],
-              "path": ["docs"]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "🧪 System Tests",
-      "item": [
-        {
-          "name": "Test NSE Connection",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/test",
-              "host": ["{{base_url}}"],
-              "path": ["test"]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Response status is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});",
-                  "",
-                  "pm.test(\"Response has success field\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property('success');",
-                  "});",
-                  "",
-                  "pm.test(\"Test results are present\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    if (jsonData.test_results) {",
-                  "        pm.expect(jsonData.test_results).to.be.an('object');",
-                  "    }",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        },
-        {
-          "name": "Test IPO Endpoints",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/test",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "test"]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"IPO endpoints test successful\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property('success');",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        },
-        {
-          "name": "Test Market Endpoints",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/market/test",
-              "host": ["{{base_url}}"],
-              "path": ["api", "market", "test"]
-            }
-          }
-        },
-        {
-          "name": "Invalid Search Query",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/search?query=x",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "search"],
-              "query": [
-                {
-                  "key": "query",
-                  "value": "x",
-                  "description": "Too short query (minimum 2 characters)"
-                }
-              ]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Should validate minimum query length\", function () {",
-                  "    pm.expect([400, 422]).to.include(pm.response.code);",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "🔄 Data Flow Tests",
-      "item": [
-        {
-          "name": "Complete Data Flow Test",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/test",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "test"]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"NSE API Connection Working\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData.success).to.be.true;",
-                  "    ",
-                  "    pm.environment.set('nse_working', jsonData.success);",
-                  "    if (jsonData.test_results) {",
-                  "        pm.environment.set('endpoints_working', jsonData.working_endpoints || 0);",
-                  "    }",
-                  "});",
-                  "",
-                  "setTimeout(function(){",
-                  "    postman.setNextRequest('Chain Test - Current IPOs');",
-                  "}, 1000);"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        },
-        {
-          "name": "Chain Test - Current IPOs",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/current?include_gmp=true",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "current"],
-              "query": [
-                {
-                  "key": "include_gmp",
-                  "value": "true"
-                }
-              ]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Current IPOs with GMP data consistency\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData.success).to.be.true;",
-                  "    pm.expect(jsonData).to.have.property('gmp_included');",
-                  "    ",
-                  "    console.log('Current IPOs Count: ' + jsonData.count);",
-                  "    console.log('GMP Included: ' + jsonData.gmp_included);",
-                  "});",
-                  "",
-                  "setTimeout(function(){",
-                  "    postman.setNextRequest('Chain Test - Market Dashboard');",
-                  "}, 1000);"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        },
-        {
-          "name": "Chain Test - Market Dashboard",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/market/dashboard",
-              "host": ["{{base_url}}"],
-              "path": ["api", "market", "dashboard"]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Market dashboard data consistency\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData.success).to.be.true;",
-                  "    ",
-                  "    if (jsonData.dashboard) {",
-                  "        pm.expect(jsonData.dashboard).to.have.property('major_indices');",
-                  "        pm.expect(jsonData.dashboard).to.have.property('market_sentiment');",
-                  "    }",
-                  "});",
-                  "",
-                  "postman.setNextRequest(null);"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "📋 Environment Tests",
-      "item": [
-        {
-          "name": "Test Local Development",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "http://localhost:8000/health",
-              "protocol": "http",
-              "host": ["localhost"],
-              "port": "8000",
-              "path": ["health"]
-            }
-          }
-        },
-        {
-          "name": "Test Production (Update URL)",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "https://your-domain.com/health",
-              "protocol": "https",
-              "host": ["your-domain", "com"],
-              "path": ["health"]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "⚡ Performance Tests",
-      "item": [
-        {
-          "name": "Response Time Test - Current IPOs",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/current",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "current"]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Response time is acceptable\", function () {",
-                  "    pm.expect(pm.response.responseTime).to.be.below(60000);",
-                  "});",
-                  "",
-                  "pm.test(\"Response has required fields\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property('success');",
-                  "    pm.expect(jsonData).to.have.property('count');",
-                  "    pm.expect(jsonData).to.have.property('data');",
-                  "    pm.expect(jsonData).to.have.property('timestamp');",
-                  "});",
-                  "",
-                  "pm.test(\"Data is array\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData.data).to.be.an('array');",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        },
-        {
-          "name": "Load Test - Multiple Endpoints",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/analytics?include_gmp=true",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "analytics"],
-              "query": [
-                {
-                  "key": "include_gmp",
-                  "value": "true"
-                }
-              ]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Analytics response time acceptable\", function () {",
-                  "    pm.expect(pm.response.responseTime).to.be.below(120000);",
-                  "});",
-                  "",
-                  "pm.test(\"Analytics data structure valid\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property('analytics');",
-                  "    ",
-                  "    if (jsonData.analytics) {",
-                  "        pm.expect(jsonData.analytics).to.have.property('market_activity');",
-                  "    }",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "❌ Error Handling Tests",
-      "item": [
-        {
-          "name": "Invalid Endpoint Test",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/invalid-endpoint",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "invalid-endpoint"]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Should return 404 for invalid endpoint\", function () {",
-                  "    pm.response.to.have.status(404);",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        },
-        {
-          "name": "Invalid Query Parameters",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/past?days_back=999",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "past"],
-              "query": [
-                {
-                  "key": "days_back",
-                  "value": "999",
-                  "description": "Invalid value (should be 1-90)"
-                }
-              ]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Should handle invalid query parameters gracefully\", function () {",
-                  "    pm.expect([200, 400, 422]).to.include(pm.response.code);",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "📊 Data Quality Tests",
-      "item": [
-        {
-          "name": "IPO Data Quality Check",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/current?include_gmp=true",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "current"],
-              "query": [
-                {
-                  "key": "include_gmp",
-                  "value": "true"
-                }
-              ]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"IPO data has required fields\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    if (jsonData.data && jsonData.data.length > 0) {",
-                  "        var firstIPO = jsonData.data[0];",
-                  "        pm.expect(firstIPO).to.have.property('symbol');",
-                  "        pm.expect(firstIPO).to.have.property('company_name');",
-                  "        pm.expect(firstIPO).to.have.property('status');",
-                  "    }",
-                  "});",
-                  "",
-                  "pm.test(\"Count matches data length\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData.count).to.equal(jsonData.data.length);",
-                  "});",
-                  "",
-                  "pm.test(\"GMP data integration check\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property('gmp_included');",
-                  "    pm.expect(jsonData).to.have.property('gmp_count');",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        },
-        {
-          "name": "Market Data Quality Check",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/market/indices",
-              "host": ["{{base_url}}"],
-              "path": ["api", "market", "indices"]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Market indices have required fields\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    if (jsonData.data && jsonData.data.length > 0) {",
-                  "        var firstIndex = jsonData.data[0];",
-                  "        pm.expect(firstIndex).to.have.property('index_name');",
-                  "        pm.expect(firstIndex).to.have.property('last');",
-                  "    }",
-                  "});",
-                  "",
-                  "pm.test(\"Numeric values are valid\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    if (jsonData.data && jsonData.data.length > 0) {",
-                  "        var firstIndex = jsonData.data[0];",
-                  "        if (firstIndex.last !== null) {",
-                  "            pm.expect(firstIndex.last).to.be.a('number');",
-                  "        }",
-                  "        if (firstIndex.percent_change !== null) {",
-                  "            pm.expect(firstIndex.percent_change).to.be.a('number');",
-                  "        }",
-                  "    }",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        },
-        {
-          "name": "GMP Data Quality Check",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/gmp",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "gmp"]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"GMP data structure is valid\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property('data');",
-                  "    pm.expect(jsonData).to.have.property('metrics');",
-                  "    pm.expect(jsonData).to.have.property('is_demo_data');",
-                  "});",
-                  "",
-                  "pm.test(\"GMP metrics are calculated\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    if (jsonData.metrics && typeof jsonData.metrics === 'object') {",
-                  "        pm.expect(Object.keys(jsonData.metrics).length).to.be.above(0);",
-                  "    }",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "🔄 Automation Tests",
-      "item": [
-        {
-          "name": "Automated Daily Check",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/summary?include_gmp=true",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "summary"],
-              "query": [
-                {
-                  "key": "include_gmp",
-                  "value": "true"
-                }
-              ]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"API is healthy and responsive\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "    pm.expect(pm.response.responseTime).to.be.below(60000);",
-                  "});",
-                  "",
-                  "pm.test(\"IPO summary data is complete\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property('summary');",
-                  "    pm.expect(jsonData.summary).to.have.property('current_ipos');",
-                  "    pm.expect(jsonData.summary).to.have.property('upcoming_ipos');",
-                  "});",
-                  "",
-                  "var jsonData = pm.response.json();",
-                  "console.log('=== DAILY IPO REPORT ===');",
-                  "console.log('Current IPOs: ' + (jsonData.summary.current_ipos ? jsonData.summary.current_ipos.count : 0));",
-                  "console.log('Upcoming IPOs: ' + (jsonData.summary.upcoming_ipos ? jsonData.summary.upcoming_ipos.count : 0));",
-                  "console.log('GMP Included: ' + jsonData.gmp_included);",
-                  "console.log('Report Time: ' + jsonData.timestamp);",
-                  "console.log('========================');"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        },
-        {
-          "name": "System Health Monitor",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/test",
-              "host": ["{{base_url}}"],
-              "path": ["test"]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"System health check passed\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData.success).to.be.true;",
-                  "});",
-                  "",
-                  "var jsonData = pm.response.json();",
-                  "if (jsonData.success_rate && jsonData.success_rate < 50) {",
-                  "    console.warn('🚨 ALERT: Low success rate - ' + jsonData.success_rate + '%');",
-                  "}",
-                  "",
-                  "console.log('=== SYSTEM STATUS ===');",
-                  "console.log('Overall Status: ' + (jsonData.overall_status || 'unknown'));",
-                  "console.log('Success Rate: ' + (jsonData.success_rate || 0) + '%');",
-                  "console.log('Working Endpoints: ' + (jsonData.working_endpoints || 0));",
-                  "console.log('Average Response Time: ' + (jsonData.average_response_time || 0) + 's');",
-                  "console.log('====================');"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "📈 IPO Endpoints",
-      "item": [
-        {
-          "name": "Get Current IPOs",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/current",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "current"]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Current IPOs fetched successfully\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property('success');",
-                  "    pm.expect(jsonData).to.have.property('count');",
-                  "    pm.expect(jsonData).to.have.property('data');",
-                  "    pm.expect(jsonData.data).to.be.an('array');",
-                  "});",
-                  "",
-                  "var jsonData = pm.response.json();",
-                  "pm.environment.set('current_ipo_count', jsonData.count);"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        },
-        {
-          "name": "Get Current IPOs with GMP",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/current?include_gmp=true",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "current"],
-              "query": [
-                {
-                  "key": "include_gmp",
-                  "value": "true",
-                  "description": "Include Gray Market Premium data"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Upcoming IPOs",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/upcoming",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "upcoming"]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Upcoming IPOs fetched successfully\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property('success');",
-                  "    pm.expect(jsonData).to.have.property('data');",
-                  "});",
-                  "",
-                  "var jsonData = pm.response.json();",
-                  "pm.environment.set('upcoming_ipo_count', jsonData.count);"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        },
-        {
-          "name": "Get Upcoming IPOs with GMP",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/upcoming?include_gmp=true",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "upcoming"],
-              "query": [
-                {
-                  "key": "include_gmp",
-                  "value": "true"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Past IPOs (30 days)",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/past",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "past"]
-            }
-          }
-        },
-        {
-          "name": "Get Past IPOs (Custom Days)",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/past?days_back=7",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "past"],
-              "query": [
-                {
-                  "key": "days_back",
-                  "value": "7",
-                  "description": "Number of days to look back (1-90)"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get IPO Summary",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/summary",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "summary"]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"IPO summary generated successfully\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property('success');",
-                  "    pm.expect(jsonData).to.have.property('summary');",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        },
-        {
-          "name": "Get IPO Summary with GMP",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/summary?include_gmp=true",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "summary"],
-              "query": [
-                {
-                  "key": "include_gmp",
-                  "value": "true"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Search IPOs",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/search?query=demo&category=all",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "search"],
-              "query": [
-                {
-                  "key": "query",
-                  "value": "demo",
-                  "description": "Search term for company name or symbol"
-                },
-                {
-                  "key": "category",
-                  "value": "all",
-                  "description": "IPO category: current, upcoming, past, or all"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Search IPOs with GMP",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/search?query=energy&category=current&include_gmp=true",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "search"],
-              "query": [
-                {
-                  "key": "query",
-                  "value": "energy"
-                },
-                {
-                  "key": "category",
-                  "value": "current"
-                },
-                {
-                  "key": "include_gmp",
-                  "value": "true"
-                }
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get IPO Analytics",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/analytics",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "analytics"]
-            }
-          }
-        },
-        {
-          "name": "Get IPO Analytics with GMP",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/analytics?include_gmp=true",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "analytics"],
-              "query": [
-                {
-                  "key": "include_gmp",
-                  "value": "true"
-                }
-              ]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "💰 GMP (Gray Market Premium)",
-      "item": [
-        {
-          "name": "Get GMP Data",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/gmp",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "gmp"]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"GMP data fetched successfully\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property('success');",
-                  "    pm.expect(jsonData).to.have.property('data');",
-                  "    pm.expect(jsonData).to.have.property('metrics');",
-                  "});",
-                  "",
-                  "var jsonData = pm.response.json();",
-                  "if (jsonData.data && jsonData.data.length > 0) {",
-                  "    pm.environment.set('test_company_name', jsonData.data[0].company_name);",
-                  "}"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        },
-        {
-          "name": "Get GMP Recommendation",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/gmp/recommendation/{{test_company_name}}",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "gmp", "recommendation", "{{test_company_name}}"]
-            }
-          },
-          "event": [
-            {
-              "listen": "prerequest",
-              "script": {
-                "exec": [
-                  "if (!pm.environment.get('test_company_name')) {",
-                  "    pm.environment.set('test_company_name', 'DEMO IPO LIMITED');",
-                  "}"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        },
-        {
-          "name": "Get GMP Recommendation (Manual Company)",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/ipo/gmp/recommendation/DEMO ENERGY",
-              "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "gmp", "recommendation", "DEMO ENERGY"]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "📊 Market Endpoints",
-      "item": [
-        {
-          "name": "Get Market Indices",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/market/indices",
-              "host": ["{{base_url}}"],
-              "path": ["api", "market", "indices"]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Market indices fetched successfully\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property('success');",
-                  "    pm.expect(jsonData).to.have.property('data');",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        },
-        {
-          "name": "Get Market Status",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/market/status",
-              "host": ["{{base_url}}"],
-              "path": ["api", "market", "status"]
-            }
-          }
-        },
-        {
-          "name": "Get Market Sentiment",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/market/sentiment",
-              "host": ["{{base_url}}"],
-              "path": ["api", "market", "sentiment"]
-            }
-          }
-        },
-        {
-          "name": "Get Market Overview",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/market/overview",
-              "host": ["{{base_url}}"],
-              "path": ["api", "market", "overview"]
-            }
-          }
-        },
-        {
-          "name": "Get Market Dashboard",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/market/dashboard",
-              "host": ["{{base_url}}"],
-              "path": ["api", "market", "dashboard"]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "pm.test(\"Market dashboard generated successfully\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property('success');",
-                  "    pm.expect(jsonData).to.have.property('dashboard');",
-                  "});"
-                ],
-                "type": "text/javascript"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "type": "text/javascript",
-        "exec": [
-          "pm.globals.set('timestamp', new Date().toISOString());",
-          "",
-          "if (pm.globals.get('last_request_time')) {",
-          "    var lastTime = new Date(pm.globals.get('last_request_time'));",
-          "    var now = new Date();",
-          "    var timeDiff = now - lastTime;",
-          "    ",
-          "    if (timeDiff < 3000) {",
-          "        var waitTime = 3000 - timeDiff;",
-          "        console.log('⏱️ Rate limiting: waiting ' + waitTime + 'ms...');",
-          "        setTimeout(function(){}, waitTime);",
-          "    }",
-          "}",
-          "",
-          "pm.globals.set('last_request_time', new Date().toISOString());",
-          "",
-          "if (!pm.environment.get('test_company_name')) {",
-          "    pm.environment.set('test_company_name', 'DEMO IPO LIMITED');",
-          "}"
-        ]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "type": "text/javascript",
-        "exec": [
-          "pm.test('Response time is acceptable (< 60s)', function () {",
-          "    pm.expect(pm.response.responseTime).to.be.below(60000);",
-          "});",
-          "",
-          "if (pm.response.code !== 200) {",
-          "    console.log('❌ Request failed:', pm.request.url.toString());",
-          "    console.log('📄 Status:', pm.response.code, pm.response.status);",
-          "    var responseText = pm.response.text();",
-          "    if (responseText.length > 0) {",
-          "        console.log('📄 Response preview:', responseText.substring(0, 300) + '...');",
-          "    }",
-          "} else {",
-          "    console.log('✅ Request successful:', pm.request.url.toString());",
-          "    console.log('⏱️ Response time:', pm.response.responseTime + 'ms');",
-          "}",
-          "",
-          "var successCount = pm.globals.get('success_count') || 0;",
-          "var totalCount = pm.globals.get('total_count') || 0;",
-          "",
-          "totalCount++;",
-          "if (pm.response.code === 200) {",
-          "    successCount++;",
-          "}",
-          "",
-          "pm.globals.set('success_count', successCount);",
-          "pm.globals.set('total_count', totalCount);",
-          "",
-          "console.log('📊 Success Rate: ' + successCount + '/' + totalCount + ' (' + Math.round((successCount/totalCount)*100) + '%)');"
-        ]
-      }
     }
   ]
 }

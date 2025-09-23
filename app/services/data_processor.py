@@ -7,46 +7,7 @@ logger = logging.getLogger(__name__)
 
 class DataProcessor:
     """Enhanced data processing and transformation utilities"""
-    
-    @staticmethod
-    def clean_ipo_data(raw_data: List[Dict]) -> List[Dict]:
-        """Clean and standardize IPO data with enhanced validation"""
-        if not raw_data:
-            return []
-        
-        cleaned_data = []
-        
-        for item in raw_data:
-            try:
-                # Clean text fields to remove null bytes and extra whitespace
-                cleaned_item = {
-                    'symbol': DataProcessor._clean_text(item.get('symbol', '')),
-                    'company_name': DataProcessor._clean_text(item.get('companyName', '')),
-                    'series': DataProcessor._clean_text(item.get('series', '')),
-                    'issue_start_date': DataProcessor._clean_text(item.get('issueStartDate', '')),
-                    'issue_end_date': DataProcessor._clean_text(item.get('issueEndDate', '')),
-                    'issue_price': DataProcessor._clean_text(item.get('issuePrice', '')),
-                    'issue_size': DataProcessor._clean_text(item.get('issueSize', '')),
-                    'status': DataProcessor._clean_text(item.get('status', '')),
-                    'subscription_times': DataProcessor._clean_number_text(item.get('noOfTime', '')),
-                    'shares_offered': DataProcessor._clean_number_text(item.get('noOfSharesOffered', '')),
-                    'shares_bid': DataProcessor._clean_number_text(item.get('noOfsharesBid', ''))
-                }
-                
-                # Add calculated fields
-                cleaned_item.update(DataProcessor._calculate_ipo_metrics(cleaned_item))
-                
-                # Only add if essential fields are present
-                if cleaned_item['symbol'] and cleaned_item['company_name']:
-                    cleaned_data.append(cleaned_item)
-                    
-            except Exception as e:
-                logger.warning(f"Error processing IPO item: {e}")
-                continue
-        
-        logger.info(f"Processed {len(cleaned_data)} IPO records from {len(raw_data)} raw records")
-        return cleaned_data
-    
+
     @staticmethod
     def clean_market_data(raw_data: List[Dict]) -> List[Dict]:
         """Clean and standardize market indices data"""
@@ -780,3 +741,68 @@ class DataProcessor:
             insights.append("📊 Investment insights temporarily unavailable")
         
         return insights
+    
+    @staticmethod
+    def clean_ipo_data(raw_data: List[Dict]) -> List[Dict]:
+        """Clean and standardize IPO data with enhanced validation"""
+        if not raw_data:
+            return []
+        
+        cleaned_data = []
+        
+        for item in raw_data:
+            try:
+                # Clean text fields to remove null bytes and extra whitespace
+                cleaned_item = {
+                    'symbol': DataProcessor._clean_text(item.get('symbol', '')),
+                    'company_name': DataProcessor._clean_text(item.get('companyName', '')),
+                    'series': DataProcessor._clean_text(item.get('series', '')),
+                    'issue_start_date': DataProcessor._clean_text(item.get('issueStartDate', '')),
+                    'issue_end_date': DataProcessor._clean_text(item.get('issueEndDate', '')),
+                    'issue_price': DataProcessor._clean_text(item.get('issuePrice', '')),
+                    'issue_size': DataProcessor._clean_text(item.get('issueSize', '')),
+                    'status': DataProcessor._clean_text(item.get('status', '')),
+                    'subscription_times': DataProcessor._format_subscription(DataProcessor._clean_number_text(item.get('noOfTime', ''))),
+                    # FIX: Use _safe_int instead of _clean_number_text to ensure int type and default to 0
+                    'shares_offered': DataProcessor._safe_int(item.get('noOfSharesOffered', 0)),
+                    'shares_bid': DataProcessor._safe_int(item.get('noOfsharesBid', 0))
+                }
+                
+                # Add calculated fields
+                cleaned_item.update(DataProcessor._calculate_ipo_metrics(cleaned_item))
+                
+                # Only add if essential fields are present
+                if cleaned_item['symbol'] and cleaned_item['company_name']:
+                    cleaned_data.append(cleaned_item)
+                    
+            except Exception as e:
+                logger.warning(f"Error processing IPO item: {e}")
+                continue  # FIX: Continue instead of failing the whole list
+        
+        logger.info(f"Processed {len(cleaned_data)} IPO records from {len(raw_data)} raw records")
+        return cleaned_data
+    
+    @staticmethod
+    def _safe_int(value: Any) -> int:
+        """Safely convert to int with default 0 (FIX: Added to handle empty strings and parsing)"""
+        try:
+            if value is None or str(value).strip() == '':
+                return 0
+            # Handle scientific notation
+            if 'E' in str(value).upper():
+                return int(float(value))
+            clean_value = str(value).replace(",", "").strip()
+            return int(float(clean_value))
+        except (ValueError, TypeError):
+            return 0
+    
+    @staticmethod
+    def _format_subscription(subscription_times: str) -> str:
+        """Format subscription times like '3.07x' (FIX: Ensure always ends with 'x')"""
+        try:
+            if not subscription_times or subscription_times == "":
+                return "0.00x"
+            num_value = float(subscription_times)
+            return f"{num_value:.2f}x"
+        except (ValueError, TypeError):
+            return "0.00x"
