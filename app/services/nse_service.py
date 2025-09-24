@@ -1,388 +1,77 @@
 # app/services/nse_service.py
-import time
-import random
-import json
-import os
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any
+"""NSE Service - Business Logic for IPO Data Processing"""
+
 import logging
-
-# Set environment variables
-os.environ['PYTHONHTTPSVERIFY'] = '0'
-
-# Import libraries
-import requests
-from urllib3.exceptions import InsecureRequestWarning
-requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-
-# Import Brotli for 'br' encoding
-try:
-    import brotli
-    HAS_BROTLI = True
-except ImportError:
-    HAS_BROTLI = False
-
-# Disable SSL
-import ssl
-ssl._create_default_https_context = ssl._create_unverified_context
+from typing import Dict, List, Optional, Any
+from .nse_scraper import nse_scraper
 
 logger = logging.getLogger(__name__)
 
 class NSEService:
-    """NSE Service with smart caching and anti-detection"""
+    """NSE Service - Handles business logic for IPO data"""
     
     def __init__(self):
-        # NSE URLs
-        self.base_url = "https://www.nseindia.com"
-        self.api_base = "https://www.nseindia.com/api"
-        
-        # Session management with rotation
-        self.sessions = []
-        self.current_session_index = 0
-        self.session_active = False
-        self.request_count = 0
-        self.last_session_time = 0
-        self.blocked_until = 0
-        
-        # Smart caching
-        self.cache = {}
-        self.cache_duration = {
-            'current_ipos': 3600,    # 1 hour
-            'upcoming_ipos': 7200,   # 2 hours  
-            'market_status': 1800    # 30 minutes
-        }
-        
-        # Anti-detection measures
-        self.user_agents = [
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:130.0) Gecko/20100101 Firefox/130.0',
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36',
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Edge/130.0.0.0'
-        ]
-        
-        # Initialize
-        self._create_session_pool()
-        self._initialize_session()
-    
-    def _create_session_pool(self):
-        """Create pool of sessions for rotation"""
-        for i in range(3):
-            session = requests.Session()
-            session.verify = False
-            self.sessions.append(session)
-    
-    def _get_current_session(self):
-        """Get current session with rotation"""
-        if not self.sessions:
-            self._create_session_pool()
-        return self.sessions[self.current_session_index]
-    
-    def _rotate_session(self):
-        """Rotate to next session"""
-        self.current_session_index = (self.current_session_index + 1) % len(self.sessions)
-        logger.info(f"Rotated to session {self.current_session_index}")
-    
-    def _is_blocked(self):
-        """Check if we're temporarily blocked"""
-        return time.time() < self.blocked_until
-    
-    def _set_blocked(self, duration_minutes=30):
-        """Set blocked status"""
-        self.blocked_until = time.time() + (duration_minutes * 60)
-        logger.warning(f"Marked as blocked for {duration_minutes} minutes")
-    
-    def _get_cache_key(self, endpoint, params=None):
-        """Generate cache key"""
-        key = endpoint
-        if params:
-            key += "_" + "_".join([f"{k}={v}" for k, v in sorted(params.items())])
-        return key
-    
-    def _get_from_cache(self, cache_key, cache_type):
-        """Get data from cache if valid"""
-        if cache_key not in self.cache:
-            return None
-            
-        cache_entry = self.cache[cache_key]
-        cache_age = time.time() - cache_entry['timestamp']
-        max_age = self.cache_duration.get(cache_type, 3600)
-        
-        if cache_age < max_age:
-            logger.info(f"Cache hit for {cache_key} (age: {cache_age:.1f}s)")
-            return cache_entry['data']
-        else:
-            # Remove expired cache
-            del self.cache[cache_key]
-            logger.info(f"Cache expired for {cache_key}")
-            return None
-    
-    def _store_in_cache(self, cache_key, data):
-        """Store data in cache"""
-        self.cache[cache_key] = {
-            'data': data,
-            'timestamp': time.time()
-        }
-        logger.info(f"Cached data for {cache_key}")
-    
-    def _get_random_headers(self, for_api=False):
-        """Get randomized headers"""
-        ua = random.choice(self.user_agents)
-        
-        if for_api:
-            return {
-                'Accept': '*/*',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Accept-Language': 'en-US,en;q=0.9',
-                'Cache-Control': 'no-cache',
-                'Pragma': 'no-cache',
-                'Referer': 'https://www.nseindia.com/market-data/all-upcoming-issues-ipo',
-                'Sec-CH-UA': '"Chromium";v="130", "Not?A_Brand";v="99"',
-                'Sec-CH-UA-Mobile': '?0',
-                'Sec-CH-UA-Platform': '"Windows"',
-                'Sec-Fetch-Dest': 'empty',
-                'Sec-Fetch-Mode': 'cors',
-                'Sec-Fetch-Site': 'same-origin',
-                'User-Agent': ua,
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        else:
-            return {
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-                'Accept-Encoding': 'gzip, deflate, br',
-                'Accept-Language': 'en-US,en;q=0.9',
-                'Cache-Control': 'max-age=0',
-                'Sec-CH-UA': '"Chromium";v="130", "Not?A_Brand";v="99"',
-                'Sec-CH-UA-Mobile': '?0',
-                'Sec-CH-UA-Platform': '"Windows"',
-                'Sec-Fetch-Dest': 'document',
-                'Sec-Fetch-Mode': 'navigate',
-                'Sec-Fetch-Site': 'none',
-                'Sec-Fetch-User': '?1',
-                'Upgrade-Insecure-Requests': '1',
-                'User-Agent': ua
-            }
-    
-    def _decode_response(self, response):
-        """Decode response safely"""
-        try:
-            content = response.content
-            encoding = response.headers.get('content-encoding', '').lower()
-            
-            if encoding == 'br' and HAS_BROTLI:
-                try:
-                    content = brotli.decompress(content)
-                except:
-                    # Fallback to raw content if brotli fails
-                    content = response.content
-            elif encoding == 'gzip':
-                import gzip
-                content = gzip.decompress(content)
-            
-            return content.decode('utf-8', errors='ignore')
-            
-        except Exception as e:
-            logger.warning(f"Decode error fallback: {e}")
-            return response.text
-    
-    def _initialize_session(self):
-        """Initialize session with anti-detection"""
-        if self._is_blocked():
-            logger.warning("Currently blocked, skipping session initialization")
-            return False
-            
-        logger.info("Initializing NSE session with anti-detection...")
-        
-        try:
-            session = self._get_current_session()
-            
-            # Step 1: Visit homepage with random delay
-            time.sleep(random.uniform(3, 7))
-            
-            headers = self._get_random_headers(for_api=False)
-            
-            homepage_response = session.get(
-                self.base_url,
-                headers=headers,
-                timeout=30,
-                verify=False
-            )
-            
-            if homepage_response.status_code != 200:
-                logger.error(f"Homepage failed: {homepage_response.status_code}")
-                self._rotate_session()
-                return False
-            
-            logger.info("Homepage loaded successfully")
-            
-            # Step 2: Random browsing simulation
-            time.sleep(random.uniform(5, 10))
-            
-            # Visit IPO section
-            ipo_page_url = f"{self.base_url}/market-data/all-upcoming-issues-ipo"
-            headers = self._get_random_headers(for_api=False)
-            headers['Referer'] = self.base_url
-            
-            ipo_response = session.get(
-                ipo_page_url,
-                headers=headers,
-                timeout=30,
-                verify=False
-            )
-            
-            if ipo_response.status_code == 200:
-                logger.info("IPO page loaded - session ready")
-                self.session_active = True
-                self.last_session_time = time.time()
-                return True
-            else:
-                logger.warning(f"IPO page status: {ipo_response.status_code}")
-                self.session_active = True  # Try anyway
-                return True
-                
-        except Exception as e:
-            logger.error(f"Session initialization failed: {e}")
-            self._rotate_session()
-            return False
-    
-    def _make_api_call(self, endpoint, params=None, cache_type=None):
-        """Make API call with caching and anti-detection"""
-        
-        # Check cache first
-        if cache_type:
-            cache_key = self._get_cache_key(endpoint, params)
-            cached_data = self._get_from_cache(cache_key, cache_type)
-            if cached_data:
-                return cached_data
-        
-        # Check if blocked
-        if self._is_blocked():
-            logger.warning("Currently blocked, returning cached data if available")
-            return self.cache.get(cache_key, {}).get('data', []) if cache_type else []
-        
-        # Session management
-        if not self.session_active or self.request_count > 15:
-            logger.info("Refreshing session...")
-            if not self._initialize_session():
-                logger.error("Session refresh failed")
-                return []
-        
-        # Smart rate limiting
-        time.sleep(random.uniform(5, 12))
-        
-        # Build URL  
-        url = f"{self.api_base}{endpoint}"
-        if params:
-            query_params = '&'.join([f"{k}={v}" for k, v in params.items()])
-            url += f"?{query_params}"
-        
-        try:
-            session = self._get_current_session()
-            headers = self._get_random_headers(for_api=True)
-            
-            logger.info(f"API Call: {endpoint}")
-            
-            response = session.get(
-                url,
-                headers=headers,
-                timeout=25,
-                verify=False
-            )
-            
-            self.request_count += 1
-            
-            logger.info(f"Response: {response.status_code}")
-            
-            if response.status_code == 200:
-                decoded_text = self._decode_response(response)
-                
-                try:
-                    data = json.loads(decoded_text)
-                    
-                    if isinstance(data, list):
-                        logger.info(f"Got {len(data)} items")
-                        # Cache successful response
-                        if cache_type:
-                            self._store_in_cache(cache_key, data)
-                        return data
-                    elif isinstance(data, dict):
-                        logger.info("Got data object")
-                        result = [data] if data else []
-                        if cache_type:
-                            self._store_in_cache(cache_key, result)
-                        return result
-                    else:
-                        return data if data else []
-                        
-                except json.JSONDecodeError as e:
-                    logger.error(f"JSON decode failed: {e}")
-                    return []
-                    
-            elif response.status_code == 401:
-                logger.error("401 Unauthorized - rotating session")
-                self.session_active = False
-                self._rotate_session()
-                return []
-                
-            elif response.status_code == 403:
-                logger.error("403 Forbidden - setting blocked status")
-                self.session_active = False
-                self._set_blocked(30)  # Block for 30 minutes
-                return []
-                
-            elif response.status_code == 429:
-                logger.error("429 Rate Limited - setting blocked status")
-                self._set_blocked(60)  # Block for 1 hour
-                return []
-                
-            else:
-                logger.error(f"Unexpected status: {response.status_code}")
-                return []
-                
-        except Exception as e:
-            logger.error(f"API call failed: {e}")
-            self._rotate_session()
-            return []
+        self.scraper = nse_scraper
     
     def fetch_current_ipos(self) -> List[Dict]:
-        """Fetch current IPOs with caching"""
+        """Fetch and process current IPOs"""
         logger.info("Fetching current IPOs...")
         
-        data = self._make_api_call('/ipo-current-issue', cache_type='current_ipos')
+        raw_data = self.scraper.make_api_call('/ipo-current-issue')
         
-        if data and len(data) > 0:
-            return self._process_ipo_data(data)
+        if raw_data:
+            if isinstance(raw_data, list):
+                return self._process_ipo_data(raw_data)
+            elif isinstance(raw_data, dict):
+                return self._process_ipo_data([raw_data])
         
-        logger.warning("No current IPO data")
+        logger.warning("No current IPO data received")
         return []
     
     def fetch_upcoming_ipos(self) -> List[Dict]:
-        """Fetch upcoming IPOs with caching"""
+        """Fetch and process upcoming IPOs"""
         logger.info("Fetching upcoming IPOs...")
         
-        data = self._make_api_call('/all-upcoming-issues', {'category': 'ipo'}, cache_type='upcoming_ipos')
+        raw_data = self.scraper.make_api_call('/all-upcoming-issues', {'category': 'ipo'})
         
-        if data and len(data) > 0:
-            return self._process_ipo_data(data)
+        if raw_data:
+            if isinstance(raw_data, list):
+                return self._process_ipo_data(raw_data)
+            elif isinstance(raw_data, dict):
+                return self._process_ipo_data([raw_data])
         
-        logger.warning("No upcoming IPO data")
+        logger.warning("No upcoming IPO data received")
         return []
     
     def fetch_market_status(self) -> List[Dict]:
-        """Fetch market status with correct endpoint"""
+        """Fetch and process market status"""
         logger.info("Fetching market status...")
         
-        # Fixed endpoint - it's marketStatus not marketstatus
-        data = self._make_api_call('/marketstatus', cache_type='marketstatus')
+        raw_data = self.scraper.make_api_call('/marketStatus')
         
-        if data and len(data) > 0:
-            return self._process_market_data(data)
+        if raw_data:
+            if isinstance(raw_data, list):
+                return self._process_market_data(raw_data)
+            elif isinstance(raw_data, dict):
+                return self._process_market_data([raw_data])
         
-        logger.warning("No market status data")
+        logger.warning("No market status data received")
         return []
     
+    def fetch_ipo_active_category(self, symbol: str) -> Dict:
+        """Fetch IPO active category data for specific symbol"""
+        logger.info(f"Fetching active category for symbol: {symbol}")
+        
+        raw_data = self.scraper.make_api_call('/ipo-active-category', {'symbol': symbol})
+        
+        if raw_data:
+            return self._process_active_category_data(raw_data, symbol)
+        
+        logger.warning(f"No active category data for symbol: {symbol}")
+        return {}
+    
     def _process_ipo_data(self, raw_data: List[Dict]) -> List[Dict]:
-        """Process IPO data"""
+        """Process raw IPO data into standardized format"""
         processed = []
         
         for item in raw_data:
@@ -400,53 +89,100 @@ class NSEService:
                     'shares_offered': self._safe_int(item.get('noOfSharesOffered', 0)),
                     'shares_bid': self._safe_int(item.get('noOfsharesBid', 0)),
                     'is_sme': bool(item.get('isBse', '0') == '1'),
-                    'category': str(item.get('category', 'Total')).strip()
+                    'category': str(item.get('category', 'Total')).strip(),
+                    'lot_size': self._safe_int(item.get('lotSize', 0)),
+                    'face_value': str(item.get('faceValue', '')).strip(),
+                    'raw_data': item  # Store original data
                 }
                 
                 if processed_item['symbol'] and processed_item['company_name']:
                     processed.append(processed_item)
                     
             except Exception as e:
-                logger.warning(f"Processing error: {e}")
+                logger.warning(f"IPO processing error: {e}")
                 continue
         
-        logger.info(f"Processed {len(processed)} IPOs")
+        logger.info(f"Processed {len(processed)} IPO records")
         return processed
     
     def _process_market_data(self, raw_data: List[Dict]) -> List[Dict]:
-        """Process market status data"""
+        """Process raw market status data"""
         processed = []
         
         for item in raw_data:
             try:
                 processed_item = {
                     'market': str(item.get('market', '')).strip(),
-                    'market_status': str(item.get('marketstatus', '')).strip(),
+                    'market_status': str(item.get('marketStatus', '')).strip(),
                     'trade_date': str(item.get('tradeDate', '')).strip(),
-                    'index': str(item.get('index', '')).strip()
+                    'index': str(item.get('index', '')).strip(),
+                    'raw_data': item
                 }
                 
                 if processed_item['market']:
                     processed.append(processed_item)
                     
             except Exception as e:
-                logger.warning(f"Processing error: {e}")
+                logger.warning(f"Market data processing error: {e}")
                 continue
         
         logger.info(f"Processed {len(processed)} market records")
         return processed
     
+    def _process_active_category_data(self, raw_data: Dict, symbol: str) -> Dict:
+        """Process IPO active category data with bid information"""
+        try:
+            processed = {
+                'symbol': symbol,
+                'company_name': str(raw_data.get('companyName', '')).strip(),
+                'issue_price': str(raw_data.get('issuePrice', '')).strip(),
+                'issue_size': str(raw_data.get('issueSize', '')).strip(),
+                'status': str(raw_data.get('status', 'Unknown')).strip(),
+                'total_subscription': self._safe_float(raw_data.get('totalSubscription', 0)),
+                'categories': {},
+                'raw_data': raw_data
+            }
+            
+            # Process category-wise subscription data
+            categories = raw_data.get('categories', [])
+            if isinstance(categories, list):
+                for category in categories:
+                    cat_name = str(category.get('category', '')).strip()
+                    if cat_name:
+                        processed['categories'][cat_name] = {
+                            'subscription_times': self._safe_float(category.get('subscriptionTimes', 0)),
+                            'shares_offered': self._safe_int(category.get('sharesOffered', 0)),
+                            'shares_bid': self._safe_int(category.get('sharesBid', 0)),
+                            'applications': self._safe_int(category.get('applications', 0)),
+                            'amount': str(category.get('amount', '')).strip()
+                        }
+            
+            logger.info(f"Processed active category data for {symbol}")
+            return processed
+            
+        except Exception as e:
+            logger.error(f"Active category processing error for {symbol}: {e}")
+            return {
+                'symbol': symbol,
+                'error': str(e),
+                'raw_data': raw_data
+            }
+    
     def _safe_int(self, value) -> int:
+        """Safely convert value to integer"""
         try:
             if isinstance(value, str):
-                if 'E' in value.upper():
+                # Handle scientific notation
+                if 'E' in value.upper() or 'e' in value:
                     return int(float(value))
+                # Remove commas and convert
                 return int(float(value.replace(',', '')))
             return int(float(value)) if value else 0
         except:
             return 0
     
     def _safe_float(self, value) -> float:
+        """Safely convert value to float"""
         try:
             if isinstance(value, str):
                 return float(value.replace(',', ''))
@@ -454,93 +190,90 @@ class NSEService:
         except:
             return 0.0
     
-    def get_session_info(self) -> Dict[str, Any]:
-        """Get session information"""
-        return {
-            'session_active': self.session_active,
-            'current_scraper': f'session_{self.current_session_index}',
-            'request_count': self.request_count,
-            'cache_size': len(self.cache),
-            'blocked_until': self.blocked_until,
-            'is_blocked': self._is_blocked(),
-            'sessions_count': len(self.sessions)
-        }
-    
     def test_connection(self) -> Dict[str, Any]:
-        """Test NSE connection"""
+        """Test NSE connection and all endpoints"""
         logger.info("Testing NSE connection...")
         
         results = {
             'session_creation': False,
-            'api_access': False,
             'current_ipos': False,
+            'upcoming_ipos': False,
             'market_status': False,
             'overall_status': 'failed',
-            'scrapers_working': [],
-            'scrapers_failed': []
+            'working_endpoints': [],
+            'failed_endpoints': []
         }
         
         # Test session
-        if self._initialize_session():
+        if self.scraper.force_refresh():
             results['session_creation'] = True
-            results['scrapers_working'].append('session_init')
+            results['working_endpoints'].append('session_init')
         else:
-            results['scrapers_failed'].append('session_init')
+            results['failed_endpoints'].append('session_init')
         
-        # Test endpoints only if not blocked
-        if results['session_creation'] and not self._is_blocked():
+        # Test endpoints if session is working
+        if results['session_creation'] and not self.scraper._is_blocked():
+            
+            # Test current IPOs
             try:
                 current_data = self.fetch_current_ipos()
-                if current_data and len(current_data) > 0:
+                if current_data:
                     results['current_ipos'] = True
-                    results['api_access'] = True
-                    results['scrapers_working'].append('current_ipos')
+                    results['working_endpoints'].append('current_ipos')
                 else:
-                    results['scrapers_failed'].append('current_ipos')
-            except:
-                results['scrapers_failed'].append('current_ipos')
+                    results['failed_endpoints'].append('current_ipos')
+            except Exception as e:
+                logger.error(f"Current IPOs test failed: {e}")
+                results['failed_endpoints'].append('current_ipos')
             
+            # Test upcoming IPOs
+            try:
+                upcoming_data = self.fetch_upcoming_ipos()
+                if upcoming_data:
+                    results['upcoming_ipos'] = True
+                    results['working_endpoints'].append('upcoming_ipos')
+                else:
+                    results['failed_endpoints'].append('upcoming_ipos')
+            except Exception as e:
+                logger.error(f"Upcoming IPOs test failed: {e}")
+                results['failed_endpoints'].append('upcoming_ipos')
+            
+            # Test market status
             try:
                 market_data = self.fetch_market_status()
-                if market_data and len(market_data) > 0:
+                if market_data:
                     results['market_status'] = True
-                    results['api_access'] = True
-                    results['scrapers_working'].append('market_status')
+                    results['working_endpoints'].append('market_status')
                 else:
-                    results['scrapers_failed'].append('market_status')
-            except:
-                results['scrapers_failed'].append('market_status')
+                    results['failed_endpoints'].append('market_status')
+            except Exception as e:
+                logger.error(f"Market status test failed: {e}")
+                results['failed_endpoints'].append('market_status')
         
-        # Overall status
-        if results['api_access']:
-            results['overall_status'] = 'working'
-        elif results['session_creation']:
+        # Determine overall status
+        working_count = len(results['working_endpoints'])
+        if working_count >= 3:
+            results['overall_status'] = 'excellent'
+        elif working_count >= 2:
+            results['overall_status'] = 'good'
+        elif working_count >= 1:
             results['overall_status'] = 'partial'
+        else:
+            results['overall_status'] = 'failed'
         
         return results
     
-    def clear_cache(self):
-        """Clear cache manually"""
-        self.cache.clear()
-        logger.info("Cache cleared")
+    def get_session_info(self) -> Dict[str, Any]:
+        """Get session information"""
+        return self.scraper.get_session_info()
     
     def force_refresh(self):
-        """Force refresh session and clear cache"""
-        self.clear_cache()
-        self.session_active = False
-        self.blocked_until = 0
-        return self._initialize_session()
+        """Force refresh session"""
+        return self.scraper.force_refresh()
     
     def cleanup(self):
-        """Cleanup all sessions"""
-        try:
-            for session in self.sessions:
-                session.close()
-            self.sessions.clear()
-            self.session_active = False
-            logger.info("All sessions cleanup completed")
-        except:
-            pass
+        """Cleanup resources"""
+        return self.scraper.cleanup()
 
 # Create service instance
 nse_service = NSEService()

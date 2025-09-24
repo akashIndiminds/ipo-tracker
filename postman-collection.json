@@ -1,171 +1,497 @@
 {
   "info": {
-    "name": "IPO Tracker API",
-    "description": "Collection for IPO Tracker API endpoints. Set {{base_url}} to your server URL (e.g., http://localhost:8000).",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "name": "NSE IPO Tracker API v2.1",
+    "description": "Complete collection for NSE IPO Tracker API with live NSE data and local storage endpoints. Set {{base_url}} to your server URL (e.g., http://localhost:8000).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "2.1.0"
   },
   "item": [
     {
-      "name": "Get Current IPOs",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{base_url}}/api/ipo/current?force_refresh=false",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "ipo",
-            "current"
-          ],
-          "query": [
-            {
-              "key": "force_refresh",
-              "value": "false",
-              "description": "Set to true to force refresh from NSE"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Get Upcoming IPOs",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{base_url}}/api/ipo/upcoming?force_refresh=false",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "ipo",
-            "upcoming"
-          ],
-          "query": [
-            {
-              "key": "force_refresh",
-              "value": "false",
-              "description": "Set to true to force refresh from NSE"
-            }
-          ]
-        }
-      },
-      "response": []
-    },
-    {
-      "name": "Get Subscription Details",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{base_url}}/api/ipo/JARO/subscription?force_refresh=false",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "ipo",
-            "JARO",
-            "subscription"
-          ],
-          "query": [
-            {
-              "key": "force_refresh",
-              "value": "false",
-              "description": "Set to true to force refresh from NSE"
-            }
-          ]
+      "name": "System Endpoints",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": ["{{base_url}}"],
+              "path": ["health"]
+            },
+            "description": "Check API health and features"
+          }
         },
-        "description": "Replace 'JARO' with actual symbol"
-      },
-      "response": []
+        {
+          "name": "Comprehensive Test",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/test",
+              "host": ["{{base_url}}"],
+              "path": ["test"]
+            },
+            "description": "Test both NSE connectivity and local storage"
+          }
+        },
+        {
+          "name": "API Information",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            },
+            "description": "Get complete API documentation and endpoints"
+          }
+        }
+      ]
     },
     {
-      "name": "Get Market Status",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{base_url}}/api/ipo/market/status",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "ipo",
-            "market",
-            "status"
-          ]
+      "name": "NSE Live Data",
+      "item": [
+        {
+          "name": "Get Current IPOs (Live)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/ipo/current?include_gmp=false&save_data=true",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ipo", "current"],
+              "query": [
+                {
+                  "key": "include_gmp",
+                  "value": "false",
+                  "description": "Include Grey Market Premium data"
+                },
+                {
+                  "key": "save_data",
+                  "value": "true",
+                  "description": "Auto-save data to JSON file"
+                }
+              ]
+            },
+            "description": "Fetch current IPOs from NSE and auto-save to daily JSON file"
+          }
+        },
+        {
+          "name": "Get Upcoming IPOs (Live)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/ipo/upcoming?include_gmp=false&save_data=true",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ipo", "upcoming"],
+              "query": [
+                {
+                  "key": "include_gmp",
+                  "value": "false",
+                  "description": "Include Grey Market Premium data"
+                },
+                {
+                  "key": "save_data",
+                  "value": "true",
+                  "description": "Auto-save data to JSON file"
+                }
+              ]
+            },
+            "description": "Fetch upcoming IPOs from NSE and auto-save to daily JSON file"
+          }
+        },
+        {
+          "name": "Get Market Status (Live)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/ipo/market-status?save_data=true",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ipo", "market-status"],
+              "query": [
+                {
+                  "key": "save_data",
+                  "value": "true",
+                  "description": "Auto-save data to JSON file"
+                }
+              ]
+            },
+            "description": "Fetch current market status from NSE"
+          }
+        },
+        {
+          "name": "Get IPO Active Category (Live)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/ipo/active-category/SOLARWORLD?save_data=true",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ipo", "active-category", "SOLARWORLD"],
+              "query": [
+                {
+                  "key": "save_data",
+                  "value": "true",
+                  "description": "Auto-save data to JSON file"
+                }
+              ]
+            },
+            "description": "Get IPO active category with bid information for specific symbol. Replace SOLARWORLD with actual symbol."
+          }
+        },
+        {
+          "name": "Test NSE Connection",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/ipo/test",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ipo", "test"]
+            },
+            "description": "Test NSE API connectivity and all endpoints"
+          }
+        },
+        {
+          "name": "Refresh NSE Session",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/ipo/refresh",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ipo", "refresh"]
+            },
+            "description": "Manually refresh NSE session and clear cache"
+          }
+        },
+        {
+          "name": "Fetch All Data (Batch)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/ipo/fetch-all",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ipo", "fetch-all"]
+            },
+            "description": "Fetch all NSE data (current, upcoming, market status) and save to files in one call"
+          }
         }
-      },
-      "response": []
+      ]
     },
     {
-      "name": "Get System Status",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{base_url}}/api/ipo/status",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "ipo",
-            "status"
-          ]
+      "name": "Local Stored Data",
+      "item": [
+        {
+          "name": "Get Stored Current IPOs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/local/current-ipos?date=2025-09-24",
+              "host": ["{{base_url}}"],
+              "path": ["api", "local", "current-ipos"],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2025-09-24",
+                  "description": "Date in YYYY-MM-DD format (optional, defaults to today)"
+                }
+              ]
+            },
+            "description": "Get current IPOs from stored JSON file for specific date"
+          }
+        },
+        {
+          "name": "Get Stored Upcoming IPOs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/local/upcoming-ipos?date=2025-09-24",
+              "host": ["{{base_url}}"],
+              "path": ["api", "local", "upcoming-ipos"],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2025-09-24",
+                  "description": "Date in YYYY-MM-DD format (optional, defaults to today)"
+                }
+              ]
+            },
+            "description": "Get upcoming IPOs from stored JSON file for specific date"
+          }
+        },
+        {
+          "name": "Get Stored Market Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/local/market-status?date=2025-09-24",
+              "host": ["{{base_url}}"],
+              "path": ["api", "local", "market-status"],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2025-09-24",
+                  "description": "Date in YYYY-MM-DD format (optional, defaults to today)"
+                }
+              ]
+            },
+            "description": "Get market status from stored JSON file for specific date"
+          }
+        },
+        {
+          "name": "Get Stored Active Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/local/active-category?symbol=SOLARWORLD&date=2025-09-24",
+              "host": ["{{base_url}}"],
+              "path": ["api", "local", "active-category"],
+              "query": [
+                {
+                  "key": "symbol",
+                  "value": "SOLARWORLD",
+                  "description": "IPO symbol (optional, returns all if not specified)"
+                },
+                {
+                  "key": "date",
+                  "value": "2025-09-24",
+                  "description": "Date in YYYY-MM-DD format (optional, defaults to today)"
+                }
+              ]
+            },
+            "description": "Get IPO active category data from stored JSON file"
+          }
+        },
+        {
+          "name": "Get Today's Data (All Types)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/local/current-ipos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "local", "current-ipos"]
+            },
+            "description": "Get today's current IPOs (no date parameter = today)"
+          }
         }
-      },
-      "response": []
+      ]
     },
     {
-      "name": "Refresh All Data",
-      "request": {
-        "method": "POST",
-        "header": [],
-        "url": {
-          "raw": "{{base_url}}/api/ipo/refresh",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "api",
-            "ipo",
-            "refresh"
-          ]
+      "name": "Data Management",
+      "item": [
+        {
+          "name": "Get Available Dates - Current IPOs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/local/available-dates/current_ipos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "local", "available-dates", "current_ipos"]
+            },
+            "description": "Get list of available dates for current IPOs data"
+          }
+        },
+        {
+          "name": "Get Available Dates - Upcoming IPOs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/local/available-dates/upcoming_ipos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "local", "available-dates", "upcoming_ipos"]
+            },
+            "description": "Get list of available dates for upcoming IPOs data"
+          }
+        },
+        {
+          "name": "Get Available Dates - Market Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/local/available-dates/market_status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "local", "available-dates", "market_status"]
+            },
+            "description": "Get list of available dates for market status data"
+          }
+        },
+        {
+          "name": "Get Available Dates - Active Category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/local/available-dates/active_category",
+              "host": ["{{base_url}}"],
+              "path": ["api", "local", "available-dates", "active_category"]
+            },
+            "description": "Get list of available dates for active category data"
+          }
+        },
+        {
+          "name": "Get Data Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/local/summary",
+              "host": ["{{base_url}}"],
+              "path": ["api", "local", "summary"]
+            },
+            "description": "Get complete summary of all stored data - files, sizes, dates"
+          }
+        },
+        {
+          "name": "Delete Stored Data",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/local/data/current_ipos/2025-09-24",
+              "host": ["{{base_url}}"],
+              "path": ["api", "local", "data", "current_ipos", "2025-09-24"]
+            },
+            "description": "Delete stored data for specific data type and date"
+          }
+        },
+        {
+          "name": "Cleanup Old Data",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/local/cleanup/current_ipos?keep_days=30",
+              "host": ["{{base_url}}"],
+              "path": ["api", "local", "cleanup", "current_ipos"],
+              "query": [
+                {
+                  "key": "keep_days",
+                  "value": "30",
+                  "description": "Number of days to keep (default: 30)"
+                }
+              ]
+            },
+            "description": "Cleanup old stored data, keeping only recent files"
+          }
         }
-      },
-      "response": []
+      ]
     },
     {
-      "name": "Health Check",
-      "request": {
-        "method": "GET",
-        "header": [],
-        "url": {
-          "raw": "{{base_url}}/health",
-          "host": [
-            "{{base_url}}"
-          ],
-          "path": [
-            "health"
-          ]
+      "name": "Common Use Cases",
+      "item": [
+        {
+          "name": "Daily Data Fetch Workflow",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/ipo/fetch-all",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ipo", "fetch-all"]
+            },
+            "description": "Step 1: Fetch all latest data from NSE and save to today's files"
+          }
+        },
+        {
+          "name": "Get Today's Stored Data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/local/current-ipos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "local", "current-ipos"]
+            },
+            "description": "Step 2: Use stored data instead of hitting NSE repeatedly"
+          }
+        },
+        {
+          "name": "Get Historical Data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/local/current-ipos?date=2025-09-20",
+              "host": ["{{base_url}}"],
+              "path": ["api", "local", "current-ipos"],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2025-09-20",
+                  "description": "Get data from specific past date"
+                }
+              ]
+            },
+            "description": "Step 3: Access historical data by date"
+          }
+        },
+        {
+          "name": "Check Data Availability",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/local/summary",
+              "host": ["{{base_url}}"],
+              "path": ["api", "local", "summary"]
+            },
+            "description": "Step 4: Monitor your data storage and availability"
+          }
+        },
+        {
+          "name": "Emergency NSE Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/ipo/test",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ipo", "test"]
+            },
+            "description": "Step 5: Test NSE connectivity if stored data is outdated"
+          }
         }
-      },
-      "response": []
+      ]
     }
   ],
   "variable": [
     {
       "key": "base_url",
       "value": "http://localhost:8000",
-      "type": "string"
+      "type": "string",
+      "description": "Base URL for the API server"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Set current date for date parameters",
+          "const today = new Date().toISOString().split('T')[0];",
+          "pm.globals.set('current_date', today);",
+          "",
+          "// Set yesterday's date",
+          "const yesterday = new Date();",
+          "yesterday.setDate(yesterday.getDate() - 1);",
+          "pm.globals.set('yesterday_date', yesterday.toISOString().split('T')[0]);"
+        ]
+      }
     }
   ]
 }
