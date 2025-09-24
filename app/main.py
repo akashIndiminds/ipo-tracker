@@ -1,11 +1,10 @@
-# main.py
+# app/main.py
 import logging
-import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-# Import routes
-from app.routes.ipo_routes import router as ipo_router
+# Import routes with correct path
+from .routes.ipo_routes import router as ipo_router
 
 # Configure logging
 logging.basicConfig(
@@ -17,9 +16,9 @@ logger = logging.getLogger(__name__)
 
 # Create FastAPI app
 app = FastAPI(
-    title="IPO Tracker API",
-    description="Complete IPO tracking system with NSE integration",
-    version="1.0.0",
+    title="NSE IPO Tracker API",
+    description="Real-time IPO tracking system with NSE integration",
+    version="2.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -42,8 +41,9 @@ async def health_check():
     """Health check endpoint"""
     return {
         "status": "healthy",
-        "service": "IPO Tracker API",
-        "version": "1.0.0"
+        "service": "NSE IPO Tracker API",
+        "version": "2.0.0",
+        "message": "API is running successfully"
     }
 
 # Root endpoint
@@ -51,51 +51,48 @@ async def health_check():
 async def root():
     """Root endpoint with API information"""
     return {
-        "message": "IPO Tracker API",
-        "version": "1.0.0",
+        "message": "NSE IPO Tracker API",
+        "version": "2.0.0",
         "docs": "/docs",
+        "health": "/health",
         "endpoints": {
             "current_ipos": "/api/ipo/current",
-            "upcoming_ipos": "/api/ipo/upcoming", 
-            "subscription_details": "/api/ipo/{symbol}/subscription",
-            "market_status": "/api/ipo/market/status",
-            "system_status": "/api/ipo/status",
-            "refresh_data": "/api/ipo/refresh"
+            "upcoming_ipos": "/api/ipo/upcoming",
+            "market_status": "/api/ipo/market-status",
+            "test_connection": "/api/ipo/test",
+            "refresh_session": "/api/ipo/refresh"
         }
     }
+
+# Test endpoint
+@app.get("/test")
+async def test_endpoint():
+    """Quick test endpoint"""
+    try:
+        from .controllers.ipo_controller import ipo_controller
+        result = await ipo_controller.test_nse_connection()
+        return {
+            "test_status": "API is working",
+            "nse_connection": result.get('success', False),
+            "message": result.get('message', 'Connection test completed')
+        }
+    except Exception as e:
+        return {
+            "test_status": "API has issues",
+            "error": str(e),
+            "message": "Check logs for details"
+        }
 
 # Startup event
 @app.on_event("startup")
 async def startup_event():
     """Initialize services on startup"""
-    logger.info("IPO Tracker API: Starting up...")
-    logger.info("Services initialized successfully")
+    logger.info("🚀 NSE IPO Tracker API: Starting up...")
+    logger.info("✅ Services initialized successfully")
 
 # Shutdown event
 @app.on_event("shutdown")
 async def shutdown_event():
     """Cleanup on shutdown"""
-    logger.info("IPO Tracker API: Shutting down...")
-    
-    try:
-        # Import and cleanup services
-        from app.services.nse_scraper_service import nse_scraper_service
-        from app.services.storage_service import storage_service
-        from app.services.data_processor import DataProcessor  # ✅ Fixed
-        
-        nse_scraper_service.cleanup()
-        storage_service.cleanup()
-        # DataProcessor has static methods, so no cleanup needed
-        
-        logger.info("All services cleaned up successfully")
-    except Exception as e:
-        logger.error(f"Error during cleanup: {e}")
-
-if __name__ == "__main__":
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=8000,
-        reload=True,
-        log_level="info"
-    )
+    logger.info("🛑 NSE IPO Tracker API: Shutting down...")
+    logger.info("🧹 Cleanup completed")

@@ -7,3 +7,7 @@
 logs/ipo_tracker.log
 app/__pycache__/main.cpython-312.pyc
 __pycache__/fallback_app.cpython-312.pyc
+app/__pycache__/main.cpython-312.pyc
+app/models/__init__.py
+app/services/__init__.py
+app/utils/__init__.py
