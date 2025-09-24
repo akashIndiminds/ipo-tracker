@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # Import routes
 from .routes.ipo_routes import router as ipo_router
 from .routes.local_routes import router as local_router
+from .routes.gmp_routes import router as gmp_router
 
 # Configure logging
 logging.basicConfig(
@@ -17,9 +18,9 @@ logger = logging.getLogger(__name__)
 
 # Create FastAPI app
 app = FastAPI(
-    title="NSE IPO Tracker API v2.1",
-    description="Real-time IPO tracking with NSE integration and local storage",
-    version="2.1.0",
+    title="NSE IPO Tracker API v3.0 - With GMP Integration",
+    description="Real-time IPO tracking with NSE integration, GMP analysis, and mathematical predictions",
+    version="3.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -36,6 +37,7 @@ app.add_middleware(
 # Include routers
 app.include_router(ipo_router)
 app.include_router(local_router)
+app.include_router(gmp_router)
 
 # Health check endpoint
 @app.get("/health")
@@ -43,14 +45,18 @@ async def health_check():
     """Health check endpoint"""
     return {
         "status": "healthy",
-        "service": "NSE IPO Tracker API",
-        "version": "2.1.0",
+        "service": "NSE IPO Tracker API with GMP Integration",
+        "version": "3.0.0",
         "message": "API is running successfully",
         "features": [
             "NSE Live Data",
             "Local Data Storage", 
             "File-based Caching",
-            "Daily Data Archives"
+            "Daily Data Archives",
+            "GMP Data Scraping",
+            "Mathematical Predictions",
+            "Risk Assessment",
+            "Investment Recommendations"
         ]
     }
 
@@ -59,15 +65,16 @@ async def health_check():
 async def root():
     """Root endpoint with complete API information"""
     return {
-        "message": "NSE IPO Tracker API v2.1",
-        "version": "2.1.0",
+        "message": "NSE IPO Tracker API v3.0 - Now with GMP Integration & Predictions!",
+        "version": "3.0.0",
         "docs": "/docs",
         "health": "/health",
-        "features": {
-            "nse_live_data": "Fetch real-time data from NSE",
-            "local_storage": "Store and retrieve daily data files",
-            "file_caching": "Automatic JSON file management",
-            "date_filtering": "Query data by specific dates"
+        "new_features_v3": {
+            "gmp_integration": "Grey Market Premium data from multiple sources",
+            "mathematical_predictions": "AI-powered IPO performance predictions",
+            "risk_assessment": "Comprehensive risk analysis and scoring",
+            "investment_advice": "BUY/HOLD/AVOID recommendations with confidence scores",
+            "market_analysis": "Overall market sentiment and trend analysis"
         },
         "endpoints": {
             "nse_live": {
@@ -87,30 +94,58 @@ async def root():
                 "available_dates": "/api/local/available-dates/{data_type}",
                 "data_summary": "/api/local/summary",
                 "cleanup": "/api/local/cleanup/{data_type}?keep_days=30"
+            },
+            "gmp_analysis": {
+                "full_analysis": "/api/gmp/analyze",
+                "get_recommendation": "/api/gmp/recommendation/{symbol}",
+                "top_recommendations": "/api/gmp/top-recommendations?limit=5",
+                "update_gmp_data": "/api/gmp/update-gmp",
+                "prediction_explanation": "/api/gmp/explanation/{symbol}",
+                "market_summary": "/api/gmp/market-summary"
             }
         },
         "data_types": [
             "current_ipos",
             "upcoming_ipos", 
             "market_status",
-            "active_category"
+            "active_category",
+            "ipo_gmp_analysis",
+            "latest_gmp_data"
         ],
         "usage_examples": {
-            "fetch_and_store": "POST /api/ipo/fetch-all",
-            "get_today_data": "GET /api/local/current-ipos",
-            "get_specific_date": "GET /api/local/current-ipos?date=2025-09-24",
-            "check_available_dates": "GET /api/local/available-dates/current_ipos",
-            "get_symbol_data": "GET /api/ipo/active-category/SOLARWORLD"
+            "comprehensive_analysis": "POST /api/gmp/analyze",
+            "get_specific_recommendation": "GET /api/gmp/recommendation/SOLARWORLD",
+            "top_5_picks": "GET /api/gmp/top-recommendations?limit=5",
+            "update_gmp_data": "POST /api/gmp/update-gmp",
+            "market_overview": "GET /api/gmp/market-summary",
+            "prediction_logic": "GET /api/gmp/explanation/SYMBOL"
+        },
+        "mathematical_model": {
+            "components": {
+                "gmp_analysis": "30% weight - Grey market premium from multiple sources",
+                "subscription_analysis": "25% weight - Demand and subscription patterns", 
+                "fundamental_analysis": "20% weight - Company and issue fundamentals",
+                "market_conditions": "15% weight - Overall market environment",
+                "risk_assessment": "10% weight - Risk factor evaluation"
+            },
+            "output": {
+                "recommendation": "BUY/HOLD/AVOID",
+                "risk_level": "LOW/MEDIUM/HIGH",
+                "confidence_score": "0-100%",
+                "expected_listing_gain": "Percentage",
+                "expected_listing_price": "Rupees"
+            }
         }
     }
 
-# Test endpoint with both NSE and local data status
+# Test endpoint with comprehensive system status
 @app.get("/test")
 async def test_endpoint():
-    """Comprehensive test endpoint for both NSE and local services"""
+    """Comprehensive test endpoint for all services"""
     try:
         from .controllers.ipo_controller import ipo_controller
         from .controllers.local_controller import local_controller
+        from .controllers.gmp_controller import gmp_controller
         
         # Test NSE connection
         nse_result = await ipo_controller.test_nse_connection()
@@ -124,6 +159,20 @@ async def test_endpoint():
             local_working = False
             local_message = f"Local storage error: {str(e)}"
         
+        # Test GMP service
+        try:
+            gmp_update = await gmp_controller.update_gmp_data()
+            gmp_working = gmp_update.get('success', False)
+            gmp_message = f"GMP service {'working' if gmp_working else 'has issues'}"
+            if gmp_working:
+                gmp_details = gmp_update.get('update_details', {})
+                gmp_message += f" - {len(gmp_details.get('sources_scraped', []))} sources scraped"
+        except Exception as e:
+            gmp_working = False
+            gmp_message = f"GMP service error: {str(e)}"
+        
+        overall_status = "READY" if (nse_result.get('success', False) and local_working and gmp_working) else "PARTIAL"
+        
         return {
             "api_status": "API is working",
             "nse_connection": {
@@ -135,12 +184,24 @@ async def test_endpoint():
                 "status": local_working,
                 "message": local_message
             },
-            "overall_status": "READY" if nse_result.get('success', False) and local_working else "PARTIAL",
+            "gmp_service": {
+                "status": gmp_working,
+                "message": gmp_message
+            },
+            "overall_status": overall_status,
+            "new_v3_features": [
+                "✅ GMP data scraping from multiple sources",
+                "✅ Mathematical prediction engine",
+                "✅ Risk assessment and scoring",
+                "✅ Investment recommendations",
+                "✅ Market sentiment analysis"
+            ],
             "recommendations": [
-                "✅ API is fully functional" if nse_result.get('success', False) and local_working else "⚠️ Some services may be limited",
                 "🔗 Use /api/ipo/ endpoints for live NSE data",
                 "💾 Use /api/local/ endpoints for stored data",
-                "📊 Check /api/local/summary for data overview"
+                "🧮 Use /api/gmp/ endpoints for predictions and analysis",
+                "📊 Check /api/gmp/market-summary for market overview",
+                "🎯 Get specific recommendations with /api/gmp/recommendation/{symbol}"
             ]
         }
     except Exception as e:
@@ -155,7 +216,7 @@ async def test_endpoint():
 @app.on_event("startup")
 async def startup_event():
     """Initialize services on startup"""
-    logger.info("🚀 NSE IPO Tracker API v2.1: Starting up...")
+    logger.info("🚀 NSE IPO Tracker API v3.0: Starting up with GMP Integration...")
     
     # Verify data directory exists
     try:
@@ -175,13 +236,21 @@ async def startup_event():
     except Exception as e:
         logger.warning(f"⚠️ NSE connection test error: {e}")
     
-    logger.info("✅ Services initialized successfully")
+    # Test GMP service (optional)
+    try:
+        from .services.gmp_scraper import gmp_scraper
+        logger.info("🔍 GMP scraper initialized")
+        logger.info("🧮 Mathematical prediction engine ready")
+    except Exception as e:
+        logger.warning(f"⚠️ GMP service initialization warning: {e}")
+    
+    logger.info("✅ Services initialized successfully - Ready for GMP-powered predictions!")
 
 # Shutdown event
 @app.on_event("shutdown")
 async def shutdown_event():
     """Cleanup on shutdown"""
-    logger.info("🛑 NSE IPO Tracker API: Shutting down...")
+    logger.info("🛑 NSE IPO Tracker API v3.0: Shutting down...")
     
     # Cleanup NSE service
     try:
@@ -190,5 +259,14 @@ async def shutdown_event():
         logger.info("🧹 NSE service cleanup completed")
     except Exception as e:
         logger.error(f"❌ NSE service cleanup error: {e}")
+    
+    # Cleanup GMP scraper
+    try:
+        from .services.gmp_scraper import gmp_scraper
+        if hasattr(gmp_scraper, 'session'):
+            gmp_scraper.session.close()
+        logger.info("🧹 GMP scraper cleanup completed")
+    except Exception as e:
+        logger.error(f"❌ GMP scraper cleanup error: {e}")
     
     logger.info("✅ Shutdown completed")

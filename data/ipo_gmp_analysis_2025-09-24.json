@@ -1,0 +1,830 @@
+{
+  "metadata": {
+    "data_type": "ipo_gmp_analysis",
+    "date": "2025-09-24",
+    "timestamp": "2025-09-24T23:59:50.292210",
+    "records_count": 1,
+    "source": "NSE_API"
+  },
+  "data": {
+    "success": true,
+    "analysis_timestamp": "2025-09-24T23:59:50.292210",
+    "total_ipos_analyzed": 12,
+    "gmp_data_status": {
+      "sources_scraped": [
+        "ipowatch",
+        "chittorgarh"
+      ],
+      "total_gmp_ipos": 233,
+      "scraping_errors": [
+        "Failed to scrape investorgain"
+      ]
+    },
+    "summary": {
+      "total_ipos": 12,
+      "recommendations": {
+        "BUY": 0,
+        "HOLD": 0,
+        "AVOID": 12
+      },
+      "risk_levels": {
+        "LOW": 0,
+        "MEDIUM": 0,
+        "HIGH": 12
+      },
+      "average_expected_gain": 0.94,
+      "best_opportunity": {
+        "symbol": "SOLARWORLD",
+        "company_name": "Solarworld Energy Solutions Limited",
+        "expected_gain": 5.79,
+        "score": 37.028999999999996
+      },
+      "highest_risk": {
+        "symbol": "GURUNANAK",
+        "company_name": "Gurunanak Agriculture India Limited",
+        "expected_gain": 0,
+        "score": 29.5
+      },
+      "gmp_coverage": 2,
+      "gmp_coverage_percent": 16.7
+    },
+    "ipo_analyses": [
+      {
+        "ipo_details": {
+          "symbol": "JAINREC",
+          "company_name": "Jain Resource Recycling Limited",
+          "series": "EQ",
+          "issue_start_date": "24-Sep-2025",
+          "issue_end_date": "26-Sep-2025",
+          "issue_price": "Rs.220 to Rs.232",
+          "issue_size": "31249999",
+          "status": "Active",
+          "subscription_times": 0.18091008578912274,
+          "shares_offered": 31249999,
+          "shares_bid": 5653440,
+          "is_sme": false,
+          "category": "Total",
+          "lot_size": 0,
+          "face_value": "",
+          "raw_data": {
+            "symbol": "JAINREC",
+            "companyName": "Jain Resource Recycling Limited",
+            "series": "EQ",
+            "issueStartDate": "24-Sep-2025",
+            "issueEndDate": "26-Sep-2025",
+            "status": "Active",
+            "issueSize": "31249999",
+            "issuePrice": "Rs.220 to Rs.232",
+            "srNo": null,
+            "category": "Total",
+            "noOfSharesOffered": "3.1249999E7",
+            "noOfsharesBid": "5653440.0",
+            "noOfTime": "0.18091008578912274"
+          }
+        },
+        "gmp_data": null,
+        "subscription_data": {
+          "total_subscription": 0.0,
+          "categories": {},
+          "status": "Unknown"
+        },
+        "prediction": {
+          "recommendation": "AVOID",
+          "risk_level": "HIGH",
+          "confidence_score": 69.0,
+          "expected_listing_gain": 0.0,
+          "expected_listing_price": 0.23,
+          "risk_factors": [
+            "Undersubscribed at 0.00x - weak demand",
+            "Large issue size ₹31249999.0Cr may face absorption issues",
+            "Poor GMP performance indicates negative sentiment",
+            "Poor subscription performance shows lack of demand",
+            "Quarter-end timing may affect institutional participation"
+          ],
+          "positive_factors": [
+            "Affordable issue price ₹0.232 for retail investors"
+          ],
+          "investment_advice": "🔴 NOT RECOMMENDED | ❌ Multiple risk factors identified | 📉 Potential loss risk of 0.0% | 🛡️ Use stop-loss at -5% if listing is negative | 💡 Consider applying with minimum amount only | ⏰ Monitor subscription numbers and GMP trends | 📱 Stay updated with company news and market conditions",
+          "scores": {
+            "mathematical_score": 65,
+            "gmp_score": 0,
+            "subscription_score": 10,
+            "final_score": 31.0
+          }
+        },
+        "analysis_timestamp": "2025-09-24T23:59:50.277315"
+      },
+      {
+        "ipo_details": {
+          "symbol": "BMWVENTLTD",
+          "company_name": "BMW Ventures Limited",
+          "series": "EQ",
+          "issue_start_date": "24-Sep-2025",
+          "issue_end_date": "26-Sep-2025",
+          "issue_price": "Rs.94 to Rs.99",
+          "issue_size": "23400000",
+          "status": "Active",
+          "subscription_times": 0.06664649572649572,
+          "shares_offered": 23400000,
+          "shares_bid": 1559528,
+          "is_sme": false,
+          "category": "Total",
+          "lot_size": 0,
+          "face_value": "",
+          "raw_data": {
+            "symbol": "BMWVENTLTD",
+            "companyName": "BMW Ventures Limited",
+            "series": "EQ",
+            "issueStartDate": "24-Sep-2025",
+            "issueEndDate": "26-Sep-2025",
+            "status": "Active",
+            "issueSize": "23400000",
+            "issuePrice": "Rs.94 to Rs.99",
+            "srNo": null,
+            "category": "Total",
+            "noOfSharesOffered": "2.34E7",
+            "noOfsharesBid": "1559528.0",
+            "noOfTime": "0.06664649572649572"
+          }
+        },
+        "gmp_data": null,
+        "subscription_data": null,
+        "prediction": {
+          "recommendation": "AVOID",
+          "risk_level": "HIGH",
+          "confidence_score": 69.5,
+          "expected_listing_gain": 0.0,
+          "expected_listing_price": 0.99,
+          "risk_factors": [
+            "Large issue size ₹23400000.0Cr may face absorption issues",
+            "Poor GMP performance indicates negative sentiment",
+            "Poor subscription performance shows lack of demand",
+            "Quarter-end timing may affect institutional participation"
+          ],
+          "positive_factors": [
+            "Affordable issue price ₹0.99 for retail investors"
+          ],
+          "investment_advice": "🔴 NOT RECOMMENDED | ❌ Multiple risk factors identified | 📉 Potential loss risk of 0.0% | 🛡️ Use stop-loss at -5% if listing is negative | 💡 Consider applying with minimum amount only | ⏰ Monitor subscription numbers and GMP trends | 📱 Stay updated with company news and market conditions",
+          "scores": {
+            "mathematical_score": 65,
+            "gmp_score": 0,
+            "subscription_score": 0,
+            "final_score": 30.5
+          }
+        },
+        "analysis_timestamp": "2025-09-24T23:59:50.277315"
+      },
+      {
+        "ipo_details": {
+          "symbol": "EPACKPEB",
+          "company_name": "Epack Prefab Technologies Limited",
+          "series": "EQ",
+          "issue_start_date": "24-Sep-2025",
+          "issue_end_date": "26-Sep-2025",
+          "issue_price": "Rs.194 to Rs.204",
+          "issue_size": "17670103",
+          "status": "Active",
+          "subscription_times": 0.08366651852567017,
+          "shares_offered": 17670103,
+          "shares_bid": 1478396,
+          "is_sme": false,
+          "category": "Total",
+          "lot_size": 0,
+          "face_value": "",
+          "raw_data": {
+            "symbol": "EPACKPEB",
+            "companyName": "Epack Prefab Technologies Limited",
+            "series": "EQ",
+            "issueStartDate": "24-Sep-2025",
+            "issueEndDate": "26-Sep-2025",
+            "status": "Active",
+            "issueSize": "17670103",
+            "issuePrice": "Rs.194 to Rs.204",
+            "srNo": null,
+            "category": "Total",
+            "noOfSharesOffered": "1.7670103E7",
+            "noOfsharesBid": "1478396.0",
+            "noOfTime": "0.08366651852567017"
+          }
+        },
+        "gmp_data": null,
+        "subscription_data": null,
+        "prediction": {
+          "recommendation": "AVOID",
+          "risk_level": "HIGH",
+          "confidence_score": 69.5,
+          "expected_listing_gain": 0.0,
+          "expected_listing_price": 0.2,
+          "risk_factors": [
+            "Large issue size ₹17670103.0Cr may face absorption issues",
+            "Poor GMP performance indicates negative sentiment",
+            "Poor subscription performance shows lack of demand",
+            "Quarter-end timing may affect institutional participation"
+          ],
+          "positive_factors": [
+            "Affordable issue price ₹0.204 for retail investors"
+          ],
+          "investment_advice": "🔴 NOT RECOMMENDED | ❌ Multiple risk factors identified | 📉 Potential loss risk of 0.0% | 🛡️ Use stop-loss at -5% if listing is negative | 💡 Consider applying with minimum amount only | ⏰ Monitor subscription numbers and GMP trends | 📱 Stay updated with company news and market conditions",
+          "scores": {
+            "mathematical_score": 65,
+            "gmp_score": 0,
+            "subscription_score": 0,
+            "final_score": 30.5
+          }
+        },
+        "analysis_timestamp": "2025-09-24T23:59:50.277315"
+      },
+      {
+        "ipo_details": {
+          "symbol": "SOLARWORLD",
+          "company_name": "Solarworld Energy Solutions Limited",
+          "series": "EQ",
+          "issue_start_date": "23-Sep-2025",
+          "issue_end_date": "25-Sep-2025",
+          "issue_price": "Rs.333 to Rs.351",
+          "issue_size": "8093092",
+          "status": "Active",
+          "subscription_times": 1.8500807849459762,
+          "shares_offered": 8093092,
+          "shares_bid": 14972874,
+          "is_sme": false,
+          "category": "Total",
+          "lot_size": 0,
+          "face_value": "",
+          "raw_data": {
+            "symbol": "SOLARWORLD",
+            "companyName": "Solarworld Energy Solutions Limited",
+            "series": "EQ",
+            "issueStartDate": "23-Sep-2025",
+            "issueEndDate": "25-Sep-2025",
+            "status": "Active",
+            "issueSize": "8093092",
+            "issuePrice": "Rs.333 to Rs.351",
+            "srNo": null,
+            "category": "Total",
+            "noOfSharesOffered": "8093092.0",
+            "noOfsharesBid": "1.4972874E7",
+            "noOfTime": "1.8500807849459762"
+          }
+        },
+        "gmp_data": {
+          "symbol": "SOLARWORLD",
+          "sources": {
+            "ipowatch": {
+              "company_name": "Solarworld Energy",
+              "symbol": "SOLARWORLD",
+              "gmp": 66.0,
+              "issue_price": 351.0,
+              "estimated_listing_price": 417.0,
+              "estimated_gain_percent": 18.8,
+              "source": "ipowatch",
+              "scraped_at": "2025-09-24T23:59:32.697777"
+            },
+            "chittorgarh": {
+              "company_name": "Solarworld Energy Solutions Ltd.",
+              "symbol": "SOLARWORLD",
+              "gmp": 25.0,
+              "issue_price": 23.0,
+              "estimated_listing_price": 0,
+              "estimated_gain_percent": 0,
+              "source": "chittorgarh",
+              "scraped_at": "2025-09-24T23:59:45.342755"
+            }
+          },
+          "consensus_gmp": 45.5,
+          "consensus_gain": 9.4,
+          "reliability_score": 27
+        },
+        "subscription_data": {
+          "total_subscription": 0.0,
+          "categories": {},
+          "status": "Unknown"
+        },
+        "prediction": {
+          "recommendation": "AVOID",
+          "risk_level": "HIGH",
+          "confidence_score": 62.971000000000004,
+          "expected_listing_gain": 5.79,
+          "expected_listing_price": 0.37,
+          "risk_factors": [
+            "Low GMP data reliability - conflicting sources",
+            "Undersubscribed at 0.00x - weak demand",
+            "Large issue size ₹8093092.0Cr may face absorption issues",
+            "Poor GMP performance indicates negative sentiment",
+            "Poor subscription performance shows lack of demand",
+            "Quarter-end timing may affect institutional participation"
+          ],
+          "positive_factors": [
+            "Positive GMP of 9.4% suggests listing gains",
+            "Affordable issue price ₹0.351 for retail investors"
+          ],
+          "investment_advice": "🔴 NOT RECOMMENDED | ❌ Multiple risk factors identified | 📈 Modest expected gain of 5.79% | 🛡️ Use stop-loss at -5% if listing is negative | 💡 Consider applying with minimum amount only | ⏰ Monitor subscription numbers and GMP trends | 📱 Stay updated with company news and market conditions",
+          "scores": {
+            "mathematical_score": 65,
+            "gmp_score": 23.429999999999996,
+            "subscription_score": 10,
+            "final_score": 37.028999999999996
+          }
+        },
+        "analysis_timestamp": "2025-09-24T23:59:50.277315"
+      },
+      {
+        "ipo_details": {
+          "symbol": "ARSSBL",
+          "company_name": "Anand Rathi Share and Stock Brokers Limited",
+          "series": "EQ",
+          "issue_start_date": "23-Sep-2025",
+          "issue_end_date": "25-Sep-2025",
+          "issue_price": "Rs.393 to Rs.414",
+          "issue_size": "13363342",
+          "status": "Active",
+          "subscription_times": 0.5824102982622161,
+          "shares_offered": 13363342,
+          "shares_bid": 7782948,
+          "is_sme": false,
+          "category": "Total",
+          "lot_size": 0,
+          "face_value": "",
+          "raw_data": {
+            "symbol": "ARSSBL",
+            "companyName": "Anand Rathi Share and Stock Brokers Limited",
+            "series": "EQ",
+            "issueStartDate": "23-Sep-2025",
+            "issueEndDate": "25-Sep-2025",
+            "status": "Active",
+            "issueSize": "13363342",
+            "issuePrice": "Rs.393 to Rs.414",
+            "srNo": null,
+            "category": "Total",
+            "noOfSharesOffered": "1.3363342E7",
+            "noOfsharesBid": "7782948.0",
+            "noOfTime": "0.5824102982622161"
+          }
+        },
+        "gmp_data": null,
+        "subscription_data": null,
+        "prediction": {
+          "recommendation": "AVOID",
+          "risk_level": "HIGH",
+          "confidence_score": 69.5,
+          "expected_listing_gain": 0.0,
+          "expected_listing_price": 0.41,
+          "risk_factors": [
+            "Large issue size ₹13363342.0Cr may face absorption issues",
+            "Poor GMP performance indicates negative sentiment",
+            "Poor subscription performance shows lack of demand",
+            "Quarter-end timing may affect institutional participation"
+          ],
+          "positive_factors": [
+            "Affordable issue price ₹0.414 for retail investors"
+          ],
+          "investment_advice": "🔴 NOT RECOMMENDED | ❌ Multiple risk factors identified | 📉 Potential loss risk of 0.0% | 🛡️ Use stop-loss at -5% if listing is negative | 💡 Consider applying with minimum amount only | ⏰ Monitor subscription numbers and GMP trends | 📱 Stay updated with company news and market conditions",
+          "scores": {
+            "mathematical_score": 65,
+            "gmp_score": 0,
+            "subscription_score": 0,
+            "final_score": 30.5
+          }
+        },
+        "analysis_timestamp": "2025-09-24T23:59:50.277315"
+      },
+      {
+        "ipo_details": {
+          "symbol": "JARO",
+          "company_name": "Jaro Institute of Technology Management and Research Limited",
+          "series": "EQ",
+          "issue_start_date": "23-Sep-2025",
+          "issue_end_date": "25-Sep-2025",
+          "issue_price": "Rs.846 to Rs.890",
+          "issue_size": "3723404",
+          "status": "Active",
+          "subscription_times": 1.113694887796221,
+          "shares_offered": 3723404,
+          "shares_bid": 4146736,
+          "is_sme": false,
+          "category": "Total",
+          "lot_size": 0,
+          "face_value": "",
+          "raw_data": {
+            "symbol": "JARO",
+            "companyName": "Jaro Institute of Technology Management and Research Limited",
+            "series": "EQ",
+            "issueStartDate": "23-Sep-2025",
+            "issueEndDate": "25-Sep-2025",
+            "status": "Active",
+            "issueSize": "3723404",
+            "issuePrice": "Rs.846 to Rs.890",
+            "srNo": null,
+            "category": "Total",
+            "noOfSharesOffered": "3723404.0",
+            "noOfsharesBid": "4146736.0",
+            "noOfTime": "1.113694887796221"
+          }
+        },
+        "gmp_data": null,
+        "subscription_data": null,
+        "prediction": {
+          "recommendation": "AVOID",
+          "risk_level": "HIGH",
+          "confidence_score": 69.5,
+          "expected_listing_gain": 0.0,
+          "expected_listing_price": 0.89,
+          "risk_factors": [
+            "Large issue size ₹3723404.0Cr may face absorption issues",
+            "Poor GMP performance indicates negative sentiment",
+            "Poor subscription performance shows lack of demand",
+            "Quarter-end timing may affect institutional participation"
+          ],
+          "positive_factors": [
+            "Affordable issue price ₹0.89 for retail investors"
+          ],
+          "investment_advice": "🔴 NOT RECOMMENDED | ❌ Multiple risk factors identified | 📉 Potential loss risk of 0.0% | 🛡️ Use stop-loss at -5% if listing is negative | 💡 Consider applying with minimum amount only | ⏰ Monitor subscription numbers and GMP trends | 📱 Stay updated with company news and market conditions",
+          "scores": {
+            "mathematical_score": 65,
+            "gmp_score": 0,
+            "subscription_score": 0,
+            "final_score": 30.5
+          }
+        },
+        "analysis_timestamp": "2025-09-24T23:59:50.277315"
+      },
+      {
+        "ipo_details": {
+          "symbol": "STYL",
+          "company_name": "Seshaasai Technologies Limited",
+          "series": "EQ",
+          "issue_start_date": "23-Sep-2025",
+          "issue_end_date": "25-Sep-2025",
+          "issue_price": "Rs.402 to Rs.423",
+          "issue_size": "13767095",
+          "status": "Active",
+          "subscription_times": 1.9477173652103077,
+          "shares_offered": 13767095,
+          "shares_bid": 26814410,
+          "is_sme": false,
+          "category": "Total",
+          "lot_size": 0,
+          "face_value": "",
+          "raw_data": {
+            "symbol": "STYL",
+            "companyName": "Seshaasai Technologies Limited",
+            "series": "EQ",
+            "issueStartDate": "23-Sep-2025",
+            "issueEndDate": "25-Sep-2025",
+            "status": "Active",
+            "issueSize": "13767095",
+            "issuePrice": "Rs.402 to Rs.423",
+            "srNo": null,
+            "category": "Total",
+            "noOfSharesOffered": "1.3767095E7",
+            "noOfsharesBid": "2.681441E7",
+            "noOfTime": "1.9477173652103077"
+          }
+        },
+        "gmp_data": null,
+        "subscription_data": null,
+        "prediction": {
+          "recommendation": "AVOID",
+          "risk_level": "HIGH",
+          "confidence_score": 69.5,
+          "expected_listing_gain": 0.0,
+          "expected_listing_price": 0.42,
+          "risk_factors": [
+            "Large issue size ₹13767095.0Cr may face absorption issues",
+            "Poor GMP performance indicates negative sentiment",
+            "Poor subscription performance shows lack of demand",
+            "Quarter-end timing may affect institutional participation"
+          ],
+          "positive_factors": [
+            "Affordable issue price ₹0.423 for retail investors"
+          ],
+          "investment_advice": "🔴 NOT RECOMMENDED | ❌ Multiple risk factors identified | 📉 Potential loss risk of 0.0% | 🛡️ Use stop-loss at -5% if listing is negative | 💡 Consider applying with minimum amount only | ⏰ Monitor subscription numbers and GMP trends | 📱 Stay updated with company news and market conditions",
+          "scores": {
+            "mathematical_score": 65,
+            "gmp_score": 0,
+            "subscription_score": 0,
+            "final_score": 30.5
+          }
+        },
+        "analysis_timestamp": "2025-09-24T23:59:50.277315"
+      },
+      {
+        "ipo_details": {
+          "symbol": "GANESHCP",
+          "company_name": "Ganesh Consumer Products Limited",
+          "series": "EQ",
+          "issue_start_date": "22-Sep-2025",
+          "issue_end_date": "24-Sep-2025",
+          "issue_price": "Rs.306 to Rs.322",
+          "issue_size": "8912228",
+          "status": "Active",
+          "subscription_times": 1.4571231795236836,
+          "shares_offered": 8912228,
+          "shares_bid": 12986214,
+          "is_sme": false,
+          "category": "Total",
+          "lot_size": 0,
+          "face_value": "",
+          "raw_data": {
+            "symbol": "GANESHCP",
+            "companyName": "Ganesh Consumer Products Limited",
+            "series": "EQ",
+            "issueStartDate": "22-Sep-2025",
+            "issueEndDate": "24-Sep-2025",
+            "status": "Active",
+            "issueSize": "8912228",
+            "issuePrice": "Rs.306 to Rs.322",
+            "srNo": null,
+            "category": "Total",
+            "noOfSharesOffered": "8912228.0",
+            "noOfsharesBid": "1.2986214E7",
+            "noOfTime": "1.4571231795236836"
+          }
+        },
+        "gmp_data": null,
+        "subscription_data": null,
+        "prediction": {
+          "recommendation": "AVOID",
+          "risk_level": "HIGH",
+          "confidence_score": 69.5,
+          "expected_listing_gain": 0.0,
+          "expected_listing_price": 0.32,
+          "risk_factors": [
+            "Large issue size ₹8912228.0Cr may face absorption issues",
+            "Poor GMP performance indicates negative sentiment",
+            "Poor subscription performance shows lack of demand",
+            "Quarter-end timing may affect institutional participation"
+          ],
+          "positive_factors": [
+            "Affordable issue price ₹0.322 for retail investors"
+          ],
+          "investment_advice": "🔴 NOT RECOMMENDED | ❌ Multiple risk factors identified | 📉 Potential loss risk of 0.0% | 🛡️ Use stop-loss at -5% if listing is negative | 💡 Consider applying with minimum amount only | ⏰ Monitor subscription numbers and GMP trends | 📱 Stay updated with company news and market conditions",
+          "scores": {
+            "mathematical_score": 65,
+            "gmp_score": 0,
+            "subscription_score": 0,
+            "final_score": 30.5
+          }
+        },
+        "analysis_timestamp": "2025-09-24T23:59:50.277315"
+      },
+      {
+        "ipo_details": {
+          "symbol": "ATLANTAELE",
+          "company_name": "Atlanta Electricals Limited",
+          "series": "EQ",
+          "issue_start_date": "22-Sep-2025",
+          "issue_end_date": "24-Sep-2025",
+          "issue_price": "Rs.718 to Rs.754",
+          "issue_size": "6538439",
+          "status": "Active",
+          "subscription_times": 36.7475255179409,
+          "shares_offered": 6538439,
+          "shares_bid": 240271454,
+          "is_sme": false,
+          "category": "Total",
+          "lot_size": 0,
+          "face_value": "",
+          "raw_data": {
+            "symbol": "ATLANTAELE",
+            "companyName": "Atlanta Electricals Limited",
+            "series": "EQ",
+            "issueStartDate": "22-Sep-2025",
+            "issueEndDate": "24-Sep-2025",
+            "status": "Active",
+            "issueSize": "6538439",
+            "issuePrice": "Rs.718 to Rs.754",
+            "srNo": null,
+            "category": "Total",
+            "noOfSharesOffered": "6538439.0",
+            "noOfsharesBid": "2.40271454E8",
+            "noOfTime": "36.7475255179409"
+          }
+        },
+        "gmp_data": {
+          "symbol": "ATLANTAELE",
+          "sources": {
+            "ipowatch": {
+              "company_name": "Atlanta Electricals",
+              "symbol": "ATLANTAELE",
+              "gmp": 136.0,
+              "issue_price": 754.0,
+              "estimated_listing_price": 890.0,
+              "estimated_gain_percent": 18.03,
+              "source": "ipowatch",
+              "scraped_at": "2025-09-24T23:59:32.697777"
+            },
+            "chittorgarh": {
+              "company_name": "Atlanta Electricals Ltd.Closed",
+              "symbol": "ATLANTAELE",
+              "gmp": 24.0,
+              "issue_price": 22.0,
+              "estimated_listing_price": 0,
+              "estimated_gain_percent": 0,
+              "source": "chittorgarh",
+              "scraped_at": "2025-09-24T23:59:45.342755"
+            }
+          },
+          "consensus_gmp": 80.0,
+          "consensus_gain": 9.02,
+          "reliability_score": 25
+        },
+        "subscription_data": null,
+        "prediction": {
+          "recommendation": "AVOID",
+          "risk_level": "HIGH",
+          "confidence_score": 63.525000000000006,
+          "expected_listing_gain": 5.46,
+          "expected_listing_price": 0.8,
+          "risk_factors": [
+            "Low GMP data reliability - conflicting sources",
+            "Large issue size ₹6538439.0Cr may face absorption issues",
+            "Poor GMP performance indicates negative sentiment",
+            "Poor subscription performance shows lack of demand",
+            "Quarter-end timing may affect institutional participation"
+          ],
+          "positive_factors": [
+            "Positive GMP of 9.02% suggests listing gains",
+            "Affordable issue price ₹0.754 for retail investors"
+          ],
+          "investment_advice": "🔴 NOT RECOMMENDED | ❌ Multiple risk factors identified | 📈 Modest expected gain of 5.46% | 🛡️ Use stop-loss at -5% if listing is negative | 💡 Consider applying with minimum amount only | ⏰ Monitor subscription numbers and GMP trends | 📱 Stay updated with company news and market conditions",
+          "scores": {
+            "mathematical_score": 65,
+            "gmp_score": 23.249999999999996,
+            "subscription_score": 0,
+            "final_score": 36.474999999999994
+          }
+        },
+        "analysis_timestamp": "2025-09-24T23:59:50.277315"
+      },
+      {
+        "ipo_details": {
+          "symbol": "GURUNANAK",
+          "company_name": "Gurunanak Agriculture India Limited",
+          "series": "SME",
+          "issue_start_date": "24-Sep-2025",
+          "issue_end_date": "26-Sep-2025",
+          "issue_price": "",
+          "issue_size": "0",
+          "status": "Active",
+          "subscription_times": 0.5,
+          "shares_offered": 3840000,
+          "shares_bid": 1931200,
+          "is_sme": true,
+          "category": "Total",
+          "lot_size": 0,
+          "face_value": "",
+          "raw_data": {
+            "symbol": "GURUNANAK",
+            "companyName": "Gurunanak Agriculture India Limited",
+            "issueStartDate": "24-Sep-2025",
+            "issueEndDate": "26-Sep-2025",
+            "status": "Active",
+            "isBse": "1",
+            "series": "SME",
+            "noOfsharesBid": "1931200",
+            "noOfSharesOffered": "3840000",
+            "noOfTime": "0.50"
+          }
+        },
+        "gmp_data": null,
+        "subscription_data": null,
+        "prediction": {
+          "recommendation": "AVOID",
+          "risk_level": "HIGH",
+          "confidence_score": 70,
+          "expected_listing_gain": 0,
+          "expected_listing_price": 0,
+          "risk_factors": [
+            "Poor GMP performance indicates negative sentiment",
+            "Poor subscription performance shows lack of demand",
+            "Quarter-end timing may affect institutional participation"
+          ],
+          "positive_factors": [
+            "SME IPO - historically better listing performance"
+          ],
+          "investment_advice": "🔴 NOT RECOMMENDED | ❌ Multiple risk factors identified | 📉 Potential loss risk of 0% | 🛡️ Use stop-loss at -5% if listing is negative | 💡 Consider applying with minimum amount only | ⏰ Monitor subscription numbers and GMP trends | 📱 Stay updated with company news and market conditions",
+          "scores": {
+            "mathematical_score": 60,
+            "gmp_score": 0,
+            "subscription_score": 0,
+            "final_score": 29.5
+          }
+        },
+        "analysis_timestamp": "2025-09-24T23:59:50.277315"
+      },
+      {
+        "ipo_details": {
+          "symbol": "ECOLINE",
+          "company_name": "Ecoline Exim Limited",
+          "series": "SME",
+          "issue_start_date": "23-Sep-2025",
+          "issue_end_date": "25-Sep-2025",
+          "issue_price": "",
+          "issue_size": "0",
+          "status": "Active",
+          "subscription_times": 1.1,
+          "shares_offered": 3877000,
+          "shares_bid": 4259000,
+          "is_sme": true,
+          "category": "Total",
+          "lot_size": 0,
+          "face_value": "",
+          "raw_data": {
+            "symbol": "ECOLINE",
+            "companyName": "Ecoline Exim Limited",
+            "issueStartDate": "23-Sep-2025",
+            "issueEndDate": "25-Sep-2025",
+            "status": "Active",
+            "isBse": "1",
+            "series": "SME",
+            "noOfsharesBid": "4259000",
+            "noOfSharesOffered": "3877000",
+            "noOfTime": "1.10"
+          }
+        },
+        "gmp_data": null,
+        "subscription_data": null,
+        "prediction": {
+          "recommendation": "AVOID",
+          "risk_level": "HIGH",
+          "confidence_score": 70,
+          "expected_listing_gain": 0,
+          "expected_listing_price": 0,
+          "risk_factors": [
+            "Poor GMP performance indicates negative sentiment",
+            "Poor subscription performance shows lack of demand",
+            "Quarter-end timing may affect institutional participation"
+          ],
+          "positive_factors": [
+            "SME IPO - historically better listing performance"
+          ],
+          "investment_advice": "🔴 NOT RECOMMENDED | ❌ Multiple risk factors identified | 📉 Potential loss risk of 0% | 🛡️ Use stop-loss at -5% if listing is negative | 💡 Consider applying with minimum amount only | ⏰ Monitor subscription numbers and GMP trends | 📱 Stay updated with company news and market conditions",
+          "scores": {
+            "mathematical_score": 60,
+            "gmp_score": 0,
+            "subscription_score": 0,
+            "final_score": 29.5
+          }
+        },
+        "analysis_timestamp": "2025-09-24T23:59:50.277315"
+      },
+      {
+        "ipo_details": {
+          "symbol": "MGSL",
+          "company_name": "Matrix Geo Solutions Limited",
+          "series": "SME",
+          "issue_start_date": "23-Sep-2025",
+          "issue_end_date": "25-Sep-2025",
+          "issue_price": "",
+          "issue_size": "0",
+          "status": "Active",
+          "subscription_times": 0.64,
+          "shares_offered": 2774400,
+          "shares_bid": 1767600,
+          "is_sme": true,
+          "category": "Total",
+          "lot_size": 0,
+          "face_value": "",
+          "raw_data": {
+            "symbol": "MGSL",
+            "companyName": "Matrix Geo Solutions Limited",
+            "issueStartDate": "23-Sep-2025",
+            "issueEndDate": "25-Sep-2025",
+            "status": "Active",
+            "isBse": "1",
+            "series": "SME",
+            "noOfsharesBid": "1767600",
+            "noOfSharesOffered": "2774400",
+            "noOfTime": "0.64"
+          }
+        },
+        "gmp_data": null,
+        "subscription_data": null,
+        "prediction": {
+          "recommendation": "AVOID",
+          "risk_level": "HIGH",
+          "confidence_score": 70,
+          "expected_listing_gain": 0,
+          "expected_listing_price": 0,
+          "risk_factors": [
+            "Poor GMP performance indicates negative sentiment",
+            "Poor subscription performance shows lack of demand",
+            "Quarter-end timing may affect institutional participation"
+          ],
+          "positive_factors": [
+            "SME IPO - historically better listing performance"
+          ],
+          "investment_advice": "🔴 NOT RECOMMENDED | ❌ Multiple risk factors identified | 📉 Potential loss risk of 0% | 🛡️ Use stop-loss at -5% if listing is negative | 💡 Consider applying with minimum amount only | ⏰ Monitor subscription numbers and GMP trends | 📱 Stay updated with company news and market conditions",
+          "scores": {
+            "mathematical_score": 60,
+            "gmp_score": 0,
+            "subscription_score": 0,
+            "final_score": 29.5
+          }
+        },
+        "analysis_timestamp": "2025-09-24T23:59:50.292210"
+      }
+    ]
+  }
+}
