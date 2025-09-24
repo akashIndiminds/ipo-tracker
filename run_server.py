@@ -8,7 +8,7 @@ import logging
 def print_banner():
     """Print startup banner"""
     print("\n" + "=" * 80)
-    print("🚀 NSE IPO TRACKER API v2.1 - Live Data + File Storage")
+    print("🚀 NSE IPO TRACKER API v3.0 - With GMP Integration & AI Predictions")
     print("=" * 80)
     print("🌐 Server URL: http://localhost:8000")
     print("📊 API Docs: http://localhost:8000/docs")
@@ -33,16 +33,23 @@ def print_banner():
     print("   • Data Summary: http://localhost:8000/api/local/summary")
     print("   • Cleanup Old Files: http://localhost:8000/api/local/cleanup/current_ipos")
     print("-" * 80)
-    print("🔧 New Features v2.1:")
-    print("✅ Restructured architecture (Scraper + Service + Storage)")
-    print("✅ Daily JSON file storage with metadata")
-    print("✅ Local data serving without NSE dependency")
-    print("✅ File management and cleanup utilities")
-    print("✅ Date-based data retrieval")
-    print("✅ Active category endpoint with bid information")
-    print("✅ Comprehensive error handling and logging")
-    print("✅ Separate controllers for live vs stored data")
-    print("❌ No auto-generated fallback data")
+    print("🧮 NEW: GMP Analysis & Predictions Endpoints:")
+    print("   • Full Analysis: http://localhost:8000/api/gmp/analyze")
+    print("   • Get Recommendation: http://localhost:8000/api/gmp/recommendation/SYMBOL")
+    print("   • Top Recommendations: http://localhost:8000/api/gmp/top-recommendations")
+    print("   • Update GMP Data: http://localhost:8000/api/gmp/update-gmp")
+    print("   • Prediction Explanation: http://localhost:8000/api/gmp/explanation/SYMBOL")
+    print("   • Market Summary: http://localhost:8000/api/gmp/market-summary")
+    print("-" * 80)
+    print("🔥 New Features v3.0:")
+    print("✅ Grey Market Premium (GMP) data scraping from multiple sources")
+    print("✅ Mathematical prediction engine with 5-component scoring")
+    print("✅ BUY/HOLD/AVOID recommendations with confidence scores")
+    print("✅ Risk assessment and positive factor identification")
+    print("✅ Market sentiment analysis and trend insights")
+    print("✅ Investment advice with expected listing gains")
+    print("✅ Prediction methodology explanation")
+    print("✅ Comprehensive market analysis dashboard")
     print("=" * 80)
 
 def setup_environment():
@@ -74,11 +81,16 @@ def check_file_structure():
         ("app/main.py", "Main App"),
         ("app/services/nse_scraper.py", "NSE Scraper"),
         ("app/services/nse_service.py", "NSE Service"),
+        ("app/services/gmp_scraper.py", "GMP Scraper"),
+        ("app/services/ipo_prediction_engine.py", "Prediction Engine"),
+        ("app/services/gmp_integration_service.py", "GMP Integration"),
         ("app/utils/file_storage.py", "File Storage"),
         ("app/controllers/ipo_controller.py", "IPO Controller"),
         ("app/controllers/local_controller.py", "Local Controller"),
+        ("app/controllers/gmp_controller.py", "GMP Controller"),
         ("app/routes/ipo_routes.py", "IPO Routes"),
         ("app/routes/local_routes.py", "Local Routes"),
+        ("app/routes/gmp_routes.py", "GMP Routes"),
     ]
 
     missing_files = []
@@ -123,6 +135,15 @@ def test_imports():
         from app.services.nse_service import nse_service
         print("   ✅ NSE service imported")
         
+        from app.services.gmp_scraper import gmp_scraper
+        print("   ✅ GMP scraper imported")
+        
+        from app.services.ipo_prediction_engine import ipo_prediction_engine
+        print("   ✅ Prediction engine imported")
+        
+        from app.services.gmp_integration_service import gmp_integration_service
+        print("   ✅ GMP integration service imported")
+        
         from app.utils.file_storage import file_storage
         print("   ✅ File storage imported")
         
@@ -131,6 +152,9 @@ def test_imports():
         
         from app.controllers.local_controller import local_controller
         print("   ✅ Local controller imported")
+        
+        from app.controllers.gmp_controller import gmp_controller
+        print("   ✅ GMP controller imported")
         
         return True
         
@@ -150,14 +174,16 @@ def verify_dependencies():
         ('fastapi', 'FastAPI framework'),
         ('uvicorn', 'ASGI server'),
         ('requests', 'HTTP library'),
-        ('pydantic', 'Data validation')
+        ('pydantic', 'Data validation'),
+        ('beautifulsoup4', 'Web scraping'),
+        ('lxml', 'XML parser')
     ]
     
     missing_packages = []
     
     for package, description in required_packages:
         try:
-            __import__(package)
+            __import__(package.replace('-', '_'))  # Handle package name differences
             print(f"   ✅ {description}")
         except ImportError:
             missing_packages.append(package)
@@ -186,6 +212,14 @@ def quick_system_test():
         from app.services.nse_service import nse_service
         session_info = nse_service.get_session_info()
         print(f"   🔗 NSE session: {'Active' if session_info.get('session_active') else 'Inactive'}")
+        
+        # Test GMP scraper
+        from app.services.gmp_scraper import gmp_scraper
+        print(f"   🔍 GMP sources: {len(gmp_scraper.sources)}")
+        
+        # Test prediction engine
+        from app.services.ipo_prediction_engine import ipo_prediction_engine
+        print(f"   🧮 Prediction engine: {'Ready' if hasattr(ipo_prediction_engine, 'predict_ipo_performance') else 'Not Ready'}")
         
         return True
         
@@ -230,6 +264,7 @@ def main():
         print("💡 Press Ctrl+C to stop the server")
         print("🔄 Server will auto-reload on file changes")
         print("📊 Visit http://localhost:8000/docs for API documentation")
+        print("🧮 Try: POST http://localhost:8000/api/gmp/analyze for predictions")
         print("-" * 80)
 
         # Start the server
@@ -246,7 +281,7 @@ def main():
 
     except KeyboardInterrupt:
         print("\n\n👋 Server stopped by user")
-        print("Thank you for using NSE IPO Tracker API v2.1!")
+        print("Thank you for using NSE IPO Tracker API v3.0!")
 
     except Exception as e:
         print(f"\n❌ Failed to start server: {e}")
@@ -254,9 +289,9 @@ def main():
         print("1. Check if port 8000 is available")
         print("2. Ensure all required files exist")
         print("3. Check Python version (3.8+ required)")
-        print("4. Install dependencies: pip install fastapi uvicorn requests pydantic")
+        print("4. Install dependencies: pip install fastapi uvicorn requests pydantic beautifulsoup4 lxml")
         print("5. Check file permissions")
-        print("6. Run test first: python test_nse_connection.py")
+        print("6. Run test first: python test_gmp_system.py")
 
         # Debug info
         print(f"\n📋 Debug Info:")
