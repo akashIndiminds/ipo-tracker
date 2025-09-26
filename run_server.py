@@ -1,4 +1,3 @@
-# run_server.py
 import uvicorn
 import os
 import sys
@@ -175,7 +174,7 @@ def verify_dependencies():
         ('uvicorn', 'ASGI server'),
         ('requests', 'HTTP library'),
         ('pydantic', 'Data validation'),
-        ('beautifulsoup4', 'Web scraping'),
+        ('beautifulsoup4', 'Web scraping'),  # ✅ Fixed: Now a proper tuple
         ('lxml', 'XML parser')
     ]
     
@@ -183,7 +182,14 @@ def verify_dependencies():
     
     for package, description in required_packages:
         try:
-            __import__(package.replace('-', '_'))  # Handle package name differences
+            # Handle package name differences (beautifulsoup4 imports as bs4)
+            import_name = package
+            if package == 'beautifulsoup4':
+                import_name = 'bs4'
+            elif package == 'pydantic':
+                import_name = 'pydantic'
+            
+            __import__(import_name.replace('-', '_'))
             print(f"   ✅ {description}")
         except ImportError:
             missing_packages.append(package)
