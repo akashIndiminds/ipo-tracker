@@ -15,7 +15,7 @@ class GeminiAIService:
     
     def __init__(self):
         # Configure Gemini API
-        self.api_key = "AIzaSyCJbiFWnGgkE7R0d18jA0PdMZfvy5XIK7g"
+        self.api_key = "AIzaSyCJbiFWnGgkE7Rxxxxxxxxxxxxxxxxxxxx"
         genai.configure(api_key=self.api_key)
         
         # Initialize model
