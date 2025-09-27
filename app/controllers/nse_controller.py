@@ -1,4 +1,4 @@
-# app/controllers/ipo_controller.py
+# app/controllers/nse_controller.py
 """IPO Controller - Handles NSE live data requests with file storage"""
 
 from typing import Dict, Any
@@ -11,8 +11,8 @@ from ..utils.file_storage import file_storage
 
 logger = logging.getLogger(__name__)
 
-class IPOController:
-    """IPO Controller - Handles HTTP requests and responses with data storage"""
+class NSEController:
+    """NSE Controller - Handles HTTP requests and responses with data storage"""
     
     def __init__(self):
         self.nse_service = nse_service
@@ -332,4 +332,4 @@ class IPOController:
         return recommendations
 
 # Create controller instance
-ipo_controller = IPOController()
+nse_controller = NSEController()

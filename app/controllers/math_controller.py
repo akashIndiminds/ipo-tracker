@@ -1,33 +1,33 @@
-# app/controllers/ai_controller.py
+# app/controllers/math_controller.py
 
 from typing import Dict, Optional
 import logging
-from ..services.ai_prediction import ai_prediction_service
+from ..services.math_prediction import math_prediction_service
 from ..utils.file_storage import file_storage
 
 logger = logging.getLogger(__name__)
 
-class AIController:
-    """AI Controller - handles Gemini AI predictions"""
+class MathController:
+    """Math Controller - handles pure mathematical predictions"""
     
     async def get_prediction(self, ipo_data: Dict, subscription_data: Optional[Dict] = None) -> Dict:
-        """Get AI prediction for IPO"""
+        """Get math prediction for IPO"""
         try:
             symbol = ipo_data.get('symbol', 'UNKNOWN')
             
-            prediction = ai_prediction_service.predict(ipo_data, subscription_data)
+            prediction = math_prediction_service.predict(ipo_data, subscription_data)
             
             # Save prediction
-            file_storage.save_data(f"predictions/ai/{symbol}", prediction)
+            file_storage.save_data(f"predictions/math/{symbol}", prediction)
             
             return prediction
             
         except Exception as e:
-            logger.error(f"AI prediction error: {e}")
+            logger.error(f"Math prediction error: {e}")
             return {
                 'symbol': ipo_data.get('symbol', 'UNKNOWN'),
-                'source': 'AI',
+                'source': 'MATH',
                 'error': str(e)
             }
 
-ai_controller = AIController()
+math_controller = MathController()

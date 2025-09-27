@@ -52,10 +52,10 @@ def test_gmp_system():
         from app.services.gmp_scraper import gmp_scraper
         print("   ✅ GMP Scraper imported")
         
-        from app.services.ipo_prediction_engine import ipo_prediction_engine
+        from math_prediction import ipo_prediction_engine
         print("   ✅ Prediction Engine imported")
         
-        from app.services.gmp_integration_service import gmp_integration_service
+        from gmp_service import gmp_integration_service
         print("   ✅ Integration Service imported")
         
         from app.controllers.gmp_controller import gmp_controller
@@ -244,7 +244,7 @@ def test_mathematical_model():
     print("=" * 60)
     
     try:
-        from app.services.ipo_prediction_engine import ipo_prediction_engine
+        from math_prediction import ipo_prediction_engine
         
         # Test scenarios
         scenarios = [

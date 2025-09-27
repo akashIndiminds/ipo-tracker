@@ -52,7 +52,7 @@ def test_imports():
         from app.utils.file_storage import file_storage
         print("   ✅ File Storage imported")
         
-        from app.controllers.ipo_controller import ipo_controller
+        from app.controllers.nse_controller import ipo_controller
         print("   ✅ IPO Controller imported")
         
         from app.controllers.local_controller import local_controller
