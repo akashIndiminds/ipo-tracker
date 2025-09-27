@@ -55,10 +55,9 @@ class GMPIntegrationService:
                 # Find subscription data
                 matching_subscription = subscription_data.get(symbol)
                 
-                # Generate prediction
+                # Generate prediction (without GMP data - engine predicts independently)
                 prediction = self.prediction_engine.predict_ipo_performance(
                     ipo_data=ipo,
-                    gmp_data=matching_gmp,
                     subscription_data=matching_subscription,
                     market_data={'data': market_data} if market_data else None
                 )
@@ -119,6 +118,8 @@ class GMPIntegrationService:
                 'analysis_timestamp': datetime.now().isoformat(),
                 'message': 'Failed to complete GMP integration analysis'
             }
+    
+
     
     def get_ipo_recommendation(self, symbol: str) -> Dict[str, Any]:
         """Get specific IPO recommendation"""
@@ -314,66 +315,92 @@ class GMPIntegrationService:
         try:
             summary = {
                 'total_ipos': len(ipo_analyses),
-                'recommendations': {'BUY': 0, 'HOLD': 0, 'AVOID': 0},
+                'ai_recommendations': {'BUY': 0, 'HOLD': 0, 'AVOID': 0},
+                'gmp_recommendations': {'BUY': 0, 'HOLD': 0, 'AVOID': 0, 'NEUTRAL': 0},
                 'risk_levels': {'LOW': 0, 'MEDIUM': 0, 'HIGH': 0},
-                'average_expected_gain': 0,
+                'average_expected_gain_ai': 0,
+                'average_expected_gain_gmp': 0,
                 'best_opportunity': None,
                 'highest_risk': None,
-                'gmp_coverage': 0
+                'gmp_coverage': 0,
+                'high_agreement_count': 0
             }
             
             if not ipo_analyses:
                 return summary
             
-            # Count recommendations and risk levels
-            expected_gains = []
-            best_score = 0
-            worst_score = 100
+            # Count recommendations and collect metrics
+            ai_gains = []
+            gmp_gains = []
+            combined_scores = []
             
             for analysis in ipo_analyses:
                 prediction = analysis.get('prediction', {})
+                gmp_metrics = analysis.get('gmp_metrics', {})
+                combined_analysis = analysis.get('combined_analysis', {})
                 
-                # Count recommendations
-                rec = prediction.get('recommendation', 'AVOID')
-                summary['recommendations'][rec] = summary['recommendations'].get(rec, 0) + 1
+                # Count AI recommendations
+                ai_rec = prediction.get('recommendation', 'AVOID')
+                summary['ai_recommendations'][ai_rec] = summary['ai_recommendations'].get(ai_rec, 0) + 1
+                
+                # Count GMP recommendations
+                gmp_rec = gmp_metrics.get('gmp_recommendation', 'NEUTRAL')
+                summary['gmp_recommendations'][gmp_rec] = summary['gmp_recommendations'].get(gmp_rec, 0) + 1
                 
                 # Count risk levels
                 risk = prediction.get('risk_level', 'HIGH')
                 summary['risk_levels'][risk] = summary['risk_levels'].get(risk, 0) + 1
                 
                 # Track gains
-                gain = prediction.get('expected_listing_gain', 0)
-                expected_gains.append(gain)
+                ai_gain = prediction.get('expected_listing_gain', 0)
+                gmp_gain = gmp_metrics.get('consensus_gain', 0)
+                ai_gains.append(ai_gain)
+                if gmp_metrics.get('has_gmp_data'):
+                    gmp_gains.append(gmp_gain)
+                
+                # Track agreement
+                agreement_score = combined_analysis.get('agreement_score', 0)
+                if agreement_score >= 70:
+                    summary['high_agreement_count'] += 1
                 
                 # Track best and worst
-                final_score = prediction.get('scores', {}).get('final_score', 0)
-                if final_score > best_score:
-                    best_score = final_score
-                    summary['best_opportunity'] = {
-                        'symbol': analysis.get('ipo_details', {}).get('symbol', ''),
-                        'company_name': analysis.get('ipo_details', {}).get('company_name', ''),
-                        'expected_gain': gain,
-                        'score': final_score
-                    }
-                
-                if final_score < worst_score:
-                    worst_score = final_score
-                    summary['highest_risk'] = {
-                        'symbol': analysis.get('ipo_details', {}).get('symbol', ''),
-                        'company_name': analysis.get('ipo_details', {}).get('company_name', ''),
-                        'expected_gain': gain,
-                        'score': final_score
-                    }
+                combined_score = analysis.get('combined_score', 0)
+                combined_scores.append(combined_score)
                 
                 # Count GMP coverage
-                if analysis.get('gmp_data'):
+                if gmp_metrics.get('has_gmp_data'):
                     summary['gmp_coverage'] += 1
             
             # Calculate averages
-            if expected_gains:
-                summary['average_expected_gain'] = round(sum(expected_gains) / len(expected_gains), 2)
+            if ai_gains:
+                summary['average_expected_gain_ai'] = round(sum(ai_gains) / len(ai_gains), 2)
+            if gmp_gains:
+                summary['average_expected_gain_gmp'] = round(sum(gmp_gains) / len(gmp_gains), 2)
             
-            summary['gmp_coverage_percent'] = round((summary['gmp_coverage'] / summary['total_ipos']) * 100, 1)
+            # Find best and worst based on combined scores
+            if combined_scores:
+                max_idx = combined_scores.index(max(combined_scores))
+                min_idx = combined_scores.index(min(combined_scores))
+                
+                best_analysis = ipo_analyses[max_idx]
+                worst_analysis = ipo_analyses[min_idx]
+                
+                summary['best_opportunity'] = {
+                    'symbol': best_analysis.get('ipo_details', {}).get('symbol', ''),
+                    'company_name': best_analysis.get('ipo_details', {}).get('company_name', ''),
+                    'combined_score': combined_scores[max_idx],
+                    'final_recommendation': best_analysis.get('combined_analysis', {}).get('final_recommendation', '')
+                }
+                
+                summary['highest_risk'] = {
+                    'symbol': worst_analysis.get('ipo_details', {}).get('symbol', ''),
+                    'company_name': worst_analysis.get('ipo_details', {}).get('company_name', ''),
+                    'combined_score': combined_scores[min_idx],
+                    'final_recommendation': worst_analysis.get('combined_analysis', {}).get('final_recommendation', '')
+                }
+            
+            summary['gmp_coverage_percent'] = round((summary['gmp_coverage'] / summary['total_ipos']) * 100, 1) if summary['total_ipos'] > 0 else 0
+            summary['agreement_rate'] = round((summary['high_agreement_count'] / summary['total_ipos']) * 100, 1) if summary['total_ipos'] > 0 else 0
             
             return summary
             

@@ -11,3 +11,7 @@ app/__pycache__/main.cpython-312.pyc
 app/models/__init__.py
 app/services/__init__.py
 app/utils/__init__.py
+data/current_ipos_2025-09-27.json
+data/*.json
+geminiai-collection.json
+app/__pycache__/main.cpython-312.pyc
