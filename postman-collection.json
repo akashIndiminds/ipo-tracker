@@ -1,63 +1,45 @@
 {
   "info": {
-    "name": "NSE IPO Tracker API v2.1",
-    "description": "Complete collection for NSE IPO Tracker API with live NSE data and local storage endpoints. Set {{base_url}} to your server URL (e.g., http://localhost:8000).",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "version": "2.1.0"
+    "name": "IPO Prediction API - Complete Collection (Enhanced GMP)",
+    "description": "Complete Postman collection for IPO prediction system with NSE data, Enhanced GMP analysis (IPOWatch + InvestorGain), Math predictions, AI predictions, and final combined predictions",
+    "version": "2.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
-  "item": [
+  "variable": [
     {
-      "name": "System Endpoints",
-      "item": [
-        {
-          "name": "Health Check",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/health",
-              "host": ["{{base_url}}"],
-              "path": ["health"]
-            },
-            "description": "Check API health and features"
-          }
-        },
-        {
-          "name": "Comprehensive Test",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/test",
-              "host": ["{{base_url}}"],
-              "path": ["test"]
-            },
-            "description": "Test both NSE connectivity and local storage"
-          }
-        },
-        {
-          "name": "API Information",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/",
-              "host": ["{{base_url}}"],
-              "path": [""]
-            },
-            "description": "Get complete API documentation and endpoints"
-          }
-        }
-      ]
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string",
+      "description": "Base URL for the API"
     },
     {
-      "name": "NSE Live Data",
+      "key": "sample_symbol",
+      "value": "TATACAP",
+      "type": "string",
+      "description": "Sample IPO symbol for testing"
+    },
+    {
+      "key": "test_date",
+      "value": "2025-09-28",
+      "type": "string",
+      "description": "Sample date for historical data testing"
+    }
+  ],
+  "item": [
+    {
+      "name": "🏢 NSE Live Data",
+      "description": "NSE live IPO data endpoints for fetching current and upcoming IPOs",
       "item": [
         {
-          "name": "Get Current IPOs (Live)",
+          "name": "Get Current IPOs",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/api/ipo/current?include_gmp=false&save_data=true",
               "host": ["{{base_url}}"],
@@ -71,18 +53,24 @@
                 {
                   "key": "save_data",
                   "value": "true",
-                  "description": "Auto-save data to JSON file"
+                  "description": "Save data to JSON file"
                 }
               ]
             },
-            "description": "Fetch current IPOs from NSE and auto-save to daily JSON file"
-          }
+            "description": "Fetch all current/active IPOs from NSE"
+          },
+          "response": []
         },
         {
-          "name": "Get Upcoming IPOs (Live)",
+          "name": "Get Upcoming IPOs",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/api/ipo/upcoming?include_gmp=false&save_data=true",
               "host": ["{{base_url}}"],
@@ -96,18 +84,24 @@
                 {
                   "key": "save_data",
                   "value": "true",
-                  "description": "Auto-save data to JSON file"
+                  "description": "Save data to JSON file"
                 }
               ]
             },
-            "description": "Fetch upcoming IPOs from NSE and auto-save to daily JSON file"
-          }
+            "description": "Fetch all upcoming IPOs from NSE"
+          },
+          "response": []
         },
         {
-          "name": "Get Market Status (Live)",
+          "name": "Get Market Status",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/api/ipo/market-status?save_data=true",
               "host": ["{{base_url}}"],
@@ -116,364 +110,673 @@
                 {
                   "key": "save_data",
                   "value": "true",
-                  "description": "Auto-save data to JSON file"
+                  "description": "Save data to JSON file"
                 }
               ]
             },
-            "description": "Fetch current market status from NSE"
-          }
+            "description": "Get current NSE market status"
+          },
+          "response": []
         },
         {
-          "name": "Get IPO Active Category (Live)",
+          "name": "Get IPO Active Category (Subscription Data)",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": {
-              "raw": "{{base_url}}/api/ipo/active-category/SOLARWORLD?save_data=true",
+              "raw": "{{base_url}}/api/ipo/active-category/{{sample_symbol}}?save_data=true",
               "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "active-category", "SOLARWORLD"],
+              "path": ["api", "ipo", "active-category", "{{sample_symbol}}"],
               "query": [
                 {
                   "key": "save_data",
                   "value": "true",
-                  "description": "Auto-save data to JSON file"
+                  "description": "Save data to JSON file"
                 }
               ]
             },
-            "description": "Get IPO active category with bid information for specific symbol. Replace SOLARWORLD with actual symbol."
-          }
+            "description": "Get IPO subscription/bid data for specific symbol"
+          },
+          "response": []
         },
         {
           "name": "Test NSE Connection",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/api/ipo/test",
               "host": ["{{base_url}}"],
               "path": ["api", "ipo", "test"]
             },
             "description": "Test NSE API connectivity and all endpoints"
-          }
+          },
+          "response": []
         },
         {
           "name": "Refresh NSE Session",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/api/ipo/refresh",
               "host": ["{{base_url}}"],
               "path": ["api", "ipo", "refresh"]
             },
             "description": "Manually refresh NSE session and clear cache"
-          }
+          },
+          "response": []
         },
         {
-          "name": "Fetch All Data (Batch)",
+          "name": "Fetch All NSE Data (Batch)",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/api/ipo/fetch-all",
               "host": ["{{base_url}}"],
               "path": ["api", "ipo", "fetch-all"]
             },
-            "description": "Fetch all NSE data (current, upcoming, market status) and save to files in one call"
-          }
+            "description": "Fetch all NSE data (current, upcoming, market status) in one go"
+          },
+          "response": []
         }
       ]
     },
     {
-      "name": "Local Stored Data",
+      "name": "📈 Enhanced GMP (Multi-Source)",
+      "description": "Enhanced GMP data from IPOWatch + InvestorGain with combined predictions",
       "item": [
         {
-          "name": "Get Stored Current IPOs",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/local/current-ipos?date=2025-09-24",
-              "host": ["{{base_url}}"],
-              "path": ["api", "local", "current-ipos"],
-              "query": [
-                {
-                  "key": "date",
-                  "value": "2025-09-24",
-                  "description": "Date in YYYY-MM-DD format (optional, defaults to today)"
-                }
-              ]
-            },
-            "description": "Get current IPOs from stored JSON file for specific date"
-          }
-        },
-        {
-          "name": "Get Stored Upcoming IPOs",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/local/upcoming-ipos?date=2025-09-24",
-              "host": ["{{base_url}}"],
-              "path": ["api", "local", "upcoming-ipos"],
-              "query": [
-                {
-                  "key": "date",
-                  "value": "2025-09-24",
-                  "description": "Date in YYYY-MM-DD format (optional, defaults to today)"
-                }
-              ]
-            },
-            "description": "Get upcoming IPOs from stored JSON file for specific date"
-          }
-        },
-        {
-          "name": "Get Stored Market Status",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/local/market-status?date=2025-09-24",
-              "host": ["{{base_url}}"],
-              "path": ["api", "local", "market-status"],
-              "query": [
-                {
-                  "key": "date",
-                  "value": "2025-09-24",
-                  "description": "Date in YYYY-MM-DD format (optional, defaults to today)"
-                }
-              ]
-            },
-            "description": "Get market status from stored JSON file for specific date"
-          }
-        },
-        {
-          "name": "Get Stored Active Category",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/local/active-category?symbol=SOLARWORLD&date=2025-09-24",
-              "host": ["{{base_url}}"],
-              "path": ["api", "local", "active-category"],
-              "query": [
-                {
-                  "key": "symbol",
-                  "value": "SOLARWORLD",
-                  "description": "IPO symbol (optional, returns all if not specified)"
-                },
-                {
-                  "key": "date",
-                  "value": "2025-09-24",
-                  "description": "Date in YYYY-MM-DD format (optional, defaults to today)"
-                }
-              ]
-            },
-            "description": "Get IPO active category data from stored JSON file"
-          }
-        },
-        {
-          "name": "Get Today's Data (All Types)",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/local/current-ipos",
-              "host": ["{{base_url}}"],
-              "path": ["api", "local", "current-ipos"]
-            },
-            "description": "Get today's current IPOs (no date parameter = today)"
-          }
-        }
-      ]
-    },
-    {
-      "name": "Data Management",
-      "item": [
-        {
-          "name": "Get Available Dates - Current IPOs",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/local/available-dates/current_ipos",
-              "host": ["{{base_url}}"],
-              "path": ["api", "local", "available-dates", "current_ipos"]
-            },
-            "description": "Get list of available dates for current IPOs data"
-          }
-        },
-        {
-          "name": "Get Available Dates - Upcoming IPOs",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/local/available-dates/upcoming_ipos",
-              "host": ["{{base_url}}"],
-              "path": ["api", "local", "available-dates", "upcoming_ipos"]
-            },
-            "description": "Get list of available dates for upcoming IPOs data"
-          }
-        },
-        {
-          "name": "Get Available Dates - Market Status",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/local/available-dates/market_status",
-              "host": ["{{base_url}}"],
-              "path": ["api", "local", "available-dates", "market_status"]
-            },
-            "description": "Get list of available dates for market status data"
-          }
-        },
-        {
-          "name": "Get Available Dates - Active Category",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/local/available-dates/active_category",
-              "host": ["{{base_url}}"],
-              "path": ["api", "local", "available-dates", "active_category"]
-            },
-            "description": "Get list of available dates for active category data"
-          }
-        },
-        {
-          "name": "Get Data Summary",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/local/summary",
-              "host": ["{{base_url}}"],
-              "path": ["api", "local", "summary"]
-            },
-            "description": "Get complete summary of all stored data - files, sizes, dates"
-          }
-        },
-        {
-          "name": "Delete Stored Data",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{base_url}}/api/local/data/current_ipos/2025-09-24",
-              "host": ["{{base_url}}"],
-              "path": ["api", "local", "data", "current_ipos", "2025-09-24"]
-            },
-            "description": "Delete stored data for specific data type and date"
-          }
-        },
-        {
-          "name": "Cleanup Old Data",
+          "name": "Fetch Current GMP Data (All Sources)",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": {
-              "raw": "{{base_url}}/api/local/cleanup/current_ipos?keep_days=30",
+              "raw": "{{base_url}}/api/gmp/fetch",
               "host": ["{{base_url}}"],
-              "path": ["api", "local", "cleanup", "current_ipos"],
+              "path": ["api", "gmp", "fetch"]
+            },
+            "description": "Fetch current GMP data from both IPOWatch and InvestorGain, create combined data"
+          },
+          "response": []
+        },
+        {
+          "name": "Get GMP Prediction for Symbol (Current)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/gmp/predict/{{sample_symbol}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "gmp", "predict", "{{sample_symbol}}"]
+            },
+            "description": "Get combined GMP prediction for specific IPO symbol (current date)"
+          },
+          "response": []
+        },
+        {
+          "name": "Get GMP Prediction for Symbol (Historical)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/gmp/predict/{{sample_symbol}}?date={{test_date}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "gmp", "predict", "{{sample_symbol}}"],
               "query": [
                 {
-                  "key": "keep_days",
-                  "value": "30",
-                  "description": "Number of days to keep (default: 30)"
+                  "key": "date",
+                  "value": "{{test_date}}",
+                  "description": "Date in YYYY-MM-DD format for historical data"
                 }
               ]
             },
-            "description": "Cleanup old stored data, keeping only recent files"
-          }
+            "description": "Get GMP prediction for specific date (historical data)"
+          },
+          "response": []
+        },
+        {
+          "name": "🆕 Scrape All GMP Sources",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/gmp/scrape-sources",
+              "host": ["{{base_url}}"],
+              "path": ["api", "gmp", "scrape-sources"]
+            },
+            "description": "NEW: Scrape data from both IPOWatch and InvestorGain sources separately"
+          },
+          "response": []
+        },
+        {
+          "name": "🆕 Create Combined GMP Data for Date",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/gmp/create-combined/{{test_date}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "gmp", "create-combined", "{{test_date}}"]
+            },
+            "description": "NEW: Create combined GMP data for specific date (no duplicates)"
+          },
+          "response": []
         }
       ]
     },
     {
-      "name": "Common Use Cases",
+      "name": "🧮 Math Predictions",
+      "description": "Pure mathematical prediction endpoints",
       "item": [
         {
-          "name": "Daily Data Fetch Workflow",
+          "name": "Get Math Prediction for Symbol",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/math/predict/{{sample_symbol}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "math", "predict", "{{sample_symbol}}"]
+            },
+            "description": "Get pure mathematical prediction for specific IPO symbol"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🤖 AI Predictions",
+      "description": "AI/ML based prediction endpoints using Gemini",
+      "item": [
+        {
+          "name": "Get AI Prediction for Symbol",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ai/predict/{{sample_symbol}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ai", "predict", "{{sample_symbol}}"]
+            },
+            "description": "Get AI-based prediction for specific IPO symbol using Gemini"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🎯 Final Predictions (Combined)",
+      "description": "Combined predictions from all sources (Enhanced GMP + Math + AI)",
+      "item": [
+        {
+          "name": "Get Final Prediction for Symbol",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/predict/{{sample_symbol}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "predict", "{{sample_symbol}}"]
+            },
+            "description": "Get combined final prediction from all 3 sources (Enhanced GMP + Math + AI)"
+          },
+          "response": []
+        },
+        {
+          "name": "Process All IPOs (Batch Prediction)",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": {
-              "raw": "{{base_url}}/api/ipo/fetch-all",
+              "raw": "{{base_url}}/api/predict/all",
               "host": ["{{base_url}}"],
-              "path": ["api", "ipo", "fetch-all"]
+              "path": ["api", "predict", "all"]
             },
-            "description": "Step 1: Fetch all latest data from NSE and save to today's files"
-          }
-        },
+            "description": "Process all current IPOs and generate combined predictions for each"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🔧 System Health & Testing",
+      "description": "System health checks and testing endpoints",
+      "item": [
         {
-          "name": "Get Today's Stored Data",
+          "name": "Health Check",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": {
-              "raw": "{{base_url}}/api/local/current-ipos",
+              "raw": "{{base_url}}/health",
               "host": ["{{base_url}}"],
-              "path": ["api", "local", "current-ipos"]
+              "path": ["health"]
             },
-            "description": "Step 2: Use stored data instead of hitting NSE repeatedly"
-          }
+            "description": "Basic health check endpoint"
+          },
+          "response": []
         },
         {
-          "name": "Get Historical Data",
+          "name": "API Documentation",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": {
-              "raw": "{{base_url}}/api/local/current-ipos?date=2025-09-20",
+              "raw": "{{base_url}}/docs",
               "host": ["{{base_url}}"],
-              "path": ["api", "local", "current-ipos"],
-              "query": [
-                {
-                  "key": "date",
-                  "value": "2025-09-20",
-                  "description": "Get data from specific past date"
-                }
-              ]
+              "path": ["docs"]
             },
-            "description": "Step 3: Access historical data by date"
-          }
+            "description": "FastAPI auto-generated documentation"
+          },
+          "response": []
         },
         {
-          "name": "Check Data Availability",
+          "name": "OpenAPI Schema",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": {
-              "raw": "{{base_url}}/api/local/summary",
+              "raw": "{{base_url}}/openapi.json",
               "host": ["{{base_url}}"],
-              "path": ["api", "local", "summary"]
+              "path": ["openapi.json"]
             },
-            "description": "Step 4: Monitor your data storage and availability"
-          }
-        },
+            "description": "OpenAPI schema in JSON format"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🚀 Enhanced Testing Workflows",
+      "description": "Updated step-by-step workflows for testing the enhanced GMP system",
+      "item": [
         {
-          "name": "Emergency NSE Check",
+          "name": "WORKFLOW 1: Basic System Check",
           "request": {
             "method": "GET",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "url": {
               "raw": "{{base_url}}/api/ipo/test",
               "host": ["{{base_url}}"],
               "path": ["api", "ipo", "test"]
             },
-            "description": "Step 5: Test NSE connectivity if stored data is outdated"
-          }
+            "description": "🔍 STEP 1: Run this first to check NSE connectivity and system health"
+          },
+          "response": []
+        },
+        {
+          "name": "WORKFLOW 2: Fetch All NSE Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/ipo/fetch-all",
+              "host": ["{{base_url}}"],
+              "path": ["api", "ipo", "fetch-all"]
+            },
+            "description": "📊 STEP 2: Fetch all NSE data (current, upcoming, market status)"
+          },
+          "response": []
+        },
+        {
+          "name": "WORKFLOW 3: Scrape GMP Sources",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/gmp/scrape-sources",
+              "host": ["{{base_url}}"],
+              "path": ["api", "gmp", "scrape-sources"]
+            },
+            "description": "📈 STEP 3: Scrape GMP data from both IPOWatch and InvestorGain"
+          },
+          "response": []
+        },
+        {
+          "name": "WORKFLOW 4: Create Combined GMP Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/gmp/create-combined/{{test_date}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "gmp", "create-combined", "{{test_date}}"]
+            },
+            "description": "🔄 STEP 4: Create combined GMP data (no duplicates)"
+          },
+          "response": []
+        },
+        {
+          "name": "WORKFLOW 5: Fetch Complete GMP Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/gmp/fetch",
+              "host": ["{{base_url}}"],
+              "path": ["api", "gmp", "fetch"]
+            },
+            "description": "📋 STEP 5: Complete GMP pipeline (scrape + combine all sources)"
+          },
+          "response": []
+        },
+        {
+          "name": "WORKFLOW 6: Generate All Predictions",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/predict/all",
+              "host": ["{{base_url}}"],
+              "path": ["api", "predict", "all"]
+            },
+            "description": "🎯 STEP 6: Generate predictions for all current IPOs"
+          },
+          "response": []
         }
       ]
-    }
-  ],
-  "variable": [
+    },
     {
-      "key": "base_url",
-      "value": "http://localhost:8000",
-      "type": "string",
-      "description": "Base URL for the API server"
+      "name": "🔍 Enhanced Symbol Testing",
+      "description": "Test endpoints with enhanced GMP data for specific IPO symbols",
+      "item": [
+        {
+          "name": "Test GMP Symbol: TATACAP",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/gmp/predict/TATACAP",
+              "host": ["{{base_url}}"],
+              "path": ["api", "gmp", "predict", "TATACAP"]
+            },
+            "description": "Test enhanced GMP prediction for TATACAP"
+          },
+          "response": []
+        },
+        {
+          "name": "Test GMP Symbol: WEWORK",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/gmp/predict/WEWORK",
+              "host": ["{{base_url}}"],
+              "path": ["api", "gmp", "predict", "WEWORK"]
+            },
+            "description": "Test enhanced GMP prediction for WeWork India"
+          },
+          "response": []
+        },
+        {
+          "name": "Test GMP Historical: TATACAP",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/gmp/predict/TATACAP?date=2025-09-27",
+              "host": ["{{base_url}}"],
+              "path": ["api", "gmp", "predict", "TATACAP"],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2025-09-27",
+                  "description": "Historical date testing"
+                }
+              ]
+            },
+            "description": "Test historical GMP data for TATACAP"
+          },
+          "response": []
+        },
+        {
+          "name": "Test Final Prediction: TATACAP",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/predict/TATACAP",
+              "host": ["{{base_url}}"],
+              "path": ["api", "predict", "TATACAP"]
+            },
+            "description": "Test final combined prediction with enhanced GMP for TATACAP"
+          },
+          "response": []
+        },
+        {
+          "name": "Test Final Prediction: WEWORK",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/predict/WEWORK",
+              "host": ["{{base_url}}"],
+              "path": ["api", "predict", "WEWORK"]
+            },
+            "description": "Test final combined prediction with enhanced GMP for WeWork"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📊 GMP Data Analysis",
+      "description": "Additional endpoints for GMP data analysis and debugging",
+      "item": [
+        {
+          "name": "Test IPOWatch Data Structure",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/gmp/scrape-sources",
+              "host": ["{{base_url}}"],
+              "path": ["api", "gmp", "scrape-sources"]
+            },
+            "description": "Check IPOWatch data structure and fields"
+          },
+          "response": []
+        },
+        {
+          "name": "Test InvestorGain Data Structure",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/gmp/scrape-sources",
+              "host": ["{{base_url}}"],
+              "path": ["api", "gmp", "scrape-sources"]
+            },
+            "description": "Check InvestorGain data structure and additional fields"
+          },
+          "response": []
+        },
+        {
+          "name": "Test Combined Data Logic",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/gmp/create-combined/{{test_date}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "gmp", "create-combined", "{{test_date}}"]
+            },
+            "description": "Test how data is combined (no duplicates, priority logic)"
+          },
+          "response": []
+        },
+        {
+          "name": "Test Currency Formatting",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/gmp/predict/{{sample_symbol}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "gmp", "predict", "{{sample_symbol}}"]
+            },
+            "description": "Test ₹ currency formatting in responses"
+          },
+          "response": []
+        }
+      ]
     }
   ],
   "event": [
@@ -482,14 +785,77 @@
       "script": {
         "type": "text/javascript",
         "exec": [
-          "// Set current date for date parameters",
-          "const today = new Date().toISOString().split('T')[0];",
-          "pm.globals.set('current_date', today);",
+          "// Pre-request script for the entire collection",
+          "console.log('Making request to: ' + pm.request.url);",
+          "console.log('Enhanced GMP Collection v2.0');",
           "",
-          "// Set yesterday's date",
-          "const yesterday = new Date();",
-          "yesterday.setDate(yesterday.getDate() - 1);",
-          "pm.globals.set('yesterday_date', yesterday.toISOString().split('T')[0]);"
+          "// Add timestamp to requests",
+          "pm.globals.set('timestamp', new Date().toISOString());",
+          "",
+          "// Set current date for testing",
+          "pm.globals.set('current_date', new Date().toISOString().split('T')[0]);"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Global test script for all requests",
+          "",
+          "// Check if response time is reasonable",
+          "pm.test('Response time is acceptable', function () {",
+          "    pm.expect(pm.response.responseTime).to.be.below(60000); // Increased for scraping",
+          "});",
+          "",
+          "// Check if response is JSON",
+          "pm.test('Response is JSON', function () {",
+          "    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');",
+          "});",
+          "",
+          "// Check for successful responses",
+          "pm.test('Response is successful', function () {",
+          "    pm.expect(pm.response.status).to.be.oneOf([200, 201]);",
+          "});",
+          "",
+          "// Log response for debugging",
+          "console.log('Response Status:', pm.response.status);",
+          "console.log('Response Time:', pm.response.responseTime + 'ms');",
+          "",
+          "// Enhanced GMP specific tests",
+          "if (pm.request.url.href.includes('/api/gmp/')) {",
+          "    console.log('GMP Endpoint Response');",
+          "    ",
+          "    try {",
+          "        const jsonData = pm.response.json();",
+          "        ",
+          "        // Test for currency formatting",
+          "        if (jsonData.gmp && typeof jsonData.gmp === 'string') {",
+          "            pm.test('Currency is formatted with ₹', function () {",
+          "                pm.expect(jsonData.gmp).to.include('₹');",
+          "            });",
+          "        }",
+          "        ",
+          "        // Test for source information",
+          "        if (jsonData.source) {",
+          "            console.log('Data Source:', jsonData.source);",
+          "        }",
+          "        ",
+          "        // Test for available sources",
+          "        if (jsonData.available_in) {",
+          "            console.log('Available in sources:', jsonData.available_in);",
+          "        }",
+          "        ",
+          "    } catch (e) {",
+          "        console.log('Response parsing error:', e);",
+          "    }",
+          "}",
+          "",
+          "// Check for common error patterns",
+          "if (pm.response.status >= 400) {",
+          "    console.log('Error Response:', pm.response.json());",
+          "}"
         ]
       }
     }

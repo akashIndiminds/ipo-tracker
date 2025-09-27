@@ -33,9 +33,9 @@ class NSEController:
                     detail="NSE data not available - service may be down or blocked"
                 )
             
-            # Save data to file if requested
+            # Save data to file if requested - Fixed path
             if save_data and ipo_data:
-                saved = self.file_storage.save_data('current_ipos', ipo_data)
+                saved = self.file_storage.save_data('nse/current', ipo_data)
                 logger.info(f"Data saved to file: {saved}")
             
             # Return response
@@ -74,9 +74,9 @@ class NSEController:
                     detail="NSE data not available - service may be down or blocked"
                 )
             
-            # Save data to file if requested
+            # Save data to file if requested - Fixed path
             if save_data and ipo_data:
-                saved = self.file_storage.save_data('upcoming_ipos', ipo_data)
+                saved = self.file_storage.save_data('nse/upcoming', ipo_data)
                 logger.info(f"Data saved to file: {saved}")
             
             # Return response
@@ -115,9 +115,9 @@ class NSEController:
                     detail="NSE market data not available"
                 )
             
-            # Save data to file if requested
+            # Save data to file if requested - Fixed path
             if save_data and market_data:
-                saved = self.file_storage.save_data('market_status', market_data)
+                saved = self.file_storage.save_data('nse/market_status', market_data)
                 logger.info(f"Data saved to file: {saved}")
             
             # Return response
@@ -155,18 +155,20 @@ class NSEController:
                     detail=f"NSE active category data not available for symbol: {symbol}"
                 )
             
-            # Save data to file if requested
+            # Save data to file if requested - Fixed path and structure
             if save_data and category_data:
-                # Load existing active category data
-                existing_data = self.file_storage.load_data('active_category')
-                if existing_data and isinstance(existing_data.get('data'), dict):
+                # Load existing subscription data
+                existing_data = self.file_storage.load_data('nse/subscription')
+                if existing_data and 'data' in existing_data:
+                    # Update existing data
                     existing_data['data'][symbol] = category_data
                     existing_data['metadata']['timestamp'] = datetime.now().isoformat()
-                    existing_data['metadata']['records_count'] = len(existing_data['data'])
                 else:
+                    # Create new structure
                     existing_data = {symbol: category_data}
                 
-                saved = self.file_storage.save_data('active_category', existing_data['data'] if isinstance(existing_data, dict) and 'data' in existing_data else existing_data)
+                # Save updated data
+                saved = self.file_storage.save_data('nse/subscription', existing_data)
                 logger.info(f"Data saved to file: {saved}")
             
             # Return response
@@ -259,7 +261,7 @@ class NSEController:
                 if current_data:
                     results['current_ipos']['success'] = True
                     results['current_ipos']['count'] = len(current_data)
-                    results['current_ipos']['saved'] = self.file_storage.save_data('current_ipos', current_data)
+                    results['current_ipos']['saved'] = self.file_storage.save_data('nse/current', current_data)
             except Exception as e:
                 logger.error(f"Failed to fetch current IPOs: {e}")
             
@@ -269,7 +271,7 @@ class NSEController:
                 if upcoming_data:
                     results['upcoming_ipos']['success'] = True
                     results['upcoming_ipos']['count'] = len(upcoming_data)
-                    results['upcoming_ipos']['saved'] = self.file_storage.save_data('upcoming_ipos', upcoming_data)
+                    results['upcoming_ipos']['saved'] = self.file_storage.save_data('nse/upcoming', upcoming_data)
             except Exception as e:
                 logger.error(f"Failed to fetch upcoming IPOs: {e}")
             
@@ -279,7 +281,7 @@ class NSEController:
                 if market_data:
                     results['market_status']['success'] = True
                     results['market_status']['count'] = len(market_data)
-                    results['market_status']['saved'] = self.file_storage.save_data('market_status', market_data)
+                    results['market_status']['saved'] = self.file_storage.save_data('nse/market_status', market_data)
             except Exception as e:
                 logger.error(f"Failed to fetch market status: {e}")
             
@@ -316,18 +318,18 @@ class NSEController:
         recommendations = []
         
         if test_results['overall_status'] == 'excellent':
-            recommendations.append("✅ NSE connection is excellent - all endpoints working")
+            recommendations.append("NSE connection is excellent - all endpoints working")
         elif test_results['overall_status'] == 'good':
-            recommendations.append("✅ NSE connection is good - most endpoints working")
+            recommendations.append("NSE connection is good - most endpoints working")
         elif test_results['overall_status'] == 'partial':
-            recommendations.append("⚠️ NSE connection is partial - some endpoints blocked")
-            recommendations.append("🔄 Try refreshing session or wait a few minutes")
+            recommendations.append("NSE connection is partial - some endpoints blocked")
+            recommendations.append("Try refreshing session or wait a few minutes")
         else:
-            recommendations.append("❌ NSE connection failed completely")
-            recommendations.append("🔧 Check internet connectivity")
-            recommendations.append("🕐 NSE servers may be down")
-            recommendations.append("⏰ Try again after some time")
-            recommendations.append("🛡️ NSE may be blocking requests")
+            recommendations.append("NSE connection failed completely")
+            recommendations.append("Check internet connectivity")
+            recommendations.append("NSE servers may be down")
+            recommendations.append("Try again after some time")
+            recommendations.append("NSE may be blocking requests")
         
         return recommendations
 

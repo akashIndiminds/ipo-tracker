@@ -91,8 +91,8 @@ class NSEService:
                     'is_sme': bool(item.get('isBse', '0') == '1'),
                     'category': str(item.get('category', 'Total')).strip(),
                     'lot_size': self._safe_int(item.get('lotSize', 0)),
-                    'face_value': str(item.get('faceValue', '')).strip(),
-                    'raw_data': item  # Store original data
+                    'face_value': str(item.get('faceValue', '')).strip()
+                    # Removed raw_data field - no duplication
                 }
                 
                 if processed_item['symbol'] and processed_item['company_name']:
@@ -115,8 +115,8 @@ class NSEService:
                     'market': str(item.get('market', '')).strip(),
                     'market_status': str(item.get('marketStatus', '')).strip(),
                     'trade_date': str(item.get('tradeDate', '')).strip(),
-                    'index': str(item.get('index', '')).strip(),
-                    'raw_data': item
+                    'index': str(item.get('index', '')).strip()
+                    # Removed raw_data field
                 }
                 
                 if processed_item['market']:
@@ -139,8 +139,8 @@ class NSEService:
                 'issue_size': str(raw_data.get('issueSize', '')).strip(),
                 'status': str(raw_data.get('status', 'Unknown')).strip(),
                 'total_subscription': self._safe_float(raw_data.get('totalSubscription', 0)),
-                'categories': {},
-                'raw_data': raw_data
+                'categories': {}
+                # Removed raw_data field
             }
             
             # Process category-wise subscription data
@@ -164,8 +164,8 @@ class NSEService:
             logger.error(f"Active category processing error for {symbol}: {e}")
             return {
                 'symbol': symbol,
-                'error': str(e),
-                'raw_data': raw_data
+                'error': str(e)
+                # Removed raw_data field
             }
     
     def _safe_int(self, value) -> int:
@@ -189,79 +189,6 @@ class NSEService:
             return float(value) if value else 0.0
         except:
             return 0.0
-    
-    def test_connection(self) -> Dict[str, Any]:
-        """Test NSE connection and all endpoints"""
-        logger.info("Testing NSE connection...")
-        
-        results = {
-            'session_creation': False,
-            'current_ipos': False,
-            'upcoming_ipos': False,
-            'market_status': False,
-            'overall_status': 'failed',
-            'working_endpoints': [],
-            'failed_endpoints': []
-        }
-        
-        # Test session
-        if self.scraper.force_refresh():
-            results['session_creation'] = True
-            results['working_endpoints'].append('session_init')
-        else:
-            results['failed_endpoints'].append('session_init')
-        
-        # Test endpoints if session is working
-        if results['session_creation'] and not self.scraper._is_blocked():
-            
-            # Test current IPOs
-            try:
-                current_data = self.fetch_current_ipos()
-                if current_data:
-                    results['current_ipos'] = True
-                    results['working_endpoints'].append('current_ipos')
-                else:
-                    results['failed_endpoints'].append('current_ipos')
-            except Exception as e:
-                logger.error(f"Current IPOs test failed: {e}")
-                results['failed_endpoints'].append('current_ipos')
-            
-            # Test upcoming IPOs
-            try:
-                upcoming_data = self.fetch_upcoming_ipos()
-                if upcoming_data:
-                    results['upcoming_ipos'] = True
-                    results['working_endpoints'].append('upcoming_ipos')
-                else:
-                    results['failed_endpoints'].append('upcoming_ipos')
-            except Exception as e:
-                logger.error(f"Upcoming IPOs test failed: {e}")
-                results['failed_endpoints'].append('upcoming_ipos')
-            
-            # Test market status
-            try:
-                market_data = self.fetch_market_status()
-                if market_data:
-                    results['market_status'] = True
-                    results['working_endpoints'].append('market_status')
-                else:
-                    results['failed_endpoints'].append('market_status')
-            except Exception as e:
-                logger.error(f"Market status test failed: {e}")
-                results['failed_endpoints'].append('market_status')
-        
-        # Determine overall status
-        working_count = len(results['working_endpoints'])
-        if working_count >= 3:
-            results['overall_status'] = 'excellent'
-        elif working_count >= 2:
-            results['overall_status'] = 'good'
-        elif working_count >= 1:
-            results['overall_status'] = 'partial'
-        else:
-            results['overall_status'] = 'failed'
-        
-        return results
     
     def get_session_info(self) -> Dict[str, Any]:
         """Get session information"""
