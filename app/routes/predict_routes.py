@@ -1,104 +1,82 @@
-# app/routes/predict_routes.py
+# app/routes/predict_routes.py - FIXED Final Prediction Routes
 
-from fastapi import APIRouter, Path
-from ..services.final_prediction import final_prediction_service
-from ..services.gmp_service import gmp_service
-from ..services.math_prediction import math_prediction_service
-from ..services.ai_prediction import ai_prediction_service
-from ..services.nse_service import nse_service
-from ..utils.file_storage import file_storage
+from fastapi import APIRouter, Path, Query
+from ..controllers.final_controller import final_controller
+from typing import Optional
 
 router = APIRouter(prefix="/api/predict", tags=["Final Prediction"])
 
+@router.post("/{symbol}")
+async def generate_final_prediction(
+    symbol: str = Path(..., description="IPO symbol"),
+    date: Optional[str] = Query(None, description="Date in YYYY-MM-DD format (default: today)")
+):
+    """
+    Generate final combined prediction for a symbol
+    
+    Combines:
+    - GMP prediction
+    - Math prediction  
+    - AI prediction
+    
+    Saves to: data/predictions/final_prediction/{date}/{symbol}.json
+    
+    Example: POST /api/predict/SWIGGY?date=2025-09-29
+    """
+    return await final_controller.get_final_prediction(symbol, date)
+
+
 @router.get("/{symbol}")
-async def get_final_prediction(symbol: str = Path(...)):
-    """Get combined prediction from all 3 sources"""
-    # Get IPO data
-    current_ipos = nse_service.fetch_current_ipos()
-    ipo_data = next((ipo for ipo in current_ipos if ipo['symbol'] == symbol.upper()), {})
+async def get_stored_final_prediction(
+    symbol: str = Path(..., description="IPO symbol"),
+    date: Optional[str] = Query(None, description="Date in YYYY-MM-DD format (default: today)")
+):
+    """
+    Get stored final prediction for a symbol
     
-    if not ipo_data:
-        return {"error": f"IPO {symbol} not found"}
+    Loads from: data/predictions/final_prediction/{date}/{symbol}.json
     
-    # Get subscription data
-    subscription_data = nse_service.fetch_ipo_active_category(symbol)
-    
-    # Get all 3 predictions
-    gmp_pred = gmp_service.get_gmp_prediction(symbol, ipo_data)
-    math_pred = math_prediction_service.predict(ipo_data, subscription_data)
-    ai_pred = ai_prediction_service.predict(ipo_data, subscription_data)
-    
-    # Combine predictions
-    final_pred = final_prediction_service.combine_predictions(
-        gmp_pred, math_pred, ai_pred, ipo_data
-    )
-    
-    # Save final prediction
-    file_storage.save_data(f"predictions/final/{symbol}", final_pred)
-    
-    return final_pred
+    Example: GET /api/predict/SWIGGY?date=2025-09-29
+    """
+    return await final_controller.get_stored_final_prediction(symbol, date)
 
-@router.post("/all")
-async def process_all_ipos():
-    """Process all current IPOs and generate predictions"""
-    # Get current IPOs
-    current_ipos = nse_service.fetch_current_ipos()
+
+@router.post("/batch")
+async def process_all_ipos(
+    date: Optional[str] = Query(None, description="Date in YYYY-MM-DD format (default: today)")
+):
+    """
+    Process all current IPOs and generate final predictions
     
-    if not current_ipos:
-        return {"error": "No current IPOs found"}
+    Steps:
+    1. Fetches all current IPOs
+    2. Generates GMP data
+    3. Generates Math predictions
+    4. Generates AI predictions
+    5. Combines all for final prediction
     
-    # First fetch GMP data
-    gmp_result = gmp_service.fetch_last_month_gmp()
-    if gmp_result['success']:
-        file_storage.save_data("gmp/raw", gmp_result['data'])
+    Saves:
+    - Individual predictions: data/predictions/final_prediction/{date}/{symbol}.json
+    - Batch summary: data/predictions/final_prediction/{date}/batch_summary.json
     
-    results = []
-    
-    for ipo in current_ipos:
-        symbol = ipo.get('symbol', '')
-        if not symbol:
-            continue
-        
-        try:
-            # Get subscription data
-            subscription_data = nse_service.fetch_ipo_active_category(symbol)
-            
-            # Get all predictions
-            gmp_pred = gmp_service.get_gmp_prediction(symbol, ipo)
-            math_pred = math_prediction_service.predict(ipo, subscription_data)
-            ai_pred = ai_prediction_service.predict(ipo, subscription_data)
-            
-            # Combine
-            final_pred = final_prediction_service.combine_predictions(
-                gmp_pred, math_pred, ai_pred, ipo
-            )
-            
-            # Save
-            file_storage.save_data(f"predictions/final/{symbol}", final_pred)
-            
-            results.append({
-                'symbol': symbol,
-                'company': ipo.get('company_name'),
-                'recommendation': final_pred.get('final_recommendation'),
-                'expected_gain': final_pred.get('expected_gain_percent'),
-                'risk': final_pred.get('risk_level')
-            })
-            
-        except Exception as e:
-            results.append({
-                'symbol': symbol,
-                'error': str(e)
-            })
-    
-    # Save all results
-    file_storage.save_data("predictions/final/all", {
-        'total_processed': len(results),
-        'results': results
-    })
-    
+    Example: POST /api/predict/batch?date=2025-09-29
+    """
+    return await final_controller.process_all_ipos(date)
+
+
+@router.get("/health")
+async def health_check():
+    """Health check endpoint for final prediction service"""
+    from datetime import datetime
     return {
-        'success': True,
-        'total_processed': len(results),
-        'results': results
+        "status": "healthy",
+        "service": "Final Prediction Service",
+        "version": "1.0.0",
+        "timestamp": datetime.now().isoformat(),
+        "storage_locations": {
+            "gmp": "data/predictions/gmp/{date}.json",
+            "math": "data/predictions/math/{date}.json",
+            "ai": "data/predictions/ai/{date}.json",
+            "final": "data/predictions/final_prediction/{date}/{symbol}.json"
+        }
     }
-

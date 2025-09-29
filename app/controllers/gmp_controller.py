@@ -8,7 +8,7 @@ from ..services.gmp_service import gmp_service
 logger = logging.getLogger(__name__)
 
 class GMPController:
-    """GMP Controller - Simple 3 endpoint handling"""
+    """GMP Controller - Simple 3 endpoint handling with correct storage"""
     
     def __init__(self):
         self.gmp_service = gmp_service

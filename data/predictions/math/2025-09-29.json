@@ -1,8 +1,9 @@
 {
   "metadata": {
     "path": "predictions/math",
-    "date": "2025-09-29",
-    "timestamp": "2025-09-29T18:54:13.577076"
+    "filename": "2025-09-29",
+    "timestamp": "2025-09-29T23:02:10.773572",
+    "full_path": "data\\predictions\\math\\2025-09-29.json"
   },
   "data": {
     "success": true,
@@ -13,108 +14,6 @@
       "failed_predictions": 0
     },
     "predictions": [
-      {
-        "symbol": "GLOTTIS",
-        "company_name": "Glottis Limited",
-        "source": "MATH_RESEARCH_MODEL",
-        "prediction": {
-          "expected_gain_percent": -0.0,
-          "expected_gain_rupees": -0.0,
-          "listing_price_prediction": 0.13,
-          "gain_range": {
-            "min": -10,
-            "max": 5,
-            "probability": 0.65
-          },
-          "gain_range_rupees": {
-            "min": -0.01,
-            "max": 0.01
-          },
-          "final_score": 0,
-          "recommendation": "AVOID",
-          "confidence": "LOW",
-          "risk_level": "HIGH"
-        },
-        "subscription_analysis": {
-          "total_subscription": 0,
-          "qib_subscription": 0,
-          "nii_subscription": 0,
-          "retail_subscription": 0,
-          "weighted_score": 0.0
-        },
-        "probability_metrics": {
-          "prob_positive_return": 65.0,
-          "prob_loss": 35.0
-        },
-        "model_details": {
-          "base_gain_before_penalty": -10.0,
-          "undersubscription_penalty": -10.0,
-          "formula": "Rock_Winner_Curse_Adapted",
-          "weights": {
-            "qib": 0.65,
-            "nii": 0.2,
-            "retail": 0.15
-          }
-        },
-        "ipo_details": {
-          "issue_price": "Rs.120 to Rs.129",
-          "issue_size": "20123929",
-          "series": "EQ",
-          "status": "Active"
-        },
-        "timestamp": "2025-09-29T18:54:13.577076"
-      },
-      {
-        "symbol": "OMFREIGHT",
-        "company_name": "Om Freight Forwarders Limited",
-        "source": "MATH_RESEARCH_MODEL",
-        "prediction": {
-          "expected_gain_percent": -0.0,
-          "expected_gain_rupees": -0.0,
-          "listing_price_prediction": 0.14,
-          "gain_range": {
-            "min": -10,
-            "max": 5,
-            "probability": 0.65
-          },
-          "gain_range_rupees": {
-            "min": -0.01,
-            "max": 0.01
-          },
-          "final_score": 0,
-          "recommendation": "AVOID",
-          "confidence": "LOW",
-          "risk_level": "HIGH"
-        },
-        "subscription_analysis": {
-          "total_subscription": 0,
-          "qib_subscription": 0,
-          "nii_subscription": 0,
-          "retail_subscription": 0,
-          "weighted_score": 0.0
-        },
-        "probability_metrics": {
-          "prob_positive_return": 65.0,
-          "prob_loss": 35.0
-        },
-        "model_details": {
-          "base_gain_before_penalty": -10.0,
-          "undersubscription_penalty": -10.0,
-          "formula": "Rock_Winner_Curse_Adapted",
-          "weights": {
-            "qib": 0.65,
-            "nii": 0.2,
-            "retail": 0.15
-          }
-        },
-        "ipo_details": {
-          "issue_price": "Rs.128 to Rs.135",
-          "issue_size": "7916945",
-          "series": "EQ",
-          "status": "Active"
-        },
-        "timestamp": "2025-09-29T18:54:13.577076"
-      },
       {
         "symbol": "FABTECH",
         "company_name": "Fabtech Technologies Limited",
@@ -164,7 +63,109 @@
           "series": "EQ",
           "status": "Active"
         },
-        "timestamp": "2025-09-29T18:54:13.577076"
+        "timestamp": "2025-09-29T23:02:10.772574"
+      },
+      {
+        "symbol": "GLOTTIS",
+        "company_name": "Glottis Limited",
+        "source": "MATH_RESEARCH_MODEL",
+        "prediction": {
+          "expected_gain_percent": 4.55,
+          "expected_gain_rupees": 0.01,
+          "listing_price_prediction": 0.14,
+          "gain_range": {
+            "min": -10,
+            "max": 5,
+            "probability": 0.65
+          },
+          "gain_range_rupees": {
+            "min": -0.01,
+            "max": 0.01
+          },
+          "final_score": 7.55,
+          "recommendation": "AVOID",
+          "confidence": "LOW",
+          "risk_level": "HIGH"
+        },
+        "subscription_analysis": {
+          "total_subscription": 0.42,
+          "qib_subscription": 1.79,
+          "nii_subscription": 0.16,
+          "retail_subscription": 0.22,
+          "weighted_score": 1.23
+        },
+        "probability_metrics": {
+          "prob_positive_return": 65.0,
+          "prob_loss": 35.0
+        },
+        "model_details": {
+          "base_gain_before_penalty": 6.85,
+          "undersubscription_penalty": 2.3,
+          "formula": "Rock_Winner_Curse_Adapted",
+          "weights": {
+            "qib": 0.65,
+            "nii": 0.2,
+            "retail": 0.15
+          }
+        },
+        "ipo_details": {
+          "issue_price": "Rs.120 to Rs.129",
+          "issue_size": "20123929",
+          "series": "EQ",
+          "status": "Active"
+        },
+        "timestamp": "2025-09-29T23:02:10.772574"
+      },
+      {
+        "symbol": "OMFREIGHT",
+        "company_name": "Om Freight Forwarders Limited",
+        "source": "MATH_RESEARCH_MODEL",
+        "prediction": {
+          "expected_gain_percent": 11.84,
+          "expected_gain_rupees": 0.02,
+          "listing_price_prediction": 0.15,
+          "gain_range": {
+            "min": 5,
+            "max": 25,
+            "probability": 0.7
+          },
+          "gain_range_rupees": {
+            "min": 0.01,
+            "max": 0.03
+          },
+          "final_score": 39.91,
+          "recommendation": "MODERATE_BUY",
+          "confidence": "LOW",
+          "risk_level": "MEDIUM-HIGH"
+        },
+        "subscription_analysis": {
+          "total_subscription": 1.39,
+          "qib_subscription": 1.1,
+          "nii_subscription": 4.03,
+          "retail_subscription": 0.54,
+          "weighted_score": 1.6
+        },
+        "probability_metrics": {
+          "prob_positive_return": 70.0,
+          "prob_loss": 30.0
+        },
+        "model_details": {
+          "base_gain_before_penalty": 11.84,
+          "undersubscription_penalty": 0.0,
+          "formula": "Rock_Winner_Curse_Adapted",
+          "weights": {
+            "qib": 0.65,
+            "nii": 0.2,
+            "retail": 0.15
+          }
+        },
+        "ipo_details": {
+          "issue_price": "Rs.128 to Rs.135",
+          "issue_size": "7916945",
+          "series": "EQ",
+          "status": "Active"
+        },
+        "timestamp": "2025-09-29T23:02:10.772574"
       },
       {
         "symbol": "PACEDIGITK",
@@ -215,7 +216,7 @@
           "series": "EQ",
           "status": "Active"
         },
-        "timestamp": "2025-09-29T18:54:13.577076"
+        "timestamp": "2025-09-29T23:02:10.772574"
       },
       {
         "symbol": "JKIPL",
@@ -266,7 +267,7 @@
           "series": "EQ",
           "status": "Active"
         },
-        "timestamp": "2025-09-29T18:54:13.577076"
+        "timestamp": "2025-09-29T23:02:10.772574"
       },
       {
         "symbol": "TRUALT",
@@ -317,7 +318,7 @@
           "series": "EQ",
           "status": "Active"
         },
-        "timestamp": "2025-09-29T18:54:13.577076"
+        "timestamp": "2025-09-29T23:02:10.772574"
       },
       {
         "symbol": "VIJAYPD",
@@ -368,7 +369,7 @@
           "series": "SME",
           "status": "Active"
         },
-        "timestamp": "2025-09-29T18:54:13.577076"
+        "timestamp": "2025-09-29T23:02:10.772574"
       },
       {
         "symbol": "SUBAHOTELS",
@@ -419,7 +420,7 @@
           "series": "SME",
           "status": "Active"
         },
-        "timestamp": "2025-09-29T18:54:13.577076"
+        "timestamp": "2025-09-29T23:02:10.772574"
       },
       {
         "symbol": "MPEL",
@@ -470,9 +471,9 @@
           "series": "SME",
           "status": "Active"
         },
-        "timestamp": "2025-09-29T18:54:13.577076"
+        "timestamp": "2025-09-29T23:02:10.772574"
       }
     ],
-    "timestamp": "2025-09-29T18:54:13.577076"
+    "timestamp": "2025-09-29T23:02:10.772574"
   }
 }

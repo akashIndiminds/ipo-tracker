@@ -1,4 +1,4 @@
-# app/controllers/ai_controller.py
+# app/controllers/ai_controller.py - FIXED STORAGE
 
 from typing import Dict, List, Optional
 import logging
@@ -11,11 +11,12 @@ from ..utils.file_storage import file_storage
 logger = logging.getLogger(__name__)
 
 class AIController:
-    """AI Controller - Handles request/response for AI predictions"""
+    """AI Controller - Handles request/response for AI predictions with FIXED storage"""
     
     def __init__(self):
-        self.prediction_base_path = Path("C:/Akash/ipo_tracker/data/predictions/ai")
-        self.prediction_base_path.mkdir(parents=True, exist_ok=True)
+        # REMOVED: Don't create separate base path
+        # Let file_storage handle everything
+        pass
     
     async def predict_all_current_ipos(self, date: Optional[str] = None) -> Dict:
         """
@@ -27,7 +28,7 @@ class AIController:
             if date is None:
                 date = datetime.now().strftime('%Y-%m-%d')
             
-            logger.info(f"Generating predictions for date: {date}")
+            logger.info(f"Generating AI predictions for date: {date}")
             
             # Generate predictions using service
             predictions = ai_prediction_service.predict_all_ipos(date)
@@ -41,17 +42,27 @@ class AIController:
                     'predictions': []
                 }
             
-            # Save predictions to file
-            self._save_predictions(date, predictions)
-            
-            return {
+            # Prepare response data
+            result = {
                 'success': True,
-                'message': 'Predictions generated successfully',
+                'message': 'AI Predictions generated successfully',
                 'date': date,
                 'total_predictions': len(predictions),
                 'predictions': predictions,
                 'timestamp': datetime.now().isoformat()
             }
+            
+            # FIXED: Save predictions to data/predictions/ai/{date}.json
+            save_success = file_storage.save_data("predictions/ai", result, date)
+            
+            if save_success:
+                logger.info(f"✅ AI predictions saved to data/predictions/ai/{date}.json")
+                result['storage_path'] = f'data/predictions/ai/{date}.json'
+            else:
+                logger.error(f"❌ Failed to save AI predictions")
+                result['storage_warning'] = 'Predictions generated but not saved to file'
+            
+            return result
             
         except Exception as e:
             logger.error(f"Error in predict_all_current_ipos: {e}")
@@ -69,26 +80,20 @@ class AIController:
         Response: All predictions for that date
         """
         try:
-            prediction_file = self.prediction_base_path / f"{date}.json"
+            # FIXED: Load from data/predictions/ai/{date}.json
+            stored_data = file_storage.load_data("predictions/ai", date)
             
-            if not prediction_file.exists():
+            if not stored_data:
                 return {
                     'success': False,
-                    'message': f'No predictions found for date: {date}',
+                    'message': f'No AI predictions found for date: {date}',
                     'date': date,
-                    'predictions': []
+                    'predictions': [],
+                    'suggestion': f'Generate predictions first using POST /api/ai/predict?date={date}'
                 }
             
-            with open(prediction_file, 'r', encoding='utf-8') as f:
-                predictions = json.load(f)
-            
-            return {
-                'success': True,
-                'message': 'Predictions retrieved successfully',
-                'date': date,
-                'total_predictions': len(predictions),
-                'predictions': predictions
-            }
+            # Return the stored data
+            return stored_data.get('data', stored_data)
             
         except Exception as e:
             logger.error(f"Error retrieving predictions by date: {e}")
@@ -106,38 +111,43 @@ class AIController:
         Response: Single prediction if found
         """
         try:
-            prediction_file = self.prediction_base_path / f"{date}.json"
+            # FIXED: Load from data/predictions/ai/{date}.json
+            stored_data = file_storage.load_data("predictions/ai", date)
             
-            if not prediction_file.exists():
+            if not stored_data:
                 return {
                     'success': False,
-                    'message': f'No predictions found for date: {date}',
+                    'message': f'No AI predictions found for date: {date}',
                     'symbol': symbol,
                     'date': date,
-                    'prediction': None
+                    'prediction': None,
+                    'suggestion': f'Generate predictions first using POST /api/ai/predict?date={date}'
                 }
             
-            with open(prediction_file, 'r', encoding='utf-8') as f:
-                predictions = json.load(f)
+            # Extract predictions list
+            predictions_list = stored_data.get('data', {}).get('predictions', [])
+            if not predictions_list:
+                predictions_list = stored_data.get('predictions', [])
             
             # Find prediction for symbol
             prediction = next(
-                (p for p in predictions if p.get('symbol', '').upper() == symbol.upper()),
+                (p for p in predictions_list if p.get('symbol', '').upper() == symbol.upper()),
                 None
             )
             
             if not prediction:
                 return {
                     'success': False,
-                    'message': f'No prediction found for symbol: {symbol} on date: {date}',
+                    'message': f'No AI prediction found for symbol: {symbol} on date: {date}',
                     'symbol': symbol,
                     'date': date,
-                    'prediction': None
+                    'prediction': None,
+                    'available_symbols': [p.get('symbol') for p in predictions_list[:10]]
                 }
             
             return {
                 'success': True,
-                'message': 'Prediction retrieved successfully',
+                'message': 'AI Prediction retrieved successfully',
                 'symbol': symbol,
                 'date': date,
                 'prediction': prediction
@@ -153,19 +163,6 @@ class AIController:
                 'date': date,
                 'prediction': None
             }
-    
-    def _save_predictions(self, date: str, predictions: List[Dict]) -> None:
-        """Save predictions to file (overwrites existing file for same date)"""
-        try:
-            prediction_file = self.prediction_base_path / f"{date}.json"
-            
-            # Always overwrite - no append logic
-            with open(prediction_file, 'w', encoding='utf-8') as f:
-                json.dump(predictions, f, indent=2, ensure_ascii=False)
-            
-            logger.info(f"Predictions saved to: {prediction_file}")
-            
-        except Exception as e:
-            logger.error(f"Error saving predictions: {e}")
 
+# Create controller instance
 ai_controller = AIController()

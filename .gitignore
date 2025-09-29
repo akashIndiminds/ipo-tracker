@@ -13,8 +13,5 @@ app/services/__init__.py
 app/utils/__init__.py
 data/current_ipos_2025-09-27.json
 data/*.json
-geminiai-collection.json
-app/__pycache__/main.cpython-312.pyc
-data/gmp/ipowatch/current-ipo-2025-09-28.json/2025-09-28.json
-data/predictions/math/TATACAP/2025-09-28.json
-data/nse/current/2025-09-28.json
+data/*
+!data/.gitkeep

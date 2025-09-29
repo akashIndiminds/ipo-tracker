@@ -1,10 +1,28 @@
 {
   "metadata": {
     "path": "nse/current",
-    "date": "2025-09-29",
-    "timestamp": "2025-09-29T17:42:57.493564"
+    "filename": "2025-09-29",
+    "timestamp": "2025-09-29T22:54:01.562008",
+    "full_path": "data\\nse\\current\\2025-09-29.json"
   },
   "data": [
+    {
+      "symbol": "FABTECH",
+      "company_name": "Fabtech Technologies Limited",
+      "series": "EQ",
+      "issue_start_date": "29-Sep-2025",
+      "issue_end_date": "01-Oct-2025",
+      "issue_price": "Rs.181 to Rs.191",
+      "issue_size": "12060000",
+      "status": "Active",
+      "subscription_times": 0.5232960199004976,
+      "shares_offered": 12060000,
+      "shares_bid": 6310950,
+      "is_sme": false,
+      "category": "Total",
+      "lot_size": 0,
+      "face_value": ""
+    },
     {
       "symbol": "GLOTTIS",
       "company_name": "Glottis Limited",
@@ -40,23 +58,6 @@
       "face_value": ""
     },
     {
-      "symbol": "FABTECH",
-      "company_name": "Fabtech Technologies Limited",
-      "series": "EQ",
-      "issue_start_date": "29-Sep-2025",
-      "issue_end_date": "01-Oct-2025",
-      "issue_price": "Rs.181 to Rs.191",
-      "issue_size": "12060000",
-      "status": "Active",
-      "subscription_times": 0.5232960199004976,
-      "shares_offered": 12060000,
-      "shares_bid": 6310950,
-      "is_sme": false,
-      "category": "Total",
-      "lot_size": 0,
-      "face_value": ""
-    },
-    {
       "symbol": "PACEDIGITK",
       "company_name": "Pace Digitek Limited",
       "series": "EQ",
@@ -82,9 +83,9 @@
       "issue_price": "Rs.115 to Rs.121",
       "issue_size": "6721048",
       "status": "Active",
-      "subscription_times": 39.26398383109301,
+      "subscription_times": 39.264108811602,
       "shares_offered": 6721048,
-      "shares_bid": 263895120,
+      "shares_bid": 263895960,
       "is_sme": false,
       "category": "Total",
       "lot_size": 0,
@@ -99,9 +100,9 @@
       "issue_price": "Rs.472 to Rs.496",
       "issue_size": "12355424",
       "status": "Active",
-      "subscription_times": 55.61368917812938,
+      "subscription_times": 55.61565592568899,
       "shares_offered": 12355424,
-      "shares_bid": 687130710,
+      "shares_bid": 687155010,
       "is_sme": false,
       "category": "Total",
       "lot_size": 0,
