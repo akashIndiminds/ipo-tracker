@@ -1,0 +1,478 @@
+{
+  "metadata": {
+    "path": "predictions/math",
+    "date": "2025-09-29",
+    "timestamp": "2025-09-29T18:54:13.577076"
+  },
+  "data": {
+    "success": true,
+    "date": "2025-09-29",
+    "summary": {
+      "total_ipos": 9,
+      "successful_predictions": 9,
+      "failed_predictions": 0
+    },
+    "predictions": [
+      {
+        "symbol": "GLOTTIS",
+        "company_name": "Glottis Limited",
+        "source": "MATH_RESEARCH_MODEL",
+        "prediction": {
+          "expected_gain_percent": -0.0,
+          "expected_gain_rupees": -0.0,
+          "listing_price_prediction": 0.13,
+          "gain_range": {
+            "min": -10,
+            "max": 5,
+            "probability": 0.65
+          },
+          "gain_range_rupees": {
+            "min": -0.01,
+            "max": 0.01
+          },
+          "final_score": 0,
+          "recommendation": "AVOID",
+          "confidence": "LOW",
+          "risk_level": "HIGH"
+        },
+        "subscription_analysis": {
+          "total_subscription": 0,
+          "qib_subscription": 0,
+          "nii_subscription": 0,
+          "retail_subscription": 0,
+          "weighted_score": 0.0
+        },
+        "probability_metrics": {
+          "prob_positive_return": 65.0,
+          "prob_loss": 35.0
+        },
+        "model_details": {
+          "base_gain_before_penalty": -10.0,
+          "undersubscription_penalty": -10.0,
+          "formula": "Rock_Winner_Curse_Adapted",
+          "weights": {
+            "qib": 0.65,
+            "nii": 0.2,
+            "retail": 0.15
+          }
+        },
+        "ipo_details": {
+          "issue_price": "Rs.120 to Rs.129",
+          "issue_size": "20123929",
+          "series": "EQ",
+          "status": "Active"
+        },
+        "timestamp": "2025-09-29T18:54:13.577076"
+      },
+      {
+        "symbol": "OMFREIGHT",
+        "company_name": "Om Freight Forwarders Limited",
+        "source": "MATH_RESEARCH_MODEL",
+        "prediction": {
+          "expected_gain_percent": -0.0,
+          "expected_gain_rupees": -0.0,
+          "listing_price_prediction": 0.14,
+          "gain_range": {
+            "min": -10,
+            "max": 5,
+            "probability": 0.65
+          },
+          "gain_range_rupees": {
+            "min": -0.01,
+            "max": 0.01
+          },
+          "final_score": 0,
+          "recommendation": "AVOID",
+          "confidence": "LOW",
+          "risk_level": "HIGH"
+        },
+        "subscription_analysis": {
+          "total_subscription": 0,
+          "qib_subscription": 0,
+          "nii_subscription": 0,
+          "retail_subscription": 0,
+          "weighted_score": 0.0
+        },
+        "probability_metrics": {
+          "prob_positive_return": 65.0,
+          "prob_loss": 35.0
+        },
+        "model_details": {
+          "base_gain_before_penalty": -10.0,
+          "undersubscription_penalty": -10.0,
+          "formula": "Rock_Winner_Curse_Adapted",
+          "weights": {
+            "qib": 0.65,
+            "nii": 0.2,
+            "retail": 0.15
+          }
+        },
+        "ipo_details": {
+          "issue_price": "Rs.128 to Rs.135",
+          "issue_size": "7916945",
+          "series": "EQ",
+          "status": "Active"
+        },
+        "timestamp": "2025-09-29T18:54:13.577076"
+      },
+      {
+        "symbol": "FABTECH",
+        "company_name": "Fabtech Technologies Limited",
+        "source": "MATH_RESEARCH_MODEL",
+        "prediction": {
+          "expected_gain_percent": 3.5,
+          "expected_gain_rupees": 0.01,
+          "listing_price_prediction": 0.2,
+          "gain_range": {
+            "min": -10,
+            "max": 5,
+            "probability": 0.65
+          },
+          "gain_range_rupees": {
+            "min": -0.02,
+            "max": 0.01
+          },
+          "final_score": 12.99,
+          "recommendation": "AVOID",
+          "confidence": "LOW",
+          "risk_level": "HIGH"
+        },
+        "subscription_analysis": {
+          "total_subscription": 0.7,
+          "qib_subscription": 0.77,
+          "nii_subscription": 0.46,
+          "retail_subscription": 0.7,
+          "weighted_score": 0.7
+        },
+        "probability_metrics": {
+          "prob_positive_return": 65.0,
+          "prob_loss": 35.0
+        },
+        "model_details": {
+          "base_gain_before_penalty": 3.85,
+          "undersubscription_penalty": 0.35,
+          "formula": "Rock_Winner_Curse_Adapted",
+          "weights": {
+            "qib": 0.65,
+            "nii": 0.2,
+            "retail": 0.15
+          }
+        },
+        "ipo_details": {
+          "issue_price": "Rs.181 to Rs.191",
+          "issue_size": "12060000",
+          "series": "EQ",
+          "status": "Active"
+        },
+        "timestamp": "2025-09-29T18:54:13.577076"
+      },
+      {
+        "symbol": "PACEDIGITK",
+        "company_name": "Pace Digitek Limited",
+        "source": "MATH_RESEARCH_MODEL",
+        "prediction": {
+          "expected_gain_percent": 0.7,
+          "expected_gain_rupees": 0.0,
+          "listing_price_prediction": 0.22,
+          "gain_range": {
+            "min": -10,
+            "max": 5,
+            "probability": 0.65
+          },
+          "gain_range_rupees": {
+            "min": -0.02,
+            "max": 0.01
+          },
+          "final_score": 1.96,
+          "recommendation": "AVOID",
+          "confidence": "LOW",
+          "risk_level": "HIGH"
+        },
+        "subscription_analysis": {
+          "total_subscription": 0.55,
+          "qib_subscription": 0.23,
+          "nii_subscription": 0.78,
+          "retail_subscription": 0.62,
+          "weighted_score": 0.4
+        },
+        "probability_metrics": {
+          "prob_positive_return": 65.0,
+          "prob_loss": 35.0
+        },
+        "model_details": {
+          "base_gain_before_penalty": 0.89,
+          "undersubscription_penalty": 0.18,
+          "formula": "Rock_Winner_Curse_Adapted",
+          "weights": {
+            "qib": 0.65,
+            "nii": 0.2,
+            "retail": 0.15
+          }
+        },
+        "ipo_details": {
+          "issue_price": "Rs.208 to Rs.219",
+          "issue_size": "27606555",
+          "series": "EQ",
+          "status": "Active"
+        },
+        "timestamp": "2025-09-29T18:54:13.577076"
+      },
+      {
+        "symbol": "JKIPL",
+        "company_name": "Jinkushal Industries Limited",
+        "source": "MATH_RESEARCH_MODEL",
+        "prediction": {
+          "expected_gain_percent": 404.55,
+          "expected_gain_rupees": 0.49,
+          "listing_price_prediction": 0.61,
+          "gain_range": {
+            "min": 80,
+            "max": 200,
+            "probability": 0.75
+          },
+          "gain_range_rupees": {
+            "min": 0.1,
+            "max": 0.24
+          },
+          "final_score": 100,
+          "recommendation": "STRONG_BUY",
+          "confidence": "VERY_HIGH",
+          "risk_level": "LOW"
+        },
+        "subscription_analysis": {
+          "total_subscription": 65.1,
+          "qib_subscription": 35.66,
+          "nii_subscription": 146.39,
+          "retail_subscription": 47.1,
+          "weighted_score": 59.52
+        },
+        "probability_metrics": {
+          "prob_positive_return": 75.0,
+          "prob_loss": 25.0
+        },
+        "model_details": {
+          "base_gain_before_penalty": 404.55,
+          "undersubscription_penalty": 0.0,
+          "formula": "Rock_Winner_Curse_Adapted",
+          "weights": {
+            "qib": 0.65,
+            "nii": 0.2,
+            "retail": 0.15
+          }
+        },
+        "ipo_details": {
+          "issue_price": "Rs.115 to Rs.121",
+          "issue_size": "6721048",
+          "series": "EQ",
+          "status": "Active"
+        },
+        "timestamp": "2025-09-29T18:54:13.577076"
+      },
+      {
+        "symbol": "TRUALT",
+        "company_name": "TruAlt Bioenergy Limited",
+        "source": "MATH_RESEARCH_MODEL",
+        "prediction": {
+          "expected_gain_percent": 931.22,
+          "expected_gain_rupees": 4.62,
+          "listing_price_prediction": 5.12,
+          "gain_range": {
+            "min": 80,
+            "max": 200,
+            "probability": 0.75
+          },
+          "gain_range_rupees": {
+            "min": 0.4,
+            "max": 0.99
+          },
+          "final_score": 100,
+          "recommendation": "STRONG_BUY",
+          "confidence": "VERY_HIGH",
+          "risk_level": "LOW"
+        },
+        "subscription_analysis": {
+          "total_subscription": 71.92,
+          "qib_subscription": 159.22,
+          "nii_subscription": 98.56,
+          "retail_subscription": 11.0,
+          "weighted_score": 124.85
+        },
+        "probability_metrics": {
+          "prob_positive_return": 75.0,
+          "prob_loss": 25.0
+        },
+        "model_details": {
+          "base_gain_before_penalty": 931.22,
+          "undersubscription_penalty": 0.0,
+          "formula": "Rock_Winner_Curse_Adapted",
+          "weights": {
+            "qib": 0.65,
+            "nii": 0.2,
+            "retail": 0.15
+          }
+        },
+        "ipo_details": {
+          "issue_price": "Rs.472 to Rs.496",
+          "issue_size": "12355424",
+          "series": "EQ",
+          "status": "Active"
+        },
+        "timestamp": "2025-09-29T18:54:13.577076"
+      },
+      {
+        "symbol": "VIJAYPD",
+        "company_name": "Vijaypd Ceutical Limited",
+        "source": "MATH_RESEARCH_MODEL",
+        "prediction": {
+          "expected_gain_percent": -0.0,
+          "expected_gain_rupees": 0,
+          "listing_price_prediction": 0,
+          "gain_range": {
+            "min": -10,
+            "max": 5,
+            "probability": 0.65
+          },
+          "gain_range_rupees": {
+            "min": 0,
+            "max": 0
+          },
+          "final_score": 0,
+          "recommendation": "AVOID",
+          "confidence": "LOW",
+          "risk_level": "HIGH"
+        },
+        "subscription_analysis": {
+          "total_subscription": 0.0,
+          "qib_subscription": 0.0,
+          "nii_subscription": 0.0,
+          "retail_subscription": 0,
+          "weighted_score": 0.0
+        },
+        "probability_metrics": {
+          "prob_positive_return": 65.0,
+          "prob_loss": 35.0
+        },
+        "model_details": {
+          "base_gain_before_penalty": -10.0,
+          "undersubscription_penalty": -10.0,
+          "formula": "Rock_Winner_Curse_Adapted",
+          "weights": {
+            "qib": 0.65,
+            "nii": 0.2,
+            "retail": 0.15
+          }
+        },
+        "ipo_details": {
+          "issue_price": "",
+          "issue_size": "0",
+          "series": "SME",
+          "status": "Active"
+        },
+        "timestamp": "2025-09-29T18:54:13.577076"
+      },
+      {
+        "symbol": "SUBAHOTELS",
+        "company_name": "Suba Hotels Limited",
+        "source": "MATH_RESEARCH_MODEL",
+        "prediction": {
+          "expected_gain_percent": -0.0,
+          "expected_gain_rupees": 0,
+          "listing_price_prediction": 0,
+          "gain_range": {
+            "min": -10,
+            "max": 5,
+            "probability": 0.65
+          },
+          "gain_range_rupees": {
+            "min": 0,
+            "max": 0
+          },
+          "final_score": 0,
+          "recommendation": "AVOID",
+          "confidence": "LOW",
+          "risk_level": "HIGH"
+        },
+        "subscription_analysis": {
+          "total_subscription": 0.0,
+          "qib_subscription": 0.0,
+          "nii_subscription": 0.0,
+          "retail_subscription": 0,
+          "weighted_score": 0.0
+        },
+        "probability_metrics": {
+          "prob_positive_return": 65.0,
+          "prob_loss": 35.0
+        },
+        "model_details": {
+          "base_gain_before_penalty": -10.0,
+          "undersubscription_penalty": -10.0,
+          "formula": "Rock_Winner_Curse_Adapted",
+          "weights": {
+            "qib": 0.65,
+            "nii": 0.2,
+            "retail": 0.15
+          }
+        },
+        "ipo_details": {
+          "issue_price": "",
+          "issue_size": "0",
+          "series": "SME",
+          "status": "Active"
+        },
+        "timestamp": "2025-09-29T18:54:13.577076"
+      },
+      {
+        "symbol": "MPEL",
+        "company_name": "Manas Polymers and Energies Limited",
+        "source": "MATH_RESEARCH_MODEL",
+        "prediction": {
+          "expected_gain_percent": -0.0,
+          "expected_gain_rupees": 0,
+          "listing_price_prediction": 0,
+          "gain_range": {
+            "min": -10,
+            "max": 5,
+            "probability": 0.65
+          },
+          "gain_range_rupees": {
+            "min": 0,
+            "max": 0
+          },
+          "final_score": 0,
+          "recommendation": "AVOID",
+          "confidence": "LOW",
+          "risk_level": "HIGH"
+        },
+        "subscription_analysis": {
+          "total_subscription": 0.0,
+          "qib_subscription": 0.0,
+          "nii_subscription": 0.0,
+          "retail_subscription": 0,
+          "weighted_score": 0.0
+        },
+        "probability_metrics": {
+          "prob_positive_return": 65.0,
+          "prob_loss": 35.0
+        },
+        "model_details": {
+          "base_gain_before_penalty": -10.0,
+          "undersubscription_penalty": -10.0,
+          "formula": "Rock_Winner_Curse_Adapted",
+          "weights": {
+            "qib": 0.65,
+            "nii": 0.2,
+            "retail": 0.15
+          }
+        },
+        "ipo_details": {
+          "issue_price": "",
+          "issue_size": "0",
+          "series": "SME",
+          "status": "Active"
+        },
+        "timestamp": "2025-09-29T18:54:13.577076"
+      }
+    ],
+    "timestamp": "2025-09-29T18:54:13.577076"
+  }
+}

@@ -38,4 +38,4 @@ brotli
 
 beautifulsoup4
 
-google-generativeai
+google-genai

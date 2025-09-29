@@ -4,248 +4,165 @@ from typing import Dict, Optional
 import logging
 from datetime import datetime
 from ..services.gmp_service import gmp_service
-from ..utils.file_storage import file_storage
 
 logger = logging.getLogger(__name__)
 
 class GMPController:
-    """Simplified GMP Controller - handles only GMP data from 2 sources"""
+    """GMP Controller - Simple 3 endpoint handling"""
+    
+    def __init__(self):
+        self.gmp_service = gmp_service
     
     async def fetch_gmp_data(self) -> Dict:
-        """Fetch current GMP data from both sources and create combined data"""
+        """Handle GMP data fetch request - filters for current IPOs only"""
         try:
-            result = gmp_service.fetch_current_gmp()
+            logger.info("Processing GMP fetch request for current IPOs")
             
-            if result['success']:
+            # Call service for business logic
+            result = self.gmp_service.fetch_current_gmp()
+            
+            # Handle response formatting
+            if result.get('success'):
                 return {
                     'success': True,
-                    'message': f"Successfully fetched GMP data from {result['successful_sources']}/{result['total_sources']} sources",
-                    'total_sources': result['total_sources'],
-                    'successful_sources': result['successful_sources'],
-                    'timestamp': result['timestamp'],
-                    'period': 'current',
-                    'sources_scraped': list(result['source_data'].get('sources', {}).keys()),
-                    'total_unique_ipos': result.get('combined_data', {}).get('total_unique_ipos', 0)
+                    'message': result.get('message'),
+                    'current_ipos_count': result.get('current_ipos_count', 0),
+                    'matched_gmp_entries': result.get('matched_gmp_entries', 0),
+                    'total_sources': result.get('total_sources', 0),
+                    'successful_sources': result.get('successful_sources', 0),
+                    'timestamp': result.get('timestamp')
                 }
-            
-            return {
-                'success': False,
-                'message': 'Failed to fetch GMP data from sources',
-                'errors': result.get('errors', [])
-            }
-            
+            else:
+                return {
+                    'success': False,
+                    'message': result.get('message', 'Failed to fetch GMP data'),
+                    'error': result.get('error'),
+                    'timestamp': datetime.now().isoformat()
+                }
+                
         except Exception as e:
             logger.error(f"GMP Controller fetch error: {e}")
             return {
                 'success': False,
-                'error': str(e)
-            }
-    
-    async def get_gmp_prediction(self, symbol: str, ipo_data: Dict, date: Optional[str] = None) -> Dict:
-        """Get GMP data for symbol with date support"""
-        try:
-            prediction = gmp_service.get_gmp_prediction(symbol, {}, date)
-            
-            # Save individual prediction
-            save_date = date or datetime.now().strftime('%Y-%m-%d')
-            file_storage.save_data(f"gmp/predictions/{symbol}_{save_date}", prediction)
-            
-            return prediction
-            
-        except Exception as e:
-            logger.error(f"GMP prediction error for {symbol}: {e}")
-            return {
-                'symbol': symbol,
-                'source': 'Combined GMP',
-                'has_data': False,
+                'message': 'GMP data fetch failed',
                 'error': str(e),
                 'timestamp': datetime.now().isoformat()
             }
     
-    async def scrape_all_sources(self) -> Dict:
-        """Scrape data from both GMP sources separately"""
+    async def get_current_predictions(self, date: Optional[str] = None) -> Dict:
+        """Handle current predictions request - all IPOs for given date"""
         try:
-            # Scrape both sources
-            source_data = gmp_service.scrape_all_sources()
+            logger.info(f"Processing current predictions request for date: {date}")
             
-            if not source_data['success']:
-                return {
-                    'success': False,
-                    'message': 'Failed to scrape GMP sources',
-                    'errors': source_data.get('errors', [])
-                }
+            # Call service for business logic
+            result = self.gmp_service.get_current_predictions(date)
             
-            # Save source data separately
-            save_result = gmp_service.save_source_data(source_data)
-            
-            # Count successful sources
-            successful_sources = [name for name, data in source_data['sources'].items() if data['success']]
-            total_ipos = sum(data['count'] for data in source_data['sources'].values() if data['success'])
-            
-            return {
-                'success': True,
-                'message': f'Successfully scraped {len(successful_sources)} sources with {total_ipos} total IPOs',
-                'timestamp': source_data['timestamp'],
-                'date': source_data['date'],
-                'total_sources': len(source_data['sources']),
-                'successful_sources': len(successful_sources),
-                'sources_scraped': successful_sources,
-                'total_ipos': total_ipos,
-                'source_details': {
-                    name: {
-                        'success': data['success'],
-                        'count': data['count'],
-                        'scraped_at': data.get('scraped_at')
-                    } for name, data in source_data['sources'].items()
-                },
-                'save_result': save_result
-            }
-            
-        except Exception as e:
-            logger.error(f"GMP sources scraping error: {e}")
-            return {
-                'success': False,
-                'error': str(e)
-            }
-    
-    async def create_combined_gmp_data(self, date: str) -> Dict:
-        """Create combined GMP data for specific date"""
-        try:
-            combined_data = gmp_service.create_combined_gmp_data(date)
-            
-            if 'error' in combined_data:
-                return {
-                    'success': False,
-                    'message': f'Failed to create combined GMP data for {date}',
-                    'error': combined_data['error'],
-                    'date': date
-                }
-            
-            return {
-                'success': True,
-                'message': f'Successfully created combined GMP data for {date}',
-                'timestamp': combined_data['timestamp'],
-                'date': date,
-                'total_unique_ipos': combined_data.get('total_unique_ipos', 0),
-                'source_counts': combined_data.get('source_counts', {}),
-                'sources_available': combined_data.get('sources_available', []),
-                'data_summary': self._create_data_summary(combined_data.get('gmp_data', {}))
-            }
-            
-        except Exception as e:
-            logger.error(f"Combined GMP data error for {date}: {e}")
-            return {
-                'success': False,
-                'error': str(e),
-                'date': date
-            }
-    
-    def _create_data_summary(self, gmp_data: Dict) -> Dict:
-        """Create summary of GMP data"""
-        summary = {
-            'total_ipos': len(gmp_data),
-            'source_distribution': {
-                'only_ipowatch': 0,
-                'only_investorgain': 0,
-                'both_sources': 0
-            },
-            'gmp_stats': {
-                'positive_gmp': 0,
-                'negative_gmp': 0,
-                'zero_gmp': 0,
-                'no_gmp_data': 0
-            }
-        }
-        
-        for symbol, data in gmp_data.items():
-            # Count source distribution
-            available_in = data.get('available_in', [])
-            if len(available_in) == 2:
-                summary['source_distribution']['both_sources'] += 1
-            elif 'ipowatch' in available_in:
-                summary['source_distribution']['only_ipowatch'] += 1
-            elif 'investorgain' in available_in:
-                summary['source_distribution']['only_investorgain'] += 1
-            
-            # Count GMP categories
-            gmp_value = data.get('gmp_value', 0)
-            if gmp_value > 0:
-                summary['gmp_stats']['positive_gmp'] += 1
-            elif gmp_value < 0:
-                summary['gmp_stats']['negative_gmp'] += 1
-            elif gmp_value == 0:
-                summary['gmp_stats']['zero_gmp'] += 1
-            else:
-                summary['gmp_stats']['no_gmp_data'] += 1
-        
-        return summary
-    
-    async def get_source_data(self, source: str, date: Optional[str] = None) -> Dict:
-        """Get data from specific source for date"""
-        try:
-            target_date = date or datetime.now().strftime('%Y-%m-%d')
-            
-            if source not in ['ipowatch', 'investorgain']:
-                return {
-                    'success': False,
-                    'error': f'Invalid source: {source}. Available sources: ipowatch, investorgain'
-                }
-            
-            source_data = file_storage.load_data(f"gmp/{source}/current-ipo-{target_date}.json")
-            
-            if source_data:
+            # Handle response
+            if result.get('success'):
                 return {
                     'success': True,
-                    'source': source,
-                    'date': target_date,
-                    'total_ipos': len(source_data),
-                    'data': source_data
+                    'date': result.get('date'),
+                    'total_current_ipos': result.get('total_current_ipos', 0),
+                    'predictions': result.get('predictions', {}),
+                    'timestamp': result.get('timestamp')
                 }
             else:
-                return {
-                    'success': False,
-                    'message': f'No {source} data found for {target_date}',
-                    'source': source,
-                    'date': target_date
-                }
+                error_code = result.get('error_code', 'UNKNOWN_ERROR')
                 
+                # Customize response based on error type
+                if error_code == 'NO_CURRENT_IPOS':
+                    return {
+                        'success': False,
+                        'message': 'No current IPOs found for this date',
+                        'error_code': error_code,
+                        'suggestion': 'Check if IPOs are available for this date',
+                        'date': date or datetime.now().strftime('%Y-%m-%d'),
+                        'timestamp': datetime.now().isoformat()
+                    }
+                elif error_code == 'NO_GMP_DATA':
+                    return {
+                        'success': False,
+                        'message': 'No GMP data available. Please fetch GMP data first.',
+                        'error_code': error_code,
+                        'suggestion': 'Run POST /api/gmp/fetch first to get GMP data',
+                        'timestamp': datetime.now().isoformat()
+                    }
+                else:
+                    return {
+                        'success': False,
+                        'message': result.get('message', 'Current predictions failed'),
+                        'error_code': error_code,
+                        'error': result.get('error'),
+                        'timestamp': datetime.now().isoformat()
+                    }
+                    
         except Exception as e:
-            logger.error(f"Error getting {source} data for {date}: {e}")
+            logger.error(f"GMP Controller current predictions error: {e}")
             return {
                 'success': False,
+                'message': 'Current predictions request failed',
                 'error': str(e),
-                'source': source,
-                'date': target_date
+                'error_code': 'CONTROLLER_ERROR',
+                'timestamp': datetime.now().isoformat()
             }
     
-    async def get_cached_combined_data(self, date: str) -> Dict:
-        """Get cached combined GMP data for date"""
+    async def get_symbol_prediction(self, symbol: str, date: Optional[str] = None) -> Dict:
+        """Handle individual symbol prediction request"""
         try:
-            combined_data = file_storage.load_data(f'gmp-combined-{date}.json')
+            logger.info(f"Processing prediction request for symbol: {symbol}")
             
-            if combined_data:
-                return {
-                    'success': True,
-                    'message': f'Found cached combined data for {date}',
-                    'date': date,
-                    'total_unique_ipos': combined_data.get('total_unique_ipos', 0),
-                    'sources_available': combined_data.get('sources_available', []),
-                    'timestamp': combined_data.get('timestamp'),
-                    'data': combined_data
-                }
-            else:
+            # Input validation
+            if not symbol or not symbol.strip():
                 return {
                     'success': False,
-                    'message': f'No cached combined data found for {date}',
-                    'date': date
+                    'message': 'Symbol parameter is required',
+                    'error_code': 'INVALID_SYMBOL',
+                    'timestamp': datetime.now().isoformat()
                 }
+            
+            # Call service for business logic
+            result = self.gmp_service.get_symbol_prediction(symbol, date)
+            
+            # Handle response
+            if result.get('success'):
+                return {
+                    'success': True,
+                    'symbol': symbol.upper(),
+                    'data': result.get('data'),
+                    'timestamp': datetime.now().isoformat()
+                }
+            else:
+                error_code = result.get('error_code', 'UNKNOWN_ERROR')
                 
+                # Customize response based on error type
+                if error_code == 'SYMBOL_NOT_FOUND':
+                    return {
+                        'success': False,
+                        'symbol': symbol.upper(),
+                        'message': f'Symbol {symbol.upper()} not found in current IPOs',
+                        'error_code': error_code,
+                        'available_symbols': result.get('available_symbols', []),
+                        'timestamp': datetime.now().isoformat()
+                    }
+                else:
+                    return {
+                        'success': False,
+                        'symbol': symbol.upper(),
+                        'message': result.get('message', 'Symbol prediction failed'),
+                        'error_code': error_code,
+                        'error': result.get('error'),
+                        'timestamp': datetime.now().isoformat()
+                    }
+                    
         except Exception as e:
-            logger.error(f"Error getting cached combined data for {date}: {e}")
+            logger.error(f"GMP Controller symbol prediction error for {symbol}: {e}")
             return {
                 'success': False,
+                'symbol': symbol.upper() if symbol else 'UNKNOWN',
+                'message': 'Symbol prediction request failed',
                 'error': str(e),
-                'date': date
+                'error_code': 'CONTROLLER_ERROR',
+                'timestamp': datetime.now().isoformat()
             }
 
 # Create controller instance

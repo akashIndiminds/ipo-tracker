@@ -1,0 +1,335 @@
+[
+  {
+    "symbol": "GLOTTIS",
+    "company_name": "Glottis Limited",
+    "source": "AI_GEMINI_SEARCH",
+    "model": "gemini-2.0-flash-exp",
+    "recommendation": "HOLD",
+    "expected_gain_percent": 10.0,
+    "confidence": "MEDIUM",
+    "risk_level": "MEDIUM",
+    "reasoning": "Glottis IPO presents a mixed bag. Strong revenue and profit growth are attractive, but reliance on ocean freight and the renewable energy sector poses risks. Subscription levels are moderate on day 1, indicating cautious investor sentiment. Valuation is fair compared to peers, but not significantly undervalued. Given these factors, a HOLD strategy is appropriate.",
+    "key_factors": [
+      "Financial Growth",
+      "Sector Focus (Renewable Energy)",
+      "Subscription Status",
+      "Valuation",
+      "Ocean Freight Dependence"
+    ],
+    "subscription_analysis": "Day 1 subscription: Overall 0.43x. QIB: 1.76x, NII: 0.17x, Retail: 0.23x. Indicates moderate institutional interest but weak retail participation.",
+    "sector_outlook": "The Indian logistics sector is experiencing robust growth, driven by infrastructure development and increasing trade. However, it remains competitive with both organized and unorganized players. The focus on renewable energy logistics provides a niche, but also concentration risk.",
+    "ipo_details": {
+      "issue_price": "Rs.120 to Rs.129",
+      "issue_size": "20123929",
+      "lot_size": "N/A",
+      "face_value": "N/A",
+      "issue_period": "29-Sep-2025 to 01-Oct-2025",
+      "status": "Active"
+    },
+    "subscription_summary": {
+      "total": "Researched via AI",
+      "qib": "Researched via AI",
+      "nii": "Researched via AI",
+      "retail": "Researched via AI"
+    },
+    "timestamp": "2025-09-29T19:45:22.550340",
+    "prediction_date": "2025-09-29",
+    "search_enabled": true
+  },
+  {
+    "symbol": "OMFREIGHT",
+    "company_name": "Om Freight Forwarders Limited",
+    "source": "AI_GEMINI_SEARCH",
+    "model": "gemini-2.0-flash-exp",
+    "recommendation": "HOLD",
+    "expected_gain_percent": 10.0,
+    "confidence": "MEDIUM",
+    "risk_level": "MEDIUM",
+    "reasoning": "Om Freight Forwarders IPO presents a mixed bag. The company has shown revenue and profit growth in FY25, and its return ratios are competitive within its peer group. However, it faces risks from geographic concentration, reliance on a few key customers, and potential volatility in margins. The IPO is priced at the higher end compared to peers. Subscription levels are moderate on day 1.",
+    "key_factors": [
+      "Financial growth in FY25",
+      "Competitive return ratios",
+      "Geographic concentration risk",
+      "High valuation compared to peers",
+      "Moderate subscription status"
+    ],
+    "subscription_analysis": "The IPO was subscribed 1.13 times on Day 1. QIB subscribed 1.10 times, NII 3.20 times, and Retail 0.40 times.",
+    "sector_outlook": "The Indian freight forwarding market is expected to grow at a CAGR of 6.4% from 2025 to 2030, driven by e-commerce growth, globalization, and government infrastructure initiatives. Digitalization and AI are expected to further optimize supply chains.",
+    "ipo_details": {
+      "issue_price": "Rs.128 to Rs.135",
+      "issue_size": "7916945",
+      "lot_size": "N/A",
+      "face_value": "N/A",
+      "issue_period": "29-Sep-2025 to 03-Oct-2025",
+      "status": "Active"
+    },
+    "subscription_summary": {
+      "total": "Researched via AI",
+      "qib": "Researched via AI",
+      "nii": "Researched via AI",
+      "retail": "Researched via AI"
+    },
+    "timestamp": "2025-09-29T19:45:32.479348",
+    "prediction_date": "2025-09-29",
+    "search_enabled": true
+  },
+  {
+    "symbol": "FABTECH",
+    "company_name": "Fabtech Technologies Limited",
+    "source": "AI_GEMINI_SEARCH",
+    "model": "gemini-2.0-flash-exp",
+    "recommendation": "BUY",
+    "expected_gain_percent": 25.0,
+    "confidence": "MEDIUM",
+    "risk_level": "MEDIUM",
+    "reasoning": "Fabtech Technologies demonstrates strong revenue and profit growth in the biopharma engineering sector. The IPO is reasonably valued with a healthy order book providing revenue visibility. Subscription numbers indicate good investor interest. The company's asset-light model and global presence are also positives, though execution risks in large projects remain.",
+    "key_factors": [
+      "Revenue Growth",
+      "Healthy Order Book",
+      "Asset-Light Model",
+      "Global Presence",
+      "Reasonable Valuation"
+    ],
+    "subscription_analysis": "The IPO has seen strong subscription demand. By the end of Day 3, the IPO was subscribed 740.37 times, with retail portion subscribed 715.05 times, QIB 224.5 times, and NII 1,485.52 times. Day 1 saw 70% subscription overall.",
+    "sector_outlook": "The biopharma engineering sector is experiencing growth due to increasing investments in pharmaceutical and biotechnology industries. Fabtech's focus on turnkey projects and cleanroom solutions positions it well to capitalize on this trend.",
+    "ipo_details": {
+      "issue_price": "Rs.181 to Rs.191",
+      "issue_size": "12060000",
+      "lot_size": "N/A",
+      "face_value": "N/A",
+      "issue_period": "29-Sep-2025 to 01-Oct-2025",
+      "status": "Active"
+    },
+    "subscription_summary": {
+      "total": "Researched via AI",
+      "qib": "Researched via AI",
+      "nii": "Researched via AI",
+      "retail": "Researched via AI"
+    },
+    "timestamp": "2025-09-29T19:45:38.516999",
+    "prediction_date": "2025-09-29",
+    "search_enabled": true
+  },
+  {
+    "symbol": "PACEDIGITK",
+    "company_name": "Pace Digitek Limited",
+    "source": "AI_GEMINI_SEARCH",
+    "model": "gemini-2.0-flash-exp",
+    "recommendation": "BUY",
+    "expected_gain_percent": 25.0,
+    "confidence": "MEDIUM",
+    "risk_level": "MEDIUM",
+    "reasoning": "Pace Digitek has demonstrated strong financial growth and profitability, driven by its telecom and energy solutions. The IPO valuation appears attractive compared to peers. However, investors should be aware of customer concentration and potential margin volatility in the renewable energy sector. The company's robust order book and diversification efforts support a positive outlook.",
+    "key_factors": [
+      "Strong financial growth",
+      "Healthy profitability",
+      "Large order book",
+      "Diversification into renewable energy",
+      "Attractive valuation compared to peers"
+    ],
+    "subscription_analysis": "Day 2 subscription data indicates moderate demand. As of September 29, 2025, 12:09 PM, the IPO was subscribed 0.34 times overall. The retail portion was subscribed 0.43 times, NII 0.33 times, and QIB 0.19 times. Anchor investors have fully subscribed their allocation.",
+    "sector_outlook": "The telecom infrastructure and renewable energy sectors in India are experiencing strong growth, driven by 4G/5G rollout, fiber broadband expansion, and increasing demand for battery energy storage systems. Government initiatives like Digital India and green energy transition further support this growth.",
+    "ipo_details": {
+      "issue_price": "Rs.208 to Rs.219",
+      "issue_size": "27606555",
+      "lot_size": "N/A",
+      "face_value": "N/A",
+      "issue_period": "26-Sep-2025 to 30-Sep-2025",
+      "status": "Active"
+    },
+    "subscription_summary": {
+      "total": "Researched via AI",
+      "qib": "Researched via AI",
+      "nii": "Researched via AI",
+      "retail": "Researched via AI"
+    },
+    "timestamp": "2025-09-29T19:45:44.143026",
+    "prediction_date": "2025-09-29",
+    "search_enabled": true
+  },
+  {
+    "symbol": "JKIPL",
+    "company_name": "Jinkushal Industries Limited",
+    "source": "AI_GEMINI_SEARCH",
+    "model": "gemini-2.0-flash-exp",
+    "recommendation": "SUBSCRIBE",
+    "expected_gain_percent": 14.05,
+    "confidence": "HIGH",
+    "risk_level": "MEDIUM",
+    "reasoning": "Jinkushal Industries IPO has received strong subscription demand, indicating positive investor sentiment. The company has shown good revenue growth and is a leading exporter in its segment. While profitability margins are lower than peers, valuations appear reasonable. The IPO is expected to list at a premium.",
+    "key_factors": [
+      "Strong subscription numbers",
+      "Revenue growth",
+      "Leading exporter",
+      "Reasonable valuation",
+      "Industry growth"
+    ],
+    "subscription_analysis": "The IPO was subscribed 65.09 times overall. Retail investors subscribed 47.04 times, NIIs subscribed 146.39 times, and QIBs subscribed 35.70 times (excluding anchor investors).",
+    "sector_outlook": "The Indian manufacturing sector is experiencing growth, supported by government initiatives and increasing foreign investment. The construction equipment market is also projected to grow.",
+    "ipo_details": {
+      "issue_price": "Rs.115 to Rs.121",
+      "issue_size": "6721048",
+      "lot_size": "N/A",
+      "face_value": "N/A",
+      "issue_period": "25-Sep-2025 to 29-Sep-2025",
+      "status": "Active"
+    },
+    "subscription_summary": {
+      "total": "Researched via AI",
+      "qib": "Researched via AI",
+      "nii": "Researched via AI",
+      "retail": "Researched via AI"
+    },
+    "timestamp": "2025-09-29T19:45:48.860035",
+    "prediction_date": "2025-09-29",
+    "search_enabled": true
+  },
+  {
+    "symbol": "TRUALT",
+    "company_name": "TruAlt Bioenergy Limited",
+    "source": "AI_GEMINI_SEARCH",
+    "model": "gemini-2.0-flash-exp",
+    "recommendation": "BUY",
+    "expected_gain_percent": 20.0,
+    "confidence": "HIGH",
+    "risk_level": "MEDIUM",
+    "reasoning": "TruAlt Bioenergy IPO closed with strong oversubscription, indicating high investor confidence. The company has strong financials, a government-backed ethanol demand story, and efficient operations. The IPO is aggressively priced, but the oversubscription and positive sector outlook support potential listing gains.",
+    "key_factors": [
+      "Oversubscription",
+      "Strong Financials",
+      "Government Support",
+      "Efficient Operations",
+      "Expansion Plans"
+    ],
+    "subscription_analysis": "The IPO was oversubscribed 75.02 times overall. QIB: 165.16x, NII: 103.04x (bNII: 118.62x, sNII: 71.87x), Retail: 11.50x. Total applications: 21.98 lakh for 88.85 crore shares.",
+    "sector_outlook": "The biofuel sector, particularly ethanol, is expected to grow significantly due to government initiatives like the Ethanol Blending Program (EBP). The company is also diversifying into CBG and sustainable aviation fuel (SAF), which adds long-term appeal.",
+    "ipo_details": {
+      "issue_price": "Rs.472 to Rs.496",
+      "issue_size": "12355424",
+      "lot_size": "N/A",
+      "face_value": "N/A",
+      "issue_period": "25-Sep-2025 to 29-Sep-2025",
+      "status": "Active"
+    },
+    "subscription_summary": {
+      "total": "Researched via AI",
+      "qib": "Researched via AI",
+      "nii": "Researched via AI",
+      "retail": "Researched via AI"
+    },
+    "timestamp": "2025-09-29T19:45:53.558081",
+    "prediction_date": "2025-09-29",
+    "search_enabled": true
+  },
+  {
+    "symbol": "VIJAYPD",
+    "company_name": "Vijaypd Ceutical Limited",
+    "source": "AI_GEMINI_SEARCH",
+    "model": "gemini-2.0-flash-exp",
+    "recommendation": "HOLD",
+    "expected_gain_percent": 10.0,
+    "confidence": "MEDIUM",
+    "risk_level": "MEDIUM",
+    "reasoning": "Vijaypd Ceutical is a pharmaceutical and FMCG distributor with a long operating history. The company has shown strong revenue growth and improving profitability. The IPO is priced reasonably. However, the company's margins are below industry benchmarks, and its geographic concentration exposes it to regional risks. Subscription levels are moderate on day 1.",
+    "key_factors": [
+      "Strong revenue growth",
+      "Improving profitability",
+      "Expansion into API manufacturing",
+      "Reasonable valuation",
+      "Moderate subscription"
+    ],
+    "subscription_analysis": "The IPO is subscribed 0.59 times overall on Day 1. The NII category is subscribed 1.10 times, while the Retail category is subscribed 0.08 times as of September 29, 2025, 5:09 PM.",
+    "sector_outlook": "The Indian pharmaceutical industry is experiencing strong growth, driven by increasing domestic demand, export opportunities, and government support. The sector is expected to continue growing at a CAGR of 11-13%.",
+    "ipo_details": {
+      "issue_price": "N/A",
+      "issue_size": "0",
+      "lot_size": "N/A",
+      "face_value": "N/A",
+      "issue_period": "29-Sep-2025 to 01-Oct-2025",
+      "status": "Active"
+    },
+    "subscription_summary": {
+      "total": "Researched via AI",
+      "qib": "Researched via AI",
+      "nii": "Researched via AI",
+      "retail": "Researched via AI"
+    },
+    "timestamp": "2025-09-29T19:45:58.992448",
+    "prediction_date": "2025-09-29",
+    "search_enabled": true
+  },
+  {
+    "symbol": "SUBAHOTELS",
+    "company_name": "Suba Hotels Limited",
+    "source": "AI_GEMINI_SEARCH",
+    "model": "gemini-2.0-flash-exp",
+    "recommendation": "AVOID",
+    "expected_gain_percent": -10.0,
+    "confidence": "MEDIUM",
+    "risk_level": "HIGH",
+    "reasoning": "Suba Hotels IPO presents a mixed bag. While the company has shown robust revenue and profit growth, its reliance on leased properties and online travel agents poses risks. The subscription status is tepid, and the increased borrowings are concerning. The mid-market hotel sector has potential, but Suba's specific financials and subscription levels suggest caution.",
+    "key_factors": [
+      "Financial growth",
+      "Mid-market positioning",
+      "Reliance on leased assets",
+      "Subscription status",
+      "Increased borrowings"
+    ],
+    "subscription_analysis": "As of September 29, 2025, the IPO is under-subscribed at 0.57 times overall. Retail subscription is at 0.10 times, QIB (Ex Anchor) at 0.48 times, and NII at 0.36 times.",
+    "sector_outlook": "The Indian hospitality sector is experiencing a strong recovery, driven by domestic leisure travel and business events. Occupancy rates are projected to reach decade-highs, particularly in Tier II and Tier III cities. The market is expected to grow at a CAGR of 9.4% from 2024 to 2030.",
+    "ipo_details": {
+      "issue_price": "N/A",
+      "issue_size": "0",
+      "lot_size": "N/A",
+      "face_value": "N/A",
+      "issue_period": "29-Sep-2025 to 01-Oct-2025",
+      "status": "Active"
+    },
+    "subscription_summary": {
+      "total": "Researched via AI",
+      "qib": "Researched via AI",
+      "nii": "Researched via AI",
+      "retail": "Researched via AI"
+    },
+    "timestamp": "2025-09-29T19:46:05.063774",
+    "prediction_date": "2025-09-29",
+    "search_enabled": true
+  },
+  {
+    "symbol": "MPEL",
+    "company_name": "Manas Polymers and Energies Limited",
+    "source": "AI_GEMINI_SEARCH",
+    "model": "gemini-2.0-flash-exp",
+    "recommendation": "AVOID",
+    "expected_gain_percent": -15.0,
+    "confidence": "MEDIUM",
+    "risk_level": "HIGH",
+    "reasoning": "Manas Polymers & Energies Ltd. IPO shows limited subscription interest with only 0.04 times subscription on Day 2. Financial performance shows revenue growth, but the IPO appears aggressively priced based on recent data. The small paid-up equity capital post IPO suggests a longer gestation period. Given the limited subscription and aggressive pricing, avoiding the IPO is recommended.",
+    "key_factors": [
+      "Limited subscription",
+      "Aggressive pricing",
+      "Small equity base",
+      "Dual business model (packaging and renewable energy)",
+      "Growth potential in polymer sector"
+    ],
+    "subscription_analysis": "As of September 29, 2025, the IPO is subscribed 0.04 times overall. Retail portion is subscribed 0.05 times, NII 0.01 times, and QIB 0.00 times.",
+    "sector_outlook": "The Indian polymer market is experiencing growth, driven by demand in automotive, construction, and packaging sectors. Renewable energy sector also shows potential. However, the company's small size and limited track record pose risks.",
+    "ipo_details": {
+      "issue_price": "N/A",
+      "issue_size": "0",
+      "lot_size": "N/A",
+      "face_value": "N/A",
+      "issue_period": "26-Sep-2025 to 30-Sep-2025",
+      "status": "Active"
+    },
+    "subscription_summary": {
+      "total": "Researched via AI",
+      "qib": "Researched via AI",
+      "nii": "Researched via AI",
+      "retail": "Researched via AI"
+    },
+    "timestamp": "2025-09-29T19:46:10.764230",
+    "prediction_date": "2025-09-29",
+    "search_enabled": true
+  }
+]

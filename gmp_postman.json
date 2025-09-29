@@ -1,0 +1,330 @@
+{
+  "info": {
+    "name": "GMP API Collection",
+    "description": "Collection for GMP (Grey Market Premium) API endpoints\n\nThis collection includes:\n1. Fetch GMP Data - Get current GMP data for all current IPOs\n2. Get Current Predictions - Get all current IPOs with GMP data\n3. Get Symbol Prediction - Get GMP prediction for specific IPO symbol",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Fetch GMP Data",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has success field\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('success');",
+              "});",
+              "",
+              "pm.test(\"Response has timestamp\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('timestamp');",
+              "});",
+              "",
+              "// Store response for use in other requests",
+              "if (pm.response.json().success) {",
+              "    pm.collectionVariables.set(\"gmp_data_fetched\", \"true\");",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/gmp/fetch",
+          "host": ["{{base_url}}"],
+          "path": ["api", "gmp", "fetch"]
+        },
+        "description": "**Fetch Current GMP Data**\n\nThis endpoint fetches and processes GMP (Grey Market Premium) data for current IPOs only.\n\n**Process:**\n1. Gets current IPOs from stored NSE data\n2. Scrapes GMP data from sources\n3. Filters only current IPO related data\n4. Stores filtered data in: gmp_current/date.json\n\n**Success Response:**\n- `success`: true/false\n- `message`: Status message\n- `current_ipos_count`: Number of current IPOs\n- `matched_gmp_entries`: Number of matched GMP entries\n- `total_sources`: Total sources checked\n- `successful_sources`: Sources that responded successfully\n- `timestamp`: Request timestamp\n\n**Error Response:**\n- `success`: false\n- `message`: Error description\n- `error`: Detailed error information\n- `timestamp`: Request timestamp"
+      }
+    },
+    {
+      "name": "Get Current Predictions",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has success field\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('success');",
+              "});",
+              "",
+              "// If successful, store available symbols for use in symbol prediction",
+              "var jsonData = pm.response.json();",
+              "if (jsonData.success && jsonData.predictions) {",
+              "    var symbols = Object.keys(jsonData.predictions);",
+              "    if (symbols.length > 0) {",
+              "        pm.collectionVariables.set(\"sample_symbol\", symbols[0]);",
+              "        pm.collectionVariables.set(\"available_symbols\", JSON.stringify(symbols));",
+              "    }",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/gmp/current?date={{current_date}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "gmp", "current"],
+          "query": [
+            {
+              "key": "date",
+              "value": "{{current_date}}",
+              "description": "Date in YYYY-MM-DD format (optional, defaults to today)"
+            }
+          ]
+        },
+        "description": "**Get All Current IPOs with GMP Data**\n\nRetrieves all current IPOs along with their GMP (Grey Market Premium) predictions for a given date.\n\n**Query Parameters:**\n- `date` (optional): Date in YYYY-MM-DD format. Defaults to today if not provided.\n\n**Success Response:**\n- `success`: true\n- `date`: Date for which data is retrieved\n- `total_current_ipos`: Total number of current IPOs\n- `predictions`: Object containing all current IPOs with their GMP data\n- `timestamp`: Response timestamp\n\n**Error Responses:**\n\n*NO_CURRENT_IPOS:*\n- `success`: false\n- `message`: \"No current IPOs found for this date\"\n- `error_code`: \"NO_CURRENT_IPOS\"\n- `suggestion`: Helpful suggestion\n- `date`: Requested date\n\n*NO_GMP_DATA:*\n- `success`: false\n- `message`: \"No GMP data available. Please fetch GMP data first.\"\n- `error_code`: \"NO_GMP_DATA\"\n- `suggestion`: \"Run POST /api/gmp/fetch first to get GMP data\""
+      }
+    },
+    {
+      "name": "Get Current Predictions (Today)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has success field\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('success');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/gmp/current",
+          "host": ["{{base_url}}"],
+          "path": ["api", "gmp", "current"]
+        },
+        "description": "**Get Current Predictions for Today**\n\nSame as above but without date parameter - uses today's date by default.\n\nThis is a convenience endpoint to quickly get today's IPO predictions without specifying the date."
+      }
+    },
+    {
+      "name": "Get Symbol Prediction",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has success field\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('success');",
+              "});",
+              "",
+              "pm.test(\"Response has symbol field\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('symbol');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/gmp/predict/{{sample_symbol}}?date={{current_date}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "gmp", "predict", "{{sample_symbol}}"],
+          "query": [
+            {
+              "key": "date",
+              "value": "{{current_date}}",
+              "description": "Date in YYYY-MM-DD format (optional, defaults to today)"
+            }
+          ]
+        },
+        "description": "**Get GMP Prediction for Specific Symbol**\n\nRetrieves GMP (Grey Market Premium) prediction data for a specific IPO symbol.\n\n**Path Parameters:**\n- `symbol`: IPO symbol (e.g., TRUALT) - Required\n\n**Query Parameters:**\n- `date` (optional): Date in YYYY-MM-DD format for historical data. Defaults to today.\n\n**Success Response:**\n- `success`: true\n- `symbol`: The requested symbol (uppercase)\n- `data`: Object containing IPO and GMP data for the symbol\n- `timestamp`: Response timestamp\n\n**Error Responses:**\n\n*INVALID_SYMBOL:*\n- `success`: false\n- `message`: \"Symbol parameter is required\"\n- `error_code`: \"INVALID_SYMBOL\"\n\n*SYMBOL_NOT_FOUND:*\n- `success`: false\n- `symbol`: Requested symbol\n- `message`: \"Symbol {SYMBOL} not found in current IPOs\"\n- `error_code`: \"SYMBOL_NOT_FOUND\"\n- `available_symbols`: Array of currently available symbols\n\n**Note:** Replace `{{sample_symbol}}` with actual IPO symbols like:\n- TRUALT\n- NTPC\n- Any other current IPO symbol"
+      }
+    },
+    {
+      "name": "Get Symbol Prediction (Hardcoded Example)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response has symbol field\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('symbol');",
+              "    pm.expect(jsonData.symbol).to.eql('TRUALT');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/gmp/predict/TRUALT",
+          "host": ["{{base_url}}"],
+          "path": ["api", "gmp", "predict", "TRUALT"]
+        },
+        "description": "**Example: Get Prediction for TRUALT Symbol**\n\nThis is a hardcoded example showing how to request prediction for a specific symbol (TRUALT) without date parameter.\n\n**Replace 'TRUALT' with any current IPO symbol you want to query.**\n\nCommon IPO symbols you might use:\n- TRUALT\n- NTPC\n- Any symbol returned in the available_symbols from the current predictions endpoint"
+      }
+    },
+    {
+      "name": "Test Invalid Symbol",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response indicates failure\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.success).to.be.false;",
+              "});",
+              "",
+              "pm.test(\"Has error code\", function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('error_code');",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/gmp/predict/INVALID_SYMBOL",
+          "host": ["{{base_url}}"],
+          "path": ["api", "gmp", "predict", "INVALID_SYMBOL"]
+        },
+        "description": "**Test Case: Invalid Symbol**\n\nThis request tests the API's behavior when an invalid or non-existent symbol is provided.\n\n**Expected Response:**\n- `success`: false\n- `error_code`: \"SYMBOL_NOT_FOUND\"\n- `available_symbols`: List of valid symbols\n- Helpful error message"
+      }
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "exec": [
+          "// Set current date if not already set",
+          "if (!pm.collectionVariables.get('current_date')) {",
+          "    const today = new Date();",
+          "    const currentDate = today.getFullYear() + '-' + ",
+          "        String(today.getMonth() + 1).padStart(2, '0') + '-' + ",
+          "        String(today.getDate()).padStart(2, '0');",
+          "    pm.collectionVariables.set('current_date', currentDate);",
+          "}",
+          "",
+          "// Set default base_url if not set",
+          "if (!pm.collectionVariables.get('base_url')) {",
+          "    pm.collectionVariables.set('base_url', 'http://localhost:8000');",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string",
+      "description": "Base URL for the GMP API"
+    },
+    {
+      "key": "current_date",
+      "value": "",
+      "type": "string",
+      "description": "Current date in YYYY-MM-DD format (auto-generated)"
+    },
+    {
+      "key": "sample_symbol",
+      "value": "TRUALT",
+      "type": "string",
+      "description": "Sample IPO symbol for testing (auto-updated from current predictions response)"
+    },
+    {
+      "key": "available_symbols",
+      "value": "",
+      "type": "string",
+      "description": "JSON string of available symbols (auto-updated from API responses)"
+    },
+    {
+      "key": "gmp_data_fetched",
+      "value": "false",
+      "type": "string",
+      "description": "Flag indicating if GMP data has been fetched successfully"
+    }
+  ]
+}

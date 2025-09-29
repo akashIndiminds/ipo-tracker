@@ -1,21 +1,58 @@
 # app/routes/ai_routes.py
 
-from fastapi import APIRouter, Path
-from ..services.ai_prediction import ai_prediction_service
-from ..services.nse_service import nse_service
-from ..utils.file_storage import file_storage
+from fastapi import APIRouter, Path, Query
+from datetime import datetime
+from ..controllers.ai_controller import ai_controller
 
 router = APIRouter(prefix="/api/ai", tags=["AI Prediction"])
 
-@router.get("/predict/{symbol}")
-async def get_ai_prediction(symbol: str = Path(...)):
-    """Get AI prediction"""
-    # Get IPO and subscription data
-    current_ipos = nse_service.fetch_current_ipos()
-    ipo_data = next((ipo for ipo in current_ipos if ipo['symbol'] == symbol.upper()), {})
+@router.post("/predict")
+async def predict_all_current_ipos(date: str = Query(None, description="Date in YYYY-MM-DD format, defaults to today")):
+    """
+    Generate AI predictions for all current IPOs
     
-    subscription_data = nse_service.fetch_ipo_active_category(symbol)
+    - Fetches current IPO data from NSE
+    - Fetches subscription data
+    - Generates AI predictions using Gemini
+    - Saves predictions to file
     
-    prediction = ai_prediction_service.predict(ipo_data, subscription_data)
-    file_storage.save_data(f"predictions/ai/{symbol}", prediction)
-    return prediction
+    Query Parameters:
+    - date: Optional date in YYYY-MM-DD format (defaults to today)
+    
+    Example: POST /api/ai/predict
+    Example: POST /api/ai/predict?date=2025-09-29
+    """
+    if date is None:
+        date = datetime.now().strftime('%Y-%m-%d')
+    
+    return await ai_controller.predict_all_current_ipos(date)
+
+
+@router.get("/predictions/{date}")
+async def get_predictions_by_date(date: str = Path(..., description="Date in YYYY-MM-DD format")):
+    """
+    Get all AI predictions for a specific date
+    
+    Path Parameters:
+    - date: Date in YYYY-MM-DD format
+    
+    Example: GET /api/ai/predictions/2025-09-29
+    """
+    return await ai_controller.get_predictions_by_date(date)
+
+
+@router.get("/prediction/{symbol}/{date}")
+async def get_prediction_by_symbol_and_date(
+    symbol: str = Path(..., description="IPO symbol"),
+    date: str = Path(..., description="Date in YYYY-MM-DD format")
+):
+    """
+    Get AI prediction for specific symbol and date
+    
+    Path Parameters:
+    - symbol: IPO symbol (e.g., SWIGGY, ZOMATO)
+    - date: Date in YYYY-MM-DD format
+    
+    Example: GET /api/ai/prediction/SWIGGY/2025-09-29
+    """
+    return await ai_controller.get_prediction_by_symbol_and_date(symbol, date)
