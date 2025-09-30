@@ -28,7 +28,7 @@ class FileStorage:
             "predictions/gmp",           # GMP predictions (renamed from gmp_current)
             "predictions/math",          # Math predictions
             "predictions/ai",            # AI predictions
-            "predictions/final_prediction"  # Final combined predictions
+            "predictions/final"          # Final combined predictions
         ]
         
         for dir_path in dirs:
