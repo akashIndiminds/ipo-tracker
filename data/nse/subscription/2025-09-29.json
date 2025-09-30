@@ -1,0 +1,1189 @@
+{
+  "metadata": {
+    "path": "nse/subscription",
+    "filename": "2025-09-29",
+    "timestamp": "2025-09-29T23:01:33.518725",
+    "full_path": "data\\nse\\subscription\\2025-09-29.json"
+  },
+  "data": {
+    "metadata": {
+      "timestamp": "2025-09-29T23:01:33.518725",
+      "total_symbols": 9,
+      "successful_symbols": 9,
+      "failed_symbols": [],
+      "success_rate": 100.0
+    },
+    "data": {
+      "FABTECH": {
+        "symbol": "FABTECH",
+        "update_time": "Updated as on 29-Sep-2025 17:00:00",
+        "categories": {
+          "Qualified Institutional Buyers(QIBs)": {
+            "sr_no": "1",
+            "shares_offered": 6002526,
+            "shares_bid": 4608375,
+            "subscription_times": 0.767739281762378,
+            "shares_offered_raw": "6002526",
+            "shares_bid_raw": "4608375",
+            "subscription_raw": "0.767739281762378"
+          },
+          "Foreign Institutional Investors(FIIs)": {
+            "sr_no": "1(a)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Domestic Financial Institutions(Banks/ Financial Institutions(FIs)/ Insurance Companies)": {
+            "sr_no": "1(b)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Mutual funds": {
+            "sr_no": "1(c)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Others": {
+            "sr_no": "2.2(c)",
+            "shares_offered": 0,
+            "shares_bid": 4350,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "4350",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors": {
+            "sr_no": "2",
+            "shares_offered": 1800759,
+            "shares_bid": 826650,
+            "subscription_times": 0.45905643120484196,
+            "shares_offered_raw": "1800759",
+            "shares_bid_raw": "826650",
+            "subscription_raw": "0.45905643120484196"
+          },
+          "Non Institutional Investors(Bid amount of more than Ten Lakh Rupees)": {
+            "sr_no": "2.1",
+            "shares_offered": 1200506,
+            "shares_bid": 435600,
+            "subscription_times": 0.36284699951520444,
+            "shares_offered_raw": "1200506",
+            "shares_bid_raw": "435600",
+            "subscription_raw": "0.36284699951520444"
+          },
+          "Corporates": {
+            "sr_no": "2.2(a)",
+            "shares_offered": 0,
+            "shares_bid": 2175,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "2175",
+            "subscription_raw": ""
+          },
+          "Individuals(Other than RIIs)": {
+            "sr_no": "2.2(b)",
+            "shares_offered": 0,
+            "shares_bid": 384525,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "384525",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors(Bid amount of more than Two Lakh Rupees upto Ten Lakh Rupees)": {
+            "sr_no": "2.2",
+            "shares_offered": 600253,
+            "shares_bid": 391050,
+            "subscription_times": 0.651475294584117,
+            "shares_offered_raw": "600253",
+            "shares_bid_raw": "391050",
+            "subscription_raw": "0.651475294584117"
+          },
+          "Retail Individual Investors(RIIs)": {
+            "sr_no": "3",
+            "shares_offered": 4201770,
+            "shares_bid": 2955600,
+            "subscription_times": 0.7034178453366081,
+            "shares_offered_raw": "4201770",
+            "shares_bid_raw": "2955600",
+            "subscription_raw": "0.7034178453366081"
+          },
+          "Cut Off": {
+            "sr_no": "4(a)",
+            "shares_offered": 0,
+            "shares_bid": 22800,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "22800",
+            "subscription_raw": ""
+          },
+          "Price bids": {
+            "sr_no": "3(b)",
+            "shares_offered": 0,
+            "shares_bid": 493875,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "493875",
+            "subscription_raw": ""
+          },
+          "Employees": {
+            "sr_no": "4",
+            "shares_offered": 54945,
+            "shares_bid": 29700,
+            "subscription_times": 0.5405405405405406,
+            "shares_offered_raw": "54945",
+            "shares_bid_raw": "29700",
+            "subscription_raw": "0.5405405405405406"
+          },
+          "Price Bids": {
+            "sr_no": "4(b)",
+            "shares_offered": 0,
+            "shares_bid": 6900,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "6900",
+            "subscription_raw": ""
+          },
+          "Total": {
+            "sr_no": "None",
+            "shares_offered": 12060000,
+            "shares_bid": 8420325,
+            "subscription_times": 0.698202736318408,
+            "shares_offered_raw": "1.206E7",
+            "shares_bid_raw": "8420325.0",
+            "subscription_raw": "0.698202736318408"
+          }
+        },
+        "total_subscription": 0.698202736318408,
+        "fetched_at": "2025-09-29T22:59:21.464223"
+      },
+      "GLOTTIS": {
+        "symbol": "GLOTTIS",
+        "update_time": "Updated as on 29-Sep-2025 17:00:00",
+        "categories": {
+          "Qualified Institutional Buyers(QIBs)": {
+            "sr_no": "1",
+            "shares_offered": 2813652,
+            "shares_bid": 5038572,
+            "subscription_times": 1.7907587718737072,
+            "shares_offered_raw": "2813652",
+            "shares_bid_raw": "5038572",
+            "subscription_raw": "1.7907587718737072"
+          },
+          "Foreign Institutional Investors(FIIs)": {
+            "sr_no": "1(a)",
+            "shares_offered": 0,
+            "shares_bid": 3100800,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "3100800",
+            "subscription_raw": ""
+          },
+          "Domestic Financial Institutions(Banks/ Financial Institutions(FIs)/ Insurance Companies)": {
+            "sr_no": "1(b)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Mutual funds": {
+            "sr_no": "1(c)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Others": {
+            "sr_no": "2.2(c)",
+            "shares_offered": 0,
+            "shares_bid": 9576,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "9576",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors": {
+            "sr_no": "2",
+            "shares_offered": 7418690,
+            "shares_bid": 1211364,
+            "subscription_times": 0.16328543179456212,
+            "shares_offered_raw": "7418690",
+            "shares_bid_raw": "1211364",
+            "subscription_raw": "0.16328543179456212"
+          },
+          "Non Institutional Investors(Bid amount of more than Ten Lakh Rupees)": {
+            "sr_no": "2.1",
+            "shares_offered": 4945794,
+            "shares_bid": 921576,
+            "subscription_times": 0.18633529823522776,
+            "shares_offered_raw": "4945794",
+            "shares_bid_raw": "921576",
+            "subscription_raw": "0.18633529823522776"
+          },
+          "Corporates": {
+            "sr_no": "2.2(a)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Individuals(Other than RIIs)": {
+            "sr_no": "2.2(b)",
+            "shares_offered": 0,
+            "shares_bid": 280212,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "280212",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors(Bid amount of more than Two Lakh Rupees upto Ten Lakh Rupees)": {
+            "sr_no": "2.2",
+            "shares_offered": 2472896,
+            "shares_bid": 289788,
+            "subscription_times": 0.11718568027122855,
+            "shares_offered_raw": "2472896",
+            "shares_bid_raw": "289788",
+            "subscription_raw": "0.11718568027122855"
+          },
+          "Retail Individual Investors(RIIs)": {
+            "sr_no": "3",
+            "shares_offered": 9891587,
+            "shares_bid": 2219466,
+            "subscription_times": 0.22437916180689713,
+            "shares_offered_raw": "9891587",
+            "shares_bid_raw": "2219466",
+            "subscription_raw": "0.22437916180689713"
+          },
+          "Cut Off": {
+            "sr_no": "3(a)",
+            "shares_offered": 0,
+            "shares_bid": 1848738,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "1848738",
+            "subscription_raw": ""
+          },
+          "Price bids": {
+            "sr_no": "3(b)",
+            "shares_offered": 0,
+            "shares_bid": 370728,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "370728",
+            "subscription_raw": ""
+          },
+          "Total": {
+            "sr_no": "None",
+            "shares_offered": 20123929,
+            "shares_bid": 8469402,
+            "subscription_times": 0.4208622481226206,
+            "shares_offered_raw": "2.0123929E7",
+            "shares_bid_raw": "8469402.0",
+            "subscription_raw": "0.4208622481226206"
+          }
+        },
+        "total_subscription": 0.4208622481226206,
+        "fetched_at": "2025-09-29T22:59:32.421392"
+      },
+      "OMFREIGHT": {
+        "symbol": "OMFREIGHT",
+        "update_time": "Updated as on 29-Sep-2025 17:00:00",
+        "categories": {
+          "Qualified Institutional Buyers(QIBs)": {
+            "sr_no": "1",
+            "shares_offered": 1341075,
+            "shares_bid": 1481628,
+            "subscription_times": 1.1048062188915608,
+            "shares_offered_raw": "1341075",
+            "shares_bid_raw": "1481628",
+            "subscription_raw": "1.1048062188915608"
+          },
+          "Foreign Institutional Investors(FIIs)": {
+            "sr_no": "1(a)",
+            "shares_offered": 0,
+            "shares_bid": 1481628,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "1481628",
+            "subscription_raw": ""
+          },
+          "Domestic Financial Institutions(Banks/ Financial Institutions(FIs)/ Insurance Companies)": {
+            "sr_no": "1(b)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Mutual funds": {
+            "sr_no": "1(c)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Others": {
+            "sr_no": "2.2(c)",
+            "shares_offered": 0,
+            "shares_bid": 43956,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "43956",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors": {
+            "sr_no": "2",
+            "shares_offered": 1764900,
+            "shares_bid": 7104999,
+            "subscription_times": 4.025723270440252,
+            "shares_offered_raw": "1764900",
+            "shares_bid_raw": "7104999",
+            "subscription_raw": "4.025723270440252"
+          },
+          "Non Institutional Investors(Bid amount of more than Ten Lakh Rupees)": {
+            "sr_no": "2.1",
+            "shares_offered": 1176600,
+            "shares_bid": 5069148,
+            "subscription_times": 4.308301886792453,
+            "shares_offered_raw": "1176600",
+            "shares_bid_raw": "5069148",
+            "subscription_raw": "4.308301886792453"
+          },
+          "Corporates": {
+            "sr_no": "2.2(a)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Individuals(Other than RIIs)": {
+            "sr_no": "2.2(b)",
+            "shares_offered": 0,
+            "shares_bid": 1991895,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "1991895",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors(Bid amount of more than Two Lakh Rupees upto Ten Lakh Rupees)": {
+            "sr_no": "2.2",
+            "shares_offered": 588300,
+            "shares_bid": 2035851,
+            "subscription_times": 3.460566037735849,
+            "shares_offered_raw": "588300",
+            "shares_bid_raw": "2035851",
+            "subscription_raw": "3.460566037735849"
+          },
+          "Retail Individual Investors(RIIs)": {
+            "sr_no": "3",
+            "shares_offered": 4360865,
+            "shares_bid": 2341101,
+            "subscription_times": 0.5368432638937458,
+            "shares_offered_raw": "4360865",
+            "shares_bid_raw": "2341101",
+            "subscription_raw": "0.5368432638937458"
+          },
+          "Cut Off": {
+            "sr_no": "4(a)",
+            "shares_offered": 0,
+            "shares_bid": 39960,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "39960",
+            "subscription_raw": ""
+          },
+          "Price bids": {
+            "sr_no": "3(b)",
+            "shares_offered": 0,
+            "shares_bid": 584304,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "584304",
+            "subscription_raw": ""
+          },
+          "Employees": {
+            "sr_no": "4",
+            "shares_offered": 450105,
+            "shares_bid": 68931,
+            "subscription_times": 0.1531442663378545,
+            "shares_offered_raw": "450105",
+            "shares_bid_raw": "68931",
+            "subscription_raw": "0.1531442663378545"
+          },
+          "Price Bids": {
+            "sr_no": "4(b)",
+            "shares_offered": 0,
+            "shares_bid": 28971,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "28971",
+            "subscription_raw": ""
+          },
+          "Total": {
+            "sr_no": "None",
+            "shares_offered": 7916945,
+            "shares_bid": 10996659,
+            "subscription_times": 1.3890028287426526,
+            "shares_offered_raw": "7916945.0",
+            "shares_bid_raw": "1.0996659E7",
+            "subscription_raw": "1.3890028287426526"
+          }
+        },
+        "total_subscription": 1.3890028287426526,
+        "fetched_at": "2025-09-29T22:59:40.920364"
+      },
+      "PACEDIGITK": {
+        "symbol": "PACEDIGITK",
+        "update_time": "Updated as on 29-Sep-2025 17:00:00",
+        "categories": {
+          "Qualified Institutional Buyers(QIBs)": {
+            "sr_no": "1",
+            "shares_offered": 7857191,
+            "shares_bid": 1823828,
+            "subscription_times": 0.23212214136069748,
+            "shares_offered_raw": "7857191",
+            "shares_bid_raw": "1823828",
+            "subscription_raw": "0.23212214136069748"
+          },
+          "Foreign Institutional Investors(FIIs)": {
+            "sr_no": "1(a)",
+            "shares_offered": 0,
+            "shares_bid": 1279488,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "1279488",
+            "subscription_raw": ""
+          },
+          "Domestic Financial Institutions(Banks/ Financial Institutions(FIs)/ Insurance Companies)": {
+            "sr_no": "1(b)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Mutual funds": {
+            "sr_no": "1(c)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Others": {
+            "sr_no": "2.2(c)",
+            "shares_offered": 0,
+            "shares_bid": 51476,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "51476",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors": {
+            "sr_no": "2",
+            "shares_offered": 5892895,
+            "shares_bid": 4578372,
+            "subscription_times": 0.7769308633532415,
+            "shares_offered_raw": "5892895",
+            "shares_bid_raw": "4578372",
+            "subscription_raw": "0.7769308633532415"
+          },
+          "Non Institutional Investors(Bid amount of more than Ten Lakh Rupees)": {
+            "sr_no": "2.1",
+            "shares_offered": 3928597,
+            "shares_bid": 2562104,
+            "subscription_times": 0.6521676822539955,
+            "shares_offered_raw": "3928597",
+            "shares_bid_raw": "2562104",
+            "subscription_raw": "0.6521676822539955"
+          },
+          "Corporates": {
+            "sr_no": "2.2(a)",
+            "shares_offered": 0,
+            "shares_bid": 6664,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "6664",
+            "subscription_raw": ""
+          },
+          "Individuals(Other than RIIs)": {
+            "sr_no": "2.2(b)",
+            "shares_offered": 0,
+            "shares_bid": 1958128,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "1958128",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors(Bid amount of more than Two Lakh Rupees upto Ten Lakh Rupees)": {
+            "sr_no": "2.2",
+            "shares_offered": 1964298,
+            "shares_bid": 2016268,
+            "subscription_times": 1.0264572890671375,
+            "shares_offered_raw": "1964298",
+            "shares_bid_raw": "2016268",
+            "subscription_raw": "1.0264572890671375"
+          },
+          "Retail Individual Investors(RIIs)": {
+            "sr_no": "3",
+            "shares_offered": 13750087,
+            "shares_bid": 8531348,
+            "subscription_times": 0.6204577469218922,
+            "shares_offered_raw": "13750087",
+            "shares_bid_raw": "8531348",
+            "subscription_raw": "0.6204577469218922"
+          },
+          "Cut Off": {
+            "sr_no": "4(a)",
+            "shares_offered": 0,
+            "shares_bid": 102476,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "102476",
+            "subscription_raw": ""
+          },
+          "Price bids": {
+            "sr_no": "3(b)",
+            "shares_offered": 0,
+            "shares_bid": 1708296,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "1708296",
+            "subscription_raw": ""
+          },
+          "Employees": {
+            "sr_no": "4",
+            "shares_offered": 106382,
+            "shares_bid": 115804,
+            "subscription_times": 1.0885676148220564,
+            "shares_offered_raw": "106382",
+            "shares_bid_raw": "115804",
+            "subscription_raw": "1.0885676148220564"
+          },
+          "Price Bids": {
+            "sr_no": "4(b)",
+            "shares_offered": 0,
+            "shares_bid": 13328,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "13328",
+            "subscription_raw": ""
+          },
+          "Total": {
+            "sr_no": "None",
+            "shares_offered": 27606555,
+            "shares_bid": 15049352,
+            "subscription_times": 0.5451369067962301,
+            "shares_offered_raw": "2.7606555E7",
+            "shares_bid_raw": "1.5049352E7",
+            "subscription_raw": "0.5451369067962301"
+          }
+        },
+        "total_subscription": 0.5451369067962301,
+        "fetched_at": "2025-09-29T22:59:51.525767"
+      },
+      "JKIPL": {
+        "symbol": "JKIPL",
+        "update_time": "Updated as on 29-Sep-2025 19:00:00",
+        "categories": {
+          "Qualified Institutional Buyers(QIBs)": {
+            "sr_no": "1",
+            "shares_offered": 1921273,
+            "shares_bid": 68511240,
+            "subscription_times": 35.65929464474856,
+            "shares_offered_raw": "1921273",
+            "shares_bid_raw": "68511240",
+            "subscription_raw": "35.65929464474856"
+          },
+          "Foreign Institutional Investors(FIIs)": {
+            "sr_no": "1(a)",
+            "shares_offered": 0,
+            "shares_bid": 12143640,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "12143640",
+            "subscription_raw": ""
+          },
+          "Domestic Financial Institutions(Banks/ Financial Institutions(FIs)/ Insurance Companies)": {
+            "sr_no": "1(b)",
+            "shares_offered": 0,
+            "shares_bid": 44136240,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "44136240",
+            "subscription_raw": ""
+          },
+          "Mutual funds": {
+            "sr_no": "1(c)",
+            "shares_offered": 0,
+            "shares_bid": 662760,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "662760",
+            "subscription_raw": ""
+          },
+          "Others": {
+            "sr_no": "2.2(c)",
+            "shares_offered": 0,
+            "shares_bid": 3061920,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "3061920",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors": {
+            "sr_no": "2",
+            "shares_offered": 1439933,
+            "shares_bid": 210793920,
+            "subscription_times": 146.39147793682068,
+            "shares_offered_raw": "1439933",
+            "shares_bid_raw": "210793920",
+            "subscription_raw": "146.39147793682068"
+          },
+          "Non Institutional Investors(Bid amount of more than Ten Lakh Rupees)": {
+            "sr_no": "2.1",
+            "shares_offered": 959956,
+            "shares_bid": 135404760,
+            "subscription_times": 141.05308993328862,
+            "shares_offered_raw": "959956",
+            "shares_bid_raw": "135404760",
+            "subscription_raw": "141.05308993328862"
+          },
+          "Corporates": {
+            "sr_no": "2.2(a)",
+            "shares_offered": 0,
+            "shares_bid": 235200,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "235200",
+            "subscription_raw": ""
+          },
+          "Individuals(Other than RIIs)": {
+            "sr_no": "2.2(b)",
+            "shares_offered": 0,
+            "shares_bid": 72092040,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "72092040",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors(Bid amount of more than Two Lakh Rupees upto Ten Lakh Rupees)": {
+            "sr_no": "2.2",
+            "shares_offered": 479977,
+            "shares_bid": 75389160,
+            "subscription_times": 157.06827618823402,
+            "shares_offered_raw": "479977",
+            "shares_bid_raw": "75389160",
+            "subscription_raw": "157.06827618823402"
+          },
+          "Retail Individual Investors(RIIs)": {
+            "sr_no": "3",
+            "shares_offered": 3359842,
+            "shares_bid": 158264400,
+            "subscription_times": 47.10471504314786,
+            "shares_offered_raw": "3359842",
+            "shares_bid_raw": "158264400",
+            "subscription_raw": "47.10471504314786"
+          },
+          "Cut Off": {
+            "sr_no": "3(a)",
+            "shares_offered": 0,
+            "shares_bid": 128033880,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "128033880",
+            "subscription_raw": ""
+          },
+          "Price bids": {
+            "sr_no": "3(b)",
+            "shares_offered": 0,
+            "shares_bid": 30230520,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "30230520",
+            "subscription_raw": ""
+          },
+          "Total": {
+            "sr_no": "None",
+            "shares_offered": 6721048,
+            "shares_bid": 437569560,
+            "subscription_times": 65.10436467646117,
+            "shares_offered_raw": "6721048.0",
+            "shares_bid_raw": "4.3756956E8",
+            "subscription_raw": "65.10436467646117"
+          }
+        },
+        "total_subscription": 65.10436467646117,
+        "fetched_at": "2025-09-29T23:00:02.729331"
+      },
+      "TRUALT": {
+        "symbol": "TRUALT",
+        "update_time": "Updated as on 29-Sep-2025 19:00:00",
+        "categories": {
+          "Qualified Institutional Buyers(QIBs)": {
+            "sr_no": "1",
+            "shares_offered": 3510508,
+            "shares_bid": 558931920,
+            "subscription_times": 159.21681990184896,
+            "shares_offered_raw": "3510508",
+            "shares_bid_raw": "558931920",
+            "subscription_raw": "159.21681990184896"
+          },
+          "Foreign Institutional Investors(FIIs)": {
+            "sr_no": "1(a)",
+            "shares_offered": 0,
+            "shares_bid": 82222980,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "82222980",
+            "subscription_raw": ""
+          },
+          "Domestic Financial Institutions(Banks/ Financial Institutions(FIs)/ Insurance Companies)": {
+            "sr_no": "1(b)",
+            "shares_offered": 0,
+            "shares_bid": 324547800,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "324547800",
+            "subscription_raw": ""
+          },
+          "Mutual funds": {
+            "sr_no": "1(c)",
+            "shares_offered": 0,
+            "shares_bid": 13878270,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "13878270",
+            "subscription_raw": ""
+          },
+          "Others": {
+            "sr_no": "2.2(c)",
+            "shares_offered": 0,
+            "shares_bid": 2831130,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "2831130",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors": {
+            "sr_no": "2",
+            "shares_offered": 2653475,
+            "shares_bid": 261530760,
+            "subscription_times": 98.5616069493777,
+            "shares_offered_raw": "2653475",
+            "shares_bid_raw": "261530760",
+            "subscription_raw": "98.5616069493777"
+          },
+          "Non Institutional Investors(Bid amount of more than Ten Lakh Rupees)": {
+            "sr_no": "2.1",
+            "shares_offered": 1768984,
+            "shares_bid": 200715030,
+            "subscription_times": 113.46345133703866,
+            "shares_offered_raw": "1768984",
+            "shares_bid_raw": "200715030",
+            "subscription_raw": "113.46345133703866"
+          },
+          "Corporates": {
+            "sr_no": "2.2(a)",
+            "shares_offered": 0,
+            "shares_bid": 86220,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "86220",
+            "subscription_raw": ""
+          },
+          "Individuals(Other than RIIs)": {
+            "sr_no": "2.2(b)",
+            "shares_offered": 0,
+            "shares_bid": 57898380,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "57898380",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors(Bid amount of more than Two Lakh Rupees upto Ten Lakh Rupees)": {
+            "sr_no": "2.2",
+            "shares_offered": 884491,
+            "shares_bid": 60815730,
+            "subscription_times": 68.75788447819141,
+            "shares_offered_raw": "884491",
+            "shares_bid_raw": "60815730",
+            "subscription_raw": "68.75788447819141"
+          },
+          "Retail Individual Investors(RIIs)": {
+            "sr_no": "3",
+            "shares_offered": 6191441,
+            "shares_bid": 68104140,
+            "subscription_times": 10.9997236507624,
+            "shares_offered_raw": "6191441",
+            "shares_bid_raw": "68104140",
+            "subscription_raw": "10.9997236507624"
+          },
+          "Cut Off": {
+            "sr_no": "3(a)",
+            "shares_offered": 0,
+            "shares_bid": 54490260,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "54490260",
+            "subscription_raw": ""
+          },
+          "Price bids": {
+            "sr_no": "3(b)",
+            "shares_offered": 0,
+            "shares_bid": 13613880,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "13613880",
+            "subscription_raw": ""
+          },
+          "Total": {
+            "sr_no": "None",
+            "shares_offered": 12355424,
+            "shares_bid": 888566820,
+            "subscription_times": 71.91714505305524,
+            "shares_offered_raw": "1.2355424E7",
+            "shares_bid_raw": "8.8856682E8",
+            "subscription_raw": "71.91714505305524"
+          }
+        },
+        "total_subscription": 71.91714505305524,
+        "fetched_at": "2025-09-29T23:00:22.756330"
+      },
+      "VIJAYPD": {
+        "symbol": "VIJAYPD",
+        "update_time": "Updated as on 29-Sep-2025 17:00:00",
+        "categories": {
+          "Qualified Institutional Buyers(QIBs)": {
+            "sr_no": "1",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "0",
+            "shares_bid_raw": "0",
+            "subscription_raw": "0.00"
+          },
+          "Foreign Institutional Investors(FIIs)": {
+            "sr_no": "1(a)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Domestic Financial Institutions(Banks/ Financial Institutions(FIs)/ Insurance Companies)": {
+            "sr_no": "1(b)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Mutual funds": {
+            "sr_no": "1(c)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Others": {
+            "sr_no": "1(d)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors": {
+            "sr_no": "2",
+            "shares_offered": 0,
+            "shares_bid": 2876000,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "0",
+            "shares_bid_raw": "2876000",
+            "subscription_raw": "0.00"
+          },
+          "Corporates": {
+            "sr_no": "2(a)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Individuals(Other than RIIs)": {
+            "sr_no": "2(b)",
+            "shares_offered": 0,
+            "shares_bid": 2876000,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "2876000",
+            "subscription_raw": ""
+          },
+          "others": {
+            "sr_no": "2(c)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Total": {
+            "sr_no": "None",
+            "shares_offered": 0,
+            "shares_bid": 2876000,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "0.0",
+            "shares_bid_raw": "2876000.0",
+            "subscription_raw": "0.00"
+          }
+        },
+        "total_subscription": 0.0,
+        "fetched_at": "2025-09-29T23:00:45.699423"
+      },
+      "SUBAHOTELS": {
+        "symbol": "SUBAHOTELS",
+        "update_time": "Updated as on 29-Sep-2025 17:00:00",
+        "categories": {
+          "Qualified Institutional Buyers(QIBs)": {
+            "sr_no": "1",
+            "shares_offered": 0,
+            "shares_bid": 1520400,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "0",
+            "shares_bid_raw": "1520400",
+            "subscription_raw": "0.00"
+          },
+          "Foreign Institutional Investors(FIIs)": {
+            "sr_no": "1(a)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Domestic Financial Institutions(Banks/ Financial Institutions(FIs)/ Insurance Companies)": {
+            "sr_no": "1(b)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Mutual funds": {
+            "sr_no": "1(c)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Others": {
+            "sr_no": "2.2(c)",
+            "shares_offered": 0,
+            "shares_bid": 3600,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "3600",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors": {
+            "sr_no": "2",
+            "shares_offered": 0,
+            "shares_bid": 895200,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "0",
+            "shares_bid_raw": "895200",
+            "subscription_raw": "0.00"
+          },
+          "Non Institutional Investors(Bid amount of more than Ten Lakh Rupees)": {
+            "sr_no": "2.1",
+            "shares_offered": 0,
+            "shares_bid": 823200,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "0",
+            "shares_bid_raw": "823200",
+            "subscription_raw": "0.00"
+          },
+          "Corporates": {
+            "sr_no": "2.2(a)",
+            "shares_offered": 0,
+            "shares_bid": 7200,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "7200",
+            "subscription_raw": ""
+          },
+          "Individuals(Other than RIIs)": {
+            "sr_no": "2.2(b)",
+            "shares_offered": 0,
+            "shares_bid": 61200,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "61200",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors(Bid amount of more than Two Lakh Rupees upto Ten Lakh Rupees)": {
+            "sr_no": "2.2",
+            "shares_offered": 0,
+            "shares_bid": 72000,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "0",
+            "shares_bid_raw": "72000",
+            "subscription_raw": "0.00"
+          },
+          "Total": {
+            "sr_no": "None",
+            "shares_offered": 0,
+            "shares_bid": 2415600,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "0.0",
+            "shares_bid_raw": "2415600.0",
+            "subscription_raw": "0.00"
+          }
+        },
+        "total_subscription": 0.0,
+        "fetched_at": "2025-09-29T23:01:09.492620"
+      },
+      "MPEL": {
+        "symbol": "MPEL",
+        "update_time": "Updated as on 29-Sep-2025 17:00:00",
+        "categories": {
+          "Qualified Institutional Buyers(QIBs)": {
+            "sr_no": "1",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "0",
+            "shares_bid_raw": "0",
+            "subscription_raw": "0.00"
+          },
+          "Foreign Institutional Investors(FIIs)": {
+            "sr_no": "1(a)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Domestic Financial Institutions(Banks/ Financial Institutions(FIs)/ Insurance Companies)": {
+            "sr_no": "1(b)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Mutual funds": {
+            "sr_no": "1(c)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Others": {
+            "sr_no": "2.2(c)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors": {
+            "sr_no": "2",
+            "shares_offered": 0,
+            "shares_bid": 16000,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "0",
+            "shares_bid_raw": "16000",
+            "subscription_raw": "0.00"
+          },
+          "Non Institutional Investors(Bid amount of more than Ten Lakh Rupees)": {
+            "sr_no": "2.1",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "0",
+            "shares_bid_raw": "0",
+            "subscription_raw": "0.00"
+          },
+          "Corporates": {
+            "sr_no": "2.2(a)",
+            "shares_offered": 0,
+            "shares_bid": 0,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "0",
+            "subscription_raw": ""
+          },
+          "Individuals(Other than RIIs)": {
+            "sr_no": "2.2(b)",
+            "shares_offered": 0,
+            "shares_bid": 16000,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "",
+            "shares_bid_raw": "16000",
+            "subscription_raw": ""
+          },
+          "Non Institutional Investors(Bid amount of more than Two Lakh Rupees upto Ten Lakh Rupees)": {
+            "sr_no": "2.2",
+            "shares_offered": 0,
+            "shares_bid": 16000,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "0",
+            "shares_bid_raw": "16000",
+            "subscription_raw": "0.00"
+          },
+          "Total": {
+            "sr_no": "None",
+            "shares_offered": 0,
+            "shares_bid": 16000,
+            "subscription_times": 0.0,
+            "shares_offered_raw": "0.0",
+            "shares_bid_raw": "16000.0",
+            "subscription_raw": "0.00"
+          }
+        },
+        "total_subscription": 0.0,
+        "fetched_at": "2025-09-29T23:01:33.518725"
+      }
+    }
+  }
+}
