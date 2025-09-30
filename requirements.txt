@@ -1,41 +1,29 @@
-# Core FastAPI dependencies
+# Core Framework (Already hai)
 fastapi==0.104.1
 uvicorn[standard]==0.24.0
 pydantic==2.5.0
 
-# HTTP clients and web scraping
+# HTTP & Web Scraping (Already hai)
 requests==2.31.0
-cloudscraper==1.2.71
-fake-useragent==1.4.0
 beautifulsoup4==4.12.2
-lxml==4.9.3
-
-# Data processing
-pandas==2.1.3
-numpy==1.25.2
-
-# Async support
-aiohttp==3.9.1
-asyncio
-
-# Security and SSL
 urllib3==2.1.0
-certifi==2023.11.17
 
-# Logging and utilities
-python-multipart==0.0.6
-python-json-logger==2.0.7
+# AI & ML (Already hai)
+google-generativeai==0.3.1
 
-# Optional: For advanced scraping (if needed)
-selenium==4.15.0
-undetected-chromedriver==3.5.4
+# Data Processing (Already hai)  
+pandas==2.1.3
+numpy==1.26.2
 
-# Development dependencies
-pytest==7.4.3
-pytest-asyncio==0.21.1
+# Compression (Already hai)
+brotli==1.1.0
 
-brotli
+# NEW - Background Scheduler ⭐
+apscheduler==3.10.4  # ✅ YE ADD KARNA HAI
 
-beautifulsoup4
+# Utilities (Already hai)
+python-dateutil==2.8.2
+pytz==2023.3
 
-google-genai
+# Production (Already hai)
+gunicorn==21.2.0
