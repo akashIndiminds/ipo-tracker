@@ -1,4 +1,4 @@
-# app/controllers/final_controller.py - FIXED VERSION
+# app/controllers/final_controller.py - CONSOLIDATED PREDICTIONS
 
 from typing import Dict, List
 import logging
@@ -12,7 +12,7 @@ from ..utils.file_storage import file_storage
 logger = logging.getLogger(__name__)
 
 class FinalController:
-    """Final Prediction Controller - Uses STORED data, no live API calls"""
+    """Final Prediction Controller - CONSOLIDATED storage in single JSON per date"""
     
     async def get_final_prediction(self, symbol: str, date: str = None) -> Dict:
         """Generate intelligent final prediction for a single IPO"""
@@ -20,7 +20,7 @@ class FinalController:
             if not date:
                 date = datetime.now().strftime('%Y-%m-%d')
             
-            logger.info(f"Starting final prediction for {symbol} on {date}")
+            logger.info(f"🎯 Starting final prediction for {symbol} on {date}")
             
             # Load stored current IPO data
             stored_current = file_storage.load_data("nse/current", date)
@@ -55,22 +55,19 @@ class FinalController:
                     'timestamp': datetime.now().isoformat()
                 }
             
-            # Get GMP prediction
+            # Get predictions from all sources
             gmp_result = await gmp_controller.get_symbol_prediction(symbol, date)
             
-            # FIXED: Properly extract GMP data from nested structure
+            # Extract GMP data properly
             if gmp_result.get('success') and gmp_result.get('data'):
-                # Extract the actual gmp_data from nested structure
                 ipo_gmp_data = gmp_result['data']
                 
                 if 'gmp_data' in ipo_gmp_data:
                     gmp_pred = ipo_gmp_data['gmp_data']
                     
-                    # Ensure has_data flag is set correctly
                     if gmp_pred.get('found'):
                         gmp_pred['has_data'] = True
                         
-                        # Set expected_gain_percent if not present
                         if 'expected_gain_percent' not in gmp_pred:
                             if 'listing_gain' in gmp_pred and gmp_pred['listing_gain'] is not None:
                                 gmp_pred['expected_gain_percent'] = gmp_pred['listing_gain']
@@ -81,13 +78,10 @@ class FinalController:
                     else:
                         gmp_pred['has_data'] = False
                         gmp_pred['expected_gain_percent'] = 0
-                        logger.info(f"❌ No GMP data available for {symbol}")
                 else:
                     gmp_pred = {'has_data': False, 'found': False, 'expected_gain_percent': 0}
-                    logger.info(f"⚠️ GMP data structure missing for {symbol}")
             else:
                 gmp_pred = {'has_data': False, 'found': False, 'expected_gain_percent': 0}
-                logger.info(f"❌ GMP fetch failed for {symbol}")
             
             # Get Math prediction
             math_result = await math_controller.get_prediction_by_symbol_and_date(symbol, date)
@@ -102,13 +96,15 @@ class FinalController:
                 gmp_pred, math_pred, ai_pred, ipo_data
             )
             
-            # Save prediction
-            save_path = f"predictions/final_prediction/{date}"
-            save_success = file_storage.save_data(save_path, final_pred, symbol)
+            # FIXED: Save to consolidated file (all symbols in one date file)
+            success = self._save_to_consolidated_file(symbol, final_pred, date)
             
-            if save_success:
-                logger.info(f"Saved: data/{save_path}/{symbol}.json")
-                final_pred['storage_path'] = f'data/{save_path}/{symbol}.json'
+            if success:
+                logger.info(f"✅ Saved {symbol} to consolidated file: data/predictions/final/{date}.json")
+                final_pred['storage_info'] = {
+                    'consolidated_file': f'data/predictions/final/{date}.json',
+                    'symbol': symbol
+                }
             
             final_pred['success'] = True
             return final_pred
@@ -123,13 +119,54 @@ class FinalController:
                 'timestamp': datetime.now().isoformat()
             }
     
+    def _save_to_consolidated_file(self, symbol: str, prediction: Dict, date: str) -> bool:
+        """
+        Save prediction to consolidated file
+        Format: data/predictions/final/{date}.json
+        Structure: {
+            "metadata": {...},
+            "predictions": {
+                "SYMBOL1": {...},
+                "SYMBOL2": {...}
+            }
+        }
+        """
+        try:
+            # Load existing consolidated file
+            existing_data = file_storage.load_data("predictions/final", date)
+            
+            if existing_data and 'data' in existing_data:
+                consolidated = existing_data['data']
+            else:
+                # Create new consolidated structure
+                consolidated = {
+                    'date': date,
+                    'created_at': datetime.now().isoformat(),
+                    'predictions': {}
+                }
+            
+            # Add/update this symbol's prediction
+            if 'predictions' not in consolidated:
+                consolidated['predictions'] = {}
+            
+            consolidated['predictions'][symbol.upper()] = prediction
+            consolidated['last_updated'] = datetime.now().isoformat()
+            consolidated['total_predictions'] = len(consolidated['predictions'])
+            
+            # Save back
+            return file_storage.save_data("predictions/final", consolidated, date)
+            
+        except Exception as e:
+            logger.error(f"Error saving to consolidated file: {e}")
+            return False
+    
     async def process_all_ipos(self, date: str = None) -> Dict:
-        """Batch process all current IPOs using stored data"""
+        """Batch process all current IPOs - saves to SINGLE consolidated file"""
         try:
             if not date:
                 date = datetime.now().strftime('%Y-%m-%d')
             
-            logger.info(f"Starting batch processing for {date}")
+            logger.info(f"🚀 Starting batch processing for {date}")
             
             # Load stored current IPOs
             stored_current = file_storage.load_data("nse/current", date)
@@ -144,22 +181,25 @@ class FinalController:
                 }
             
             current_ipos = stored_current['data']
-            logger.info(f"Loaded {len(current_ipos)} IPOs")
+            logger.info(f"📊 Processing {len(current_ipos)} IPOs")
             
             # Check/generate predictions if needed
             gmp_stored = file_storage.load_data("predictions/gmp", date)
             if not gmp_stored:
+                logger.info("⏳ Generating GMP predictions...")
                 await gmp_controller.fetch_gmp_data()
             
             math_stored = file_storage.load_data("predictions/math", date)
             if not math_stored:
+                logger.info("⏳ Generating Math predictions...")
                 await math_controller.predict_all_by_date(date)
             
             ai_stored = file_storage.load_data("predictions/ai", date)
             if not ai_stored:
+                logger.info("⏳ Generating AI predictions...")
                 await ai_controller.predict_all_current_ipos(date)
             
-            # Process each IPO
+            # Process each IPO and save to consolidated file
             results = []
             success_count = 0
             fail_count = 0
@@ -170,6 +210,7 @@ class FinalController:
                     continue
                 
                 try:
+                    logger.info(f"🔄 Processing {symbol}...")
                     final_pred = await self.get_final_prediction(symbol, date)
                     
                     if final_pred.get('success'):
@@ -195,7 +236,7 @@ class FinalController:
                         fail_count += 1
                         
                 except Exception as e:
-                    logger.error(f"Error processing {symbol}: {e}")
+                    logger.error(f"❌ Error processing {symbol}: {e}")
                     results.append({
                         'symbol': symbol,
                         'error': str(e),
@@ -203,12 +244,9 @@ class FinalController:
                     })
                     fail_count += 1
             
-            # Generate summary
+            # Generate and save batch summary
             summary_data = self._generate_batch_summary(results, date)
-            
-            # Save summary
-            batch_path = f"predictions/final_prediction/{date}"
-            file_storage.save_data(batch_path, summary_data, "batch_summary")
+            self._save_batch_summary(summary_data, date)
             
             return {
                 'success': True,
@@ -221,7 +259,10 @@ class FinalController:
                 },
                 'results': results,
                 'top_picks': summary_data.get('top_picks', []),
-                'storage_path': f'data/{batch_path}/',
+                'storage_info': {
+                    'consolidated_file': f'data/predictions/final/{date}.json',
+                    'summary_file': f'data/predictions/final/{date}_summary.json'
+                },
                 'timestamp': datetime.now().isoformat()
             }
             
@@ -233,6 +274,14 @@ class FinalController:
                 'error': str(e),
                 'timestamp': datetime.now().isoformat()
             }
+    
+    def _save_batch_summary(self, summary_data: Dict, date: str) -> bool:
+        """Save batch summary separately for quick access"""
+        try:
+            return file_storage.save_data("predictions/final", summary_data, f"{date}_summary")
+        except Exception as e:
+            logger.error(f"Error saving batch summary: {e}")
+            return False
     
     def _generate_batch_summary(self, results: List[Dict], date: str) -> Dict:
         """Generate intelligent batch summary with rankings"""
@@ -295,31 +344,47 @@ class FinalController:
         }
     
     async def get_stored_final_prediction(self, symbol: str, date: str = None) -> Dict:
-        """Get stored final prediction for a symbol"""
+        """Get stored final prediction for a symbol from consolidated file"""
         try:
             if not date:
                 date = datetime.now().strftime('%Y-%m-%d')
             
-            load_path = f"predictions/final_prediction/{date}"
-            stored_data = file_storage.load_data(load_path, symbol)
+            # Load consolidated file
+            stored_data = file_storage.load_data("predictions/final", date)
             
-            if not stored_data:
+            if not stored_data or 'data' not in stored_data:
                 return {
                     'success': False,
-                    'message': f'No final prediction found for {symbol} on {date}',
+                    'message': f'No predictions found for {date}',
                     'symbol': symbol,
                     'date': date,
+                    'suggestion': f'Generate predictions first: POST /api/predict/batch?date={date}',
                     'timestamp': datetime.now().isoformat()
                 }
             
-            return {
-                'success': True,
-                'data': stored_data.get('data'),
-                'metadata': stored_data.get('metadata'),
-                'symbol': symbol,
-                'date': date,
-                'timestamp': datetime.now().isoformat()
-            }
+            consolidated = stored_data['data']
+            predictions = consolidated.get('predictions', {})
+            
+            symbol_upper = symbol.upper()
+            if symbol_upper in predictions:
+                return {
+                    'success': True,
+                    'data': predictions[symbol_upper],
+                    'symbol': symbol_upper,
+                    'date': date,
+                    'source': 'consolidated_file',
+                    'timestamp': datetime.now().isoformat()
+                }
+            else:
+                available_symbols = list(predictions.keys())
+                return {
+                    'success': False,
+                    'message': f'Symbol {symbol_upper} not found in predictions for {date}',
+                    'symbol': symbol_upper,
+                    'date': date,
+                    'available_symbols': available_symbols,
+                    'timestamp': datetime.now().isoformat()
+                }
             
         except Exception as e:
             logger.error(f"Error loading stored prediction for {symbol}: {e}")
@@ -337,21 +402,47 @@ class FinalController:
             if not date:
                 date = datetime.now().strftime('%Y-%m-%d')
             
-            load_path = f"predictions/final_prediction/{date}"
-            stored_data = file_storage.load_data(load_path, "batch_summary")
+            # Try to load summary file
+            stored_data = file_storage.load_data("predictions/final", f"{date}_summary")
             
-            if not stored_data:
+            if stored_data and 'data' in stored_data:
                 return {
-                    'success': False,
-                    'message': f'No batch summary found for {date}',
+                    'success': True,
+                    'data': stored_data['data'],
                     'date': date,
+                    'source': 'summary_file',
+                    'timestamp': datetime.now().isoformat()
+                }
+            
+            # Fallback: Generate summary from consolidated file
+            consolidated_data = file_storage.load_data("predictions/final", date)
+            
+            if consolidated_data and 'data' in consolidated_data:
+                predictions = consolidated_data['data'].get('predictions', {})
+                
+                results = []
+                for symbol, pred in predictions.items():
+                    results.append({
+                        'symbol': symbol,
+                        'recommendation': pred.get('final_recommendation'),
+                        'expected_gain': pred.get('expected_gain_percent'),
+                        'risk': pred.get('overall_risk_level'),
+                        'status': 'success'
+                    })
+                
+                summary = self._generate_batch_summary(results, date)
+                
+                return {
+                    'success': True,
+                    'data': summary,
+                    'date': date,
+                    'source': 'generated_from_consolidated',
                     'timestamp': datetime.now().isoformat()
                 }
             
             return {
-                'success': True,
-                'data': stored_data.get('data'),
-                'metadata': stored_data.get('metadata'),
+                'success': False,
+                'message': f'No predictions found for {date}',
                 'date': date,
                 'timestamp': datetime.now().isoformat()
             }
