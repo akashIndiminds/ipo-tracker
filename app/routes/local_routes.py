@@ -1,67 +1,55 @@
 # app/routes/local_routes.py
-"""Local Routes - Stored JSON Data Endpoints"""
+"""Local Routes - Clean API for stored IPO data"""
 
-from fastapi import APIRouter, Query, Path
+from fastapi import APIRouter, Query
 from typing import Dict, Any, Optional
 
 from ..controllers.local_controller import local_controller
 
 # Create router
-router = APIRouter(prefix="/api/local", tags=["Local Stored Data"])
+router = APIRouter(prefix="/api/local", tags=["Local IPO Data"])
 
-@router.get("/current-ipos")
-async def get_stored_current_ipos(
-    date: Optional[str] = Query(None, description="Date in YYYY-MM-DD format (default: today)")
+@router.get("/current")
+async def get_current_ipos(
+    date: Optional[str] = Query(None, description="Date (YYYY-MM-DD), defaults to today")
 ) -> Dict[str, Any]:
-    """Get current IPOs from stored JSON file"""
-    return await local_controller.get_stored_current_ipos(date)
+    """
+    Get current IPOs with subscription data
+    
+    Returns IPO details with Groww-style subscription breakdown:
+    - QIB subscription
+    - NII subscription  
+    - Retail subscription
+    - Total subscription
+    
+    Example: GET /api/local/current?date=2025-09-29
+    """
+    return await local_controller.get_current_ipos(date)
 
-@router.get("/upcoming-ipos")
-async def get_stored_upcoming_ipos(
-    date: Optional[str] = Query(None, description="Date in YYYY-MM-DD format (default: today)")
+
+@router.get("/upcoming")
+async def get_upcoming_ipos(
+    date: Optional[str] = Query(None, description="Date (YYYY-MM-DD), defaults to today")
 ) -> Dict[str, Any]:
-    """Get upcoming IPOs from stored JSON file"""
-    return await local_controller.get_stored_upcoming_ipos(date)
+    """
+    Get upcoming IPOs
+    
+    Returns list of upcoming IPOs with basic details
+    
+    Example: GET /api/local/upcoming?date=2025-09-29
+    """
+    return await local_controller.get_upcoming_ipos(date)
 
-@router.get("/market-status")
-async def get_stored_market_status(
-    date: Optional[str] = Query(None, description="Date in YYYY-MM-DD format (default: today)")
+
+@router.get("/subscription")
+async def get_subscription_data(
+    date: Optional[str] = Query(None, description="Date (YYYY-MM-DD), defaults to today")
 ) -> Dict[str, Any]:
-    """Get market status from stored JSON file"""
-    return await local_controller.get_stored_market_status(date)
-
-@router.get("/active-category")
-async def get_stored_active_category(
-    symbol: Optional[str] = Query(None, description="IPO symbol (optional)"),
-    date: Optional[str] = Query(None, description="Date in YYYY-MM-DD format (default: today)")
-) -> Dict[str, Any]:
-    """Get IPO active category data from stored JSON file"""
-    return await local_controller.get_stored_active_category(symbol, date)
-
-@router.get("/available-dates/{data_type}")
-async def get_available_dates(
-    data_type: str = Path(..., description="Data type: current_ipos, upcoming_ipos, market_status, active_category")
-) -> Dict[str, Any]:
-    """Get list of available dates for a data type"""
-    return await local_controller.get_available_dates(data_type)
-
-@router.get("/summary")
-async def get_data_summary() -> Dict[str, Any]:
-    """Get summary of all stored data"""
-    return await local_controller.get_data_summary()
-
-@router.delete("/data/{data_type}/{date}")
-async def delete_stored_data(
-    data_type: str = Path(..., description="Data type: current_ipos, upcoming_ipos, market_status, active_category"),
-    date: str = Path(..., description="Date in YYYY-MM-DD format")
-) -> Dict[str, Any]:
-    """Delete stored data for specific date"""
-    return await local_controller.delete_stored_data(data_type, date)
-
-@router.post("/cleanup/{data_type}")
-async def cleanup_old_data(
-    data_type: str = Path(..., description="Data type: current_ipos, upcoming_ipos, market_status, active_category"),
-    keep_days: int = Query(30, description="Number of days to keep (default: 30)")
-) -> Dict[str, Any]:
-    """Cleanup old stored data, keeping only recent files"""
-    return await local_controller.cleanup_old_data(data_type, keep_days)
+    """
+    Get raw subscription data for all IPOs
+    
+    Returns detailed subscription breakdown for all symbols
+    
+    Example: GET /api/local/subscription?date=2025-09-29
+    """
+    return await local_controller.get_subscription_data(date)

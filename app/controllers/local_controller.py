@@ -1,7 +1,7 @@
 # app/controllers/local_controller.py
-"""Local Controller - Handles locally stored JSON data requests"""
+"""Local Controller - Serves locally stored IPO data with subscription details"""
 
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 import logging
 from datetime import datetime
 from fastapi import HTTPException
@@ -11,178 +11,175 @@ from ..utils.file_storage import file_storage
 logger = logging.getLogger(__name__)
 
 class LocalController:
-    """Local Controller - Serves data from stored JSON files"""
+    """Local Controller - Serves IPO data from JSON files"""
     
     def __init__(self):
         self.file_storage = file_storage
     
-    async def get_stored_current_ipos(self, date: str = None) -> Dict[str, Any]:
-        """Get current IPOs from stored JSON file"""
+    async def get_current_ipos(self, date: str = None) -> Dict[str, Any]:
+        """
+        Get current IPOs with subscription data (Groww style)
+        
+        Returns IPO details with subscription breakdown like:
+        QIB: 0.77x | NII: 0.45x | Retail: 0.67x | Total: 0.69x
+        """
         try:
             if not date:
                 date = datetime.now().strftime("%Y-%m-%d")
             
-            logger.info(f"Loading stored current IPOs for date: {date}")
+            logger.info(f"📊 Loading current IPOs with subscription data for: {date}")
             
-            # Load data from file
-            stored_data = self.file_storage.load_data('current_ipos', date)
-            
-            if not stored_data:
+            # Load current IPO data
+            current_data = self.file_storage.load_data('nse/current', date)
+            if not current_data:
                 raise HTTPException(
                     status_code=404,
-                    detail=f"No current IPOs data found for date: {date}"
+                    detail=f"No current IPO data found for {date}"
                 )
             
-            data = stored_data.get('data', [])
-            metadata = stored_data.get('metadata', {})
+            # Load subscription data
+            subscription_data = self.file_storage.load_data('nse/subscription', date)
             
-            return {
-                'success': True,
-                'message': f'Successfully loaded current IPOs for {date}',
-                'date': date,
-                'count': len(data) if isinstance(data, list) else 1,
-                'data': data,
-                'metadata': metadata,
-                'source': 'LOCAL_STORAGE',
-                'timestamp': datetime.now().isoformat()
-            }
-            
-        except HTTPException:
-            raise
-        except Exception as e:
-            logger.error(f"Local controller error - current IPOs for {date}: {e}")
-            raise HTTPException(
-                status_code=500,
-                detail=f"Failed to load current IPOs for {date}: {str(e)}"
-            )
-    
-    async def get_stored_upcoming_ipos(self, date: str = None) -> Dict[str, Any]:
-        """Get upcoming IPOs from stored JSON file"""
-        try:
-            if not date:
-                date = datetime.now().strftime("%Y-%m-%d")
-            
-            logger.info(f"Loading stored upcoming IPOs for date: {date}")
-            
-            # Load data from file
-            stored_data = self.file_storage.load_data('upcoming_ipos', date)
-            
-            if not stored_data:
-                raise HTTPException(
-                    status_code=404,
-                    detail=f"No upcoming IPOs data found for date: {date}"
-                )
-            
-            data = stored_data.get('data', [])
-            metadata = stored_data.get('metadata', {})
-            
-            return {
-                'success': True,
-                'message': f'Successfully loaded upcoming IPOs for {date}',
-                'date': date,
-                'count': len(data) if isinstance(data, list) else 1,
-                'data': data,
-                'metadata': metadata,
-                'source': 'LOCAL_STORAGE',
-                'timestamp': datetime.now().isoformat()
-            }
-            
-        except HTTPException:
-            raise
-        except Exception as e:
-            logger.error(f"Local controller error - upcoming IPOs for {date}: {e}")
-            raise HTTPException(
-                status_code=500,
-                detail=f"Failed to load upcoming IPOs for {date}: {str(e)}"
-            )
-    
-    async def get_stored_market_status(self, date: str = None) -> Dict[str, Any]:
-        """Get market status from stored JSON file"""
-        try:
-            if not date:
-                date = datetime.now().strftime("%Y-%m-%d")
-            
-            logger.info(f"Loading stored market status for date: {date}")
-            
-            # Load data from file
-            stored_data = self.file_storage.load_data('market_status', date)
-            
-            if not stored_data:
-                raise HTTPException(
-                    status_code=404,
-                    detail=f"No market status data found for date: {date}"
-                )
-            
-            data = stored_data.get('data', [])
-            metadata = stored_data.get('metadata', {})
-            
-            return {
-                'success': True,
-                'message': f'Successfully loaded market status for {date}',
-                'date': date,
-                'count': len(data) if isinstance(data, list) else 1,
-                'data': data,
-                'metadata': metadata,
-                'source': 'LOCAL_STORAGE',
-                'timestamp': datetime.now().isoformat()
-            }
-            
-        except HTTPException:
-            raise
-        except Exception as e:
-            logger.error(f"Local controller error - market status for {date}: {e}")
-            raise HTTPException(
-                status_code=500,
-                detail=f"Failed to load market status for {date}: {str(e)}"
-            )
-    
-    async def get_stored_active_category(self, symbol: str = None, date: str = None) -> Dict[str, Any]:
-        """Get IPO active category from stored JSON file"""
-        try:
-            if not date:
-                date = datetime.now().strftime("%Y-%m-%d")
-            
-            logger.info(f"Loading stored active category for date: {date}, symbol: {symbol}")
-            
-            # Load data from file
-            stored_data = self.file_storage.load_data('active_category', date)
-            
-            if not stored_data:
-                raise HTTPException(
-                    status_code=404,
-                    detail=f"No active category data found for date: {date}"
-                )
-            
-            data = stored_data.get('data', {})
-            metadata = stored_data.get('metadata', {})
-            
-            # If specific symbol requested
-            if symbol:
-                if symbol not in data:
-                    raise HTTPException(
-                        status_code=404,
-                        detail=f"No active category data found for symbol: {symbol} on date: {date}"
-                    )
-                
+            # Extract IPOs list
+            ipos = current_data.get('data', [])
+            if not ipos:
                 return {
                     'success': True,
-                    'message': f'Successfully loaded active category for {symbol} on {date}',
+                    'message': 'No current IPOs available',
                     'date': date,
-                    'symbol': symbol,
-                    'data': data[symbol],
-                    'metadata': metadata,
-                    'source': 'LOCAL_STORAGE',
+                    'count': 0,
+                    'data': [],
                     'timestamp': datetime.now().isoformat()
                 }
             
-            # Return all symbols
+            # Process each IPO with subscription data
+            enriched_ipos = []
+            for ipo in ipos:
+                symbol = ipo.get('symbol', '')
+                
+                # Get subscription details for this IPO
+                subscription_info = self._get_subscription_for_symbol(
+                    symbol, 
+                    subscription_data
+                )
+                
+                # Combine IPO + Subscription data
+                enriched_ipo = {
+                    'symbol': symbol,
+                    'company_name': ipo.get('company_name', ''),
+                    'issue_price': ipo.get('issue_price', ''),
+                    'issue_size': ipo.get('issue_size', ''),
+                    'lot_size': ipo.get('lot_size', 0),
+                    'issue_start_date': ipo.get('issue_start_date', ''),
+                    'issue_end_date': ipo.get('issue_end_date', ''),
+                    'status': ipo.get('status', ''),
+                    'series': ipo.get('series', ''),
+                    
+                    # Subscription data (Groww style)
+                    'subscription': subscription_info
+                }
+                
+                enriched_ipos.append(enriched_ipo)
+            
             return {
                 'success': True,
-                'message': f'Successfully loaded all active categories for {date}',
+                'message': f'Loaded {len(enriched_ipos)} current IPOs with subscription data',
                 'date': date,
-                'count': len(data),
-                'symbols': list(data.keys()) if isinstance(data, dict) else [],
-                'data': data,
+                'count': len(enriched_ipos),
+                'data': enriched_ipos,
+                'source': 'LOCAL_STORAGE',
+                'timestamp': datetime.now().isoformat()
+            }
+            
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"❌ Error loading current IPOs: {e}", exc_info=True)
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to load current IPOs: {str(e)}"
+            )
+    
+    async def get_upcoming_ipos(self, date: str = None) -> Dict[str, Any]:
+        """Get upcoming IPOs from stored data"""
+        try:
+            if not date:
+                date = datetime.now().strftime("%Y-%m-%d")
+            
+            logger.info(f"📅 Loading upcoming IPOs for: {date}")
+            
+            # Load upcoming IPO data
+            upcoming_data = self.file_storage.load_data('nse/upcoming', date)
+            if not upcoming_data:
+                raise HTTPException(
+                    status_code=404,
+                    detail=f"No upcoming IPO data found for {date}"
+                )
+            
+            ipos = upcoming_data.get('data', [])
+            
+            # Process upcoming IPOs (no subscription data needed)
+            processed_ipos = []
+            for ipo in ipos:
+                processed_ipo = {
+                    'symbol': ipo.get('symbol', ''),
+                    'company_name': ipo.get('company_name', ''),
+                    'issue_price': ipo.get('issue_price', ''),
+                    'issue_size': ipo.get('issue_size', ''),
+                    'lot_size': ipo.get('lot_size', 0),
+                    'issue_start_date': ipo.get('issue_start_date', ''),
+                    'issue_end_date': ipo.get('issue_end_date', ''),
+                    'status': ipo.get('status', ''),
+                    'series': ipo.get('series', '')
+                }
+                processed_ipos.append(processed_ipo)
+            
+            return {
+                'success': True,
+                'message': f'Loaded {len(processed_ipos)} upcoming IPOs',
+                'date': date,
+                'count': len(processed_ipos),
+                'data': processed_ipos,
+                'source': 'LOCAL_STORAGE',
+                'timestamp': datetime.now().isoformat()
+            }
+            
+        except HTTPException:
+            raise
+        except Exception as e:
+            logger.error(f"❌ Error loading upcoming IPOs: {e}", exc_info=True)
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to load upcoming IPOs: {str(e)}"
+            )
+    
+    async def get_subscription_data(self, date: str = None) -> Dict[str, Any]:
+        """Get raw subscription data for all IPOs"""
+        try:
+            if not date:
+                date = datetime.now().strftime("%Y-%m-%d")
+            
+            logger.info(f"📈 Loading subscription data for: {date}")
+            
+            # Load subscription data
+            subscription_data = self.file_storage.load_data('nse/subscription', date)
+            if not subscription_data:
+                raise HTTPException(
+                    status_code=404,
+                    detail=f"No subscription data found for {date}"
+                )
+            
+            # Extract subscription details
+            data = subscription_data.get('data', {})
+            metadata = data.get('metadata', {})
+            subscription_dict = data.get('data', {})
+            
+            return {
+                'success': True,
+                'message': f'Loaded subscription data for {len(subscription_dict)} IPOs',
+                'date': date,
+                'count': len(subscription_dict),
+                'data': subscription_dict,
                 'metadata': metadata,
                 'source': 'LOCAL_STORAGE',
                 'timestamp': datetime.now().isoformat()
@@ -191,144 +188,93 @@ class LocalController:
         except HTTPException:
             raise
         except Exception as e:
-            logger.error(f"Local controller error - active category for {symbol} on {date}: {e}")
+            logger.error(f"❌ Error loading subscription data: {e}", exc_info=True)
             raise HTTPException(
                 status_code=500,
-                detail=f"Failed to load active category data: {str(e)}"
+                detail=f"Failed to load subscription data: {str(e)}"
             )
     
-    async def get_available_dates(self, data_type: str) -> Dict[str, Any]:
-        """Get list of available dates for a data type"""
+    def _get_subscription_for_symbol(self, symbol: str, subscription_data: Dict) -> Dict:
+        """
+        Extract subscription data for a specific symbol
+        Returns Groww-style format:
+        {
+            'qib': '0.77x',
+            'nii': '0.45x', 
+            'retail': '0.67x',
+            'total': '0.69x',
+            'has_data': True
+        }
+        """
+        if not subscription_data:
+            return self._empty_subscription()
+        
         try:
-            logger.info(f"Getting available dates for data type: {data_type}")
+            # Navigate nested structure
+            data = subscription_data.get('data', {})
+            sub_dict = data.get('data', {})
             
-            valid_types = ['current_ipos', 'upcoming_ipos', 'market_status', 'active_category']
-            if data_type not in valid_types:
-                raise HTTPException(
-                    status_code=400,
-                    detail=f"Invalid data type. Valid types: {valid_types}"
-                )
+            # Get symbol-specific data
+            symbol_data = sub_dict.get(symbol)
+            if not symbol_data:
+                return self._empty_subscription()
             
-            dates = self.file_storage.get_available_dates(data_type)
+            categories = symbol_data.get('categories', {})
+            
+            # Extract subscription times for each category
+            qib = self._extract_subscription(
+                categories.get('Qualified Institutional Buyers(QIBs)', {})
+            )
+            
+            nii = self._extract_subscription(
+                categories.get('Non Institutional Investors', {})
+            )
+            
+            retail = self._extract_subscription(
+                categories.get('Retail Individual Investors(RIIs)', {})
+            )
+            
+            total = symbol_data.get('total_subscription', 0)
             
             return {
-                'success': True,
-                'message': f'Found {len(dates)} available dates for {data_type}',
-                'data_type': data_type,
-                'available_dates': dates,
-                'count': len(dates),
-                'latest_date': dates[0] if dates else None,
-                'oldest_date': dates[-1] if dates else None,
-                'timestamp': datetime.now().isoformat()
+                'qib': f"{qib:.2f}x" if qib > 0 else "0.00x",
+                'nii': f"{nii:.2f}x" if nii > 0 else "0.00x",
+                'retail': f"{retail:.2f}x" if retail > 0 else "0.00x",
+                'total': f"{total:.2f}x" if total > 0 else "0.00x",
+                'qib_numeric': qib,
+                'nii_numeric': nii,
+                'retail_numeric': retail,
+                'total_numeric': total,
+                'has_data': True,
+                'display': f"QIB: {qib:.2f}x | NII: {nii:.2f}x | Retail: {retail:.2f}x | Total: {total:.2f}x"
             }
             
-        except HTTPException:
-            raise
         except Exception as e:
-            logger.error(f"Local controller error - available dates for {data_type}: {e}")
-            raise HTTPException(
-                status_code=500,
-                detail=f"Failed to get available dates: {str(e)}"
-            )
+            logger.warning(f"⚠️ Error extracting subscription for {symbol}: {e}")
+            return self._empty_subscription()
     
-    async def get_data_summary(self) -> Dict[str, Any]:
-        """Get summary of all stored data"""
+    def _extract_subscription(self, category_data: Dict) -> float:
+        """Extract subscription times from category data"""
         try:
-            logger.info("Getting data summary")
-            
-            summary = self.file_storage.get_all_data_summary()
-            
-            if not summary:
-                return {
-                    'success': False,
-                    'message': 'No stored data found',
-                    'summary': {},
-                    'timestamp': datetime.now().isoformat()
-                }
-            
-            return {
-                'success': True,
-                'message': 'Successfully loaded data summary',
-                'summary': summary,
-                'timestamp': datetime.now().isoformat()
-            }
-            
-        except Exception as e:
-            logger.error(f"Local controller error - data summary: {e}")
-            raise HTTPException(
-                status_code=500,
-                detail=f"Failed to get data summary: {str(e)}"
-            )
+            sub_times = category_data.get('subscription_times', 0)
+            return float(sub_times) if sub_times else 0.0
+        except:
+            return 0.0
     
-    async def delete_stored_data(self, data_type: str, date: str) -> Dict[str, Any]:
-        """Delete stored data for specific date"""
-        try:
-            logger.info(f"Deleting stored data: {data_type} for {date}")
-            
-            valid_types = ['current_ipos', 'upcoming_ipos', 'market_status', 'active_category']
-            if data_type not in valid_types:
-                raise HTTPException(
-                    status_code=400,
-                    detail=f"Invalid data type. Valid types: {valid_types}"
-                )
-            
-            deleted = self.file_storage.delete_data(data_type, date)
-            
-            if not deleted:
-                raise HTTPException(
-                    status_code=404,
-                    detail=f"No data found to delete for {data_type} on {date}"
-                )
-            
-            return {
-                'success': True,
-                'message': f'Successfully deleted {data_type} data for {date}',
-                'data_type': data_type,
-                'date': date,
-                'deleted': True,
-                'timestamp': datetime.now().isoformat()
-            }
-            
-        except HTTPException:
-            raise
-        except Exception as e:
-            logger.error(f"Local controller error - delete data {data_type} for {date}: {e}")
-            raise HTTPException(
-                status_code=500,
-                detail=f"Failed to delete data: {str(e)}"
-            )
-    
-    async def cleanup_old_data(self, data_type: str, keep_days: int = 30) -> Dict[str, Any]:
-        """Cleanup old stored data"""
-        try:
-            logger.info(f"Cleaning up old data for {data_type}, keeping {keep_days} days")
-            
-            valid_types = ['current_ipos', 'upcoming_ipos', 'market_status', 'active_category']
-            if data_type not in valid_types:
-                raise HTTPException(
-                    status_code=400,
-                    detail=f"Invalid data type. Valid types: {valid_types}"
-                )
-            
-            deleted_count = self.file_storage.cleanup_old_files(data_type, keep_days)
-            
-            return {
-                'success': True,
-                'message': f'Cleanup completed for {data_type}',
-                'data_type': data_type,
-                'keep_days': keep_days,
-                'deleted_files': deleted_count,
-                'timestamp': datetime.now().isoformat()
-            }
-            
-        except HTTPException:
-            raise
-        except Exception as e:
-            logger.error(f"Local controller error - cleanup {data_type}: {e}")
-            raise HTTPException(
-                status_code=500,
-                detail=f"Failed to cleanup data: {str(e)}"
-            )
+    def _empty_subscription(self) -> Dict:
+        """Return empty subscription data structure"""
+        return {
+            'qib': '0.00x',
+            'nii': '0.00x',
+            'retail': '0.00x',
+            'total': '0.00x',
+            'qib_numeric': 0.0,
+            'nii_numeric': 0.0,
+            'retail_numeric': 0.0,
+            'total_numeric': 0.0,
+            'has_data': False,
+            'display': 'No subscription data available'
+        }
 
 # Create controller instance
 local_controller = LocalController()
