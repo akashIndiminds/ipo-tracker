@@ -2,6 +2,7 @@ from datetime import datetime
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes import nse_routes, gmp_routes, math_routes, ai_routes, predict_routes ,local_routes
+from app.routes import orchestrator_routes
 
 # Pehle app initialize karo
 app = FastAPI(
@@ -16,6 +17,7 @@ app.include_router(math_routes.router)
 app.include_router(ai_routes.router)
 app.include_router(predict_routes.router)
 app.include_router(local_routes.router)
+app.include_router(orchestrator_routes.router)
 
 # Middleware add karo
 app.add_middleware(
